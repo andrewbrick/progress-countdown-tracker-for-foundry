@@ -120,7 +120,7 @@ Hooks.once("init", () => {
 
 Hooks.once('ready', () => {
 
-  new TrackersApp().render(true);
+  new TrackerApp().render(true);
   
   // Load position
   const pos = game.settings.get("tictac-tracker", "trackerPosition");
