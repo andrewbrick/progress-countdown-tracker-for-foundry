@@ -308,7 +308,7 @@ Hooks.on("renderTrackerApp", (app, html) => {
 
   app.render();
   
-}
+});
 
 function randomId() {
   return randomId = foundry.utils.randomID(16);
