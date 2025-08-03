@@ -1,0 +1,38 @@
+<div class="trackers-window {{#if collapsed}}collapsed{{/if}}">
+  <header class="header">
+    <span class="title">Trackers</span>
+    <i class="fas fa-caret-down toggle-collapse"></i>
+  </header>
+
+  {{#if isGM}}
+    <div class="controls">
+      <i class="fas fa-circle-plus add-tracker"></i>
+    </div>
+  {{/if}}
+
+  <div class="tracker-list">
+    {{#each trackers as |tracker idx|}}
+      {{#if (or ../isGM tracker.visible)}}
+        <div class="tracker-row" data-index="{{idx}}">
+          {{#if ../isGM}}
+            <input class="edit-id" value="{{tracker.id}}" data-index="{{idx}}">
+            <span class="type-switcher">
+              <span class="type-letter {{#ifEquals tracker.type 'progress'}}white{{else}}gray{{/ifEquals}}">P</span>
+              <span class="type-letter {{#ifEquals tracker.type 'consequence'}}white{{else}}gray{{/ifEquals}}">C</span>
+            </span>
+            <i class="fas fa-trash-can delete-tracker" data-index="{{idx}}"></i>
+            <!-- ...more controls... -->
+          {{else}}
+            <span class="readonly-id">{{tracker.id}}</span>
+          {{/if}}
+
+          <div class="pips">
+            {{#each (range 0 tracker.pip_cnt)}}
+              <span class="pip {{#if (lt @index tracker.filled_cnt)}}filled{{else}}empty{{/if}}"></span>
+            {{/each}}
+          </div>
+        </div>
+      {{/if}}
+    {{/each}}
+  </div>
+</div>
