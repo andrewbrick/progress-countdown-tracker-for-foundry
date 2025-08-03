@@ -131,9 +131,9 @@ Hooks.once('ready', () => {
 
 });
 
-const { HandlebarsApplicationMixin } = foundry.applications.api;
+//const { HandlebarsApplicationMixin } = foundry.applications.api;
 
-class TrackerApp extends HandlebarsApplicationMixin(foundry.applications.api.ApplicationV2) {
+class TrackerApp extends foundry.applications.api.HandlebarsApplicationMixin(foundry.applications.api.ApplicationV2) { //HandlebarsApplicationMixin(foundry.applications.api.ApplicationV2) {
   static get defaultOptions() {
     return foundry.utils.mergeObject(super.defaultOptions, {
       id: "trackers-app",
@@ -179,7 +179,7 @@ class TrackerApp extends HandlebarsApplicationMixin(foundry.applications.api.App
     };
   }
 
-  async _renderHTML() {
+  async _renderHTML(context, options) {
     //const html = await foundry.applications.handlebars.renderTemplate(this.options.template, await this.getData());
     console.log("_renderHTML context:", context);
     const html = await foundry.applications.handlebars.renderTemplate("modules/tictac-tracker/templates/trackers.html", context); //this.getData()); //this.getData()); //context);
