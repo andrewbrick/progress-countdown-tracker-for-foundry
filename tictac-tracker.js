@@ -72,5 +72,19 @@ Hooks.once("init", () => {
       reRender();
     }
   });
+
+  // keep track of the tracker's position
+  game.settings.register("tictac-tracker", "trackerPosition", {
+    name: "Tracker Position",
+    scope: "client",
+    config: false,
+    type: Object,
+    default: {top:100, left:100}
+  });
   
 } // end init
+
+  // Load position
+  const pos = game.settings.get("fear-tracker", "miniTrackerPosition");
+  tracker.style.top = pos.top; 
+  tracker.style.left = pos.left; 
