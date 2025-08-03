@@ -121,6 +121,7 @@ Hooks.once("init", () => {
 Hooks.once('ready', () => {
 
   new TrackerApp().render(true);
+  console.log(TrackersApp.prototype instanceof foundry.applications.api.ApplicationV2);
   
   // Load position
   //const pos = game.settings.get("tictac-tracker", "trackerPosition");
@@ -155,16 +156,16 @@ class TrackerApp extends foundry.applications.api.ApplicationV2 {
   //  this.activateListeners(this._element);
   //}
 
-  async _renderHTML() {
-    const html = await foundry.applications.handlebars.renderTemplate(this.options.template, await this.getContext());
-    return html;
-  }
+  //async _renderHTML() {
+  //  const html = await foundry.applications.handlebars.renderTemplate(this.options.template, await this.getData());
+  //  return html;
+  //}
 
-  async _replaceHTML(element, html) {
-    element.innerHTML = html;
-  }
+  //async _replaceHTML(element, html) {
+  //  element.innerHTML = html;
+  //}
 
-  async data() {
+  async getData() {
     const data = game.settings.get("tictac-tracker", "trackerData");
     const collapsed = game.settings.get("tictac-tracker", "collapsed");
     const order = game.settings.get("tictac-tracker", "trackerOrder");
