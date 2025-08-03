@@ -2,12 +2,13 @@
   "id": "tictac-tracker",
   "title": "Tictac Tracker for Foundry",
   "description": "Adds a GM-controlled, extensible overlay for progress clocks/trackers and countdowns. https://github.com/andrewbrick/tictac-tracker-for-foundry/",
-  "version": "0.0.1a",
+  "version": "0.0.2a",
   "compatibility": {
     "minimum": "12",
     "verified": "13.346"
   },
-  "styles": [],
+  "styles": ["styles/trackers.css"],
+  "templates": ["templates/trackers.html"],
   "scripts": ["tictac-tracker.js"],
   "esmodules": [],
   "packs": [],
@@ -15,7 +16,7 @@
   "socket": true,
   "url": "https://github.com/andrewbrick/tictac-tracker-for-foundry/",
   "manifest": "https://raw.githubusercontent.com/andrewbrick/tictac-tracker-for-foundry/refs/heads/main/module.json",
-  "download": "https://github.com/andrewbrick/tictac-tracker-for-foundry/archive/refs/tags/v0.0.1a.zip",
+  "download": "https://github.com/andrewbrick/tictac-tracker-for-foundry/archive/refs/tags/v0.0.2a.zip",
   "relationships": {
     "requires": [{
       "id": "color-picker",
