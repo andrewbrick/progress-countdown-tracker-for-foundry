@@ -159,10 +159,10 @@ class TrackerApp extends foundry.applications.api.ApplicationV2 {
   async _renderHTML() {
     //const html = await foundry.applications.handlebars.renderTemplate(this.options.template, await this.getData());
     const html = await foundry.applications.handlebars.renderTemplate("modules/tictac-tracker/templates/trackers.html", this.getData()); //this.getData()); //context);
-    const template = document.createElement("template");
-    template.innerHTML = html.trim();
-    return template.content.firstElementChild;
-    //return html;
+    //const template = document.createElement("template");
+    //template.innerHTML = html.trim();
+    //return template.content.firstElementChild;
+    return html;
   }
 
   async _replaceHTML(element, html) {
@@ -172,15 +172,17 @@ class TrackerApp extends foundry.applications.api.ApplicationV2 {
       template.innerHTML = html.trim();
       return template.content;
     })();
-    let windowContent = element.querySelector(".window-content");
-    if(!windowContent) {
-      console.log("no windowContent");
-      windowContent = document.createElement("div");
-      windowContent.classList.add("window-content");
-      element.appendChild(windowContent);
-    }
-    windowContent.replaceChildren(...content.childNodes);
-    //element.innerHTML = html;
+    //let windowContent = element.querySelector(".window-content");
+    //if(!windowContent) {
+    //  console.log("no windowContent");
+    //  windowContent = document.createElement("div");
+    //  windowContent.classList.add("window-content");
+    //  element.appendChild(windowContent);
+    //}
+    //windowContent.replaceChildren(...content.childNodes);
+    
+    //element.innerHTML = content; //html
+    html.innerHTML = element;
     
     //const range = document.createRange();
     //const newContent = range.createContextualFragment(html);
@@ -224,7 +226,7 @@ class TrackerApp extends foundry.applications.api.ApplicationV2 {
 
   activateListeners(html) {
     super.activateListeners(html);
-    const self = this;
+    //const self = this;
 
     html.find(".toggle-collapse").on("click", async () => {
       const current = game.settings.get("tictac-tracker", "collapsed");
