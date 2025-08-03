@@ -125,7 +125,7 @@ Hooks.once("init", () => {
 Hooks.once('ready', () => {
 
   new TrackerApp().render(true);
-  console.log(TrackersApp.prototype instanceof foundry.applications.api.ApplicationV2);
+  console.log(TrackerApp.prototype instanceof foundry.applications.api.ApplicationV2);
   
   // Load position
   //const pos = game.settings.get("tictac-tracker", "trackerPosition");
