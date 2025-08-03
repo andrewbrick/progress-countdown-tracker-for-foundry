@@ -283,7 +283,7 @@ class TrackerApp extends foundry.applications.api.HandlebarsApplicationMixin(fou
 
     await game.settings.set("tictac-tracker", "trackerData", data);
     await game.settings.set("tictac-tracker", "trackerOrder", order);
-    app.render()
+    app.render(true)
   }
 
   static async _onDelTracker(event, app) {
@@ -369,7 +369,8 @@ class TrackerApp extends foundry.applications.api.HandlebarsApplicationMixin(fou
     super._onRender(context, options);
 
     // re-ordering the trackers
-    const $trackerList = this.element.find(".tracker-list"); 
+    const appHtmlElement = this.element;
+    const $trackerList = $(appHtmlElement).find(".tracker-list");
     if ($trackerList.length) { // Ensure the element exists
       $trackerList.sortable({
         handle: ".drag-handle",
@@ -386,7 +387,7 @@ class TrackerApp extends foundry.applications.api.HandlebarsApplicationMixin(fou
     }
 
     // editing the tracker names
-    const editNameInputs = this.element[0].querySelectorAll(".edit-name"); // this.element is a jQuery obj, get the native HTMLElement
+    const editNameInputs = appHtmlElement.querySelectorAll(".edit-name"); //this.element[0].querySelectorAll(".edit-name"); // this.element is a jQuery obj, get the native HTMLElement
     editNameInputs.forEach(input => {
       input.addEventListener("blur", async (event) => {
         const id = event.currentTarget.dataset.id;
