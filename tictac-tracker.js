@@ -1,4 +1,4 @@
-export class TrackerApp extends foundry.applications.api.ApplicationV2 {
+class TrackerApp extends foundry.applications.api.ApplicationV2 {
   static get defaultOptions() {
     return foundry.utils.mergeObject(super.defaultOptions, {
       id: "trackers-app",
