@@ -130,7 +130,9 @@ Hooks.once("init", () => {
 
 Hooks.once('ready', () => {
   
-  new TrackerApp().render(true);
+  game.tictacTracker = new TrackerApp();
+  game.tictacTracker.render(true);
+  //new TrackerApp().render(true);
   console.log(TrackerApp.prototype instanceof foundry.applications.api.ApplicationV2);
   console.log("num trackers:", game.settings.get("tictac-tracker", "trackerData").length);
   
@@ -203,51 +205,31 @@ class TrackerApp extends foundry.applications.api.HandlebarsApplicationMixin(fou
   async _replaceHTML(element, html) {
     console.log("element passed to _replaceHTML:", element);
     console.log("html passed to _replaceHTML:", html);
-    const content = html instanceof HTMLElement ? html : (() => {
-      const template = document.createElement("template");
-      template.innerHTML = html.trim();
-      return template.content;
-    })();
-    //let windowContent = element.querySelector(".window-content");
-    //if(!windowContent) {
-    //  console.log("no windowContent");
-    //  windowContent = document.createElement("div");
-    //  windowContent.classList.add("window-content");
-    //  element.appendChild(windowContent);
-    //}
-    //windowContent.replaceChildren(...content.childNodes);
-    
-    //element.innerHTML = content; //html
-    html.innerHTML = element;
-    
-    //const range = document.createRange();
-    //const newContent = range.createContextualFragment(html);
-    //element.replaceChildren(...newContent.childNodes);
-
     //const content = html instanceof HTMLElement ? html : (() => {
     //  const template = document.createElement("template");
     //  template.innerHTML = html.trim();
-    //  return template.content.firstElementChild;
+    //  return template.content;
     //})();
-    //if (!(element instanceof HTMLElement)) {
-    //  console.error("TrackerApp: Invalid target element for HTML replacement.", element);
-    //  return;
-    //}
-    //element.replaceChildren(content);
-    
+
+    html.innerHTML = element;    
   }
 
   activateListeners(html) {
     super.activateListeners(html);
-    //const self = this;
-
-    html.find(".toggle-collapse").on("click", async () => {
+    console.log("ACTIVATE LISTENERS CALLED!");
+    /*
+    html.querySelector(".toggle-collapse").on("click", async () => {
       const current = game.settings.get("tictac-tracker", "collapsed");
       await game.settings.set("tictac-tracker", "collapsed", !current);
       this.render();
     });
 
-    html.find(".add-tracker").on("click", async () => {
+    const addButton = html.querySelector(".add-tracker");
+    console.log("add button element", addButton);
+    addButton.addEventListener("click", async (event) => {
+      console.log("add button click");
+      event.preventDefault();
+      
       const data = game.settings.get("tictac-tracker", "trackerData");
       const order = game.settings.get("tictac-tracker", "trackerOrder");
       let base = "New Tracker";
@@ -274,8 +256,38 @@ class TrackerApp extends foundry.applications.api.HandlebarsApplicationMixin(fou
       await game.settings.set("tictac-tracker", "trackerOrder", order);
       this.render()
     });
+                               
+    /*
+    html.querySelector(".add-tracker").on("click", async () => {
+      const data = game.settings.get("tictac-tracker", "trackerData");
+      const order = game.settings.get("tictac-tracker", "trackerOrder");
+      let base = "New Tracker";
+      let i = 0 ;
+      let name;
+      do {
+        name = base + (i ? ` ${i}` : "");
+        i++;
+      } while (data.find(t => t.name === name));
 
-    html.find(".delete-tracker").on("click", async (event) => {
+      const id = randomID();
+      const newTracker = {
+        id,
+        name,
+        type: "progress",
+        pip_cnt: 4,
+        filled_cnt: 4,
+        visible: false
+      };
+      data.push(newTracker);
+      order.push(id);
+
+      await game.settings.set("tictac-tracker", "trackerData", data);
+      await game.settings.set("tictac-tracker", "trackerOrder", order);
+      this.render()
+    });
+    //end comment here
+
+    html.querySelector(".delete-tracker").on("click", async (event) => {
       const id = event.currentTarget.dataset.id;
       let data = game.settings.get("tictac-tracker", "trackerData");
       let order = game.settings.get("tictac-tracker", "trackerOrder");
@@ -286,7 +298,7 @@ class TrackerApp extends foundry.applications.api.HandlebarsApplicationMixin(fou
       this.render();
     });
 
-    html.find(".edit-name").on("blur", async (event) => {
+    html.querySelector(".edit-name").on("blur", async (event) => {
       const id = event.currentTarget.dataset.id;
       const newName = event.currentTarget.value.trim();
       const data = game.settings.get("tictac-tracker", "trackerData");
@@ -297,7 +309,7 @@ class TrackerApp extends foundry.applications.api.HandlebarsApplicationMixin(fou
       }
     });
 
-    html.find(".toggle-type").on("click", async (event) => {
+    html.querySelector(".toggle-type").on("click", async (event) => {
       const id = event.currentTarget.dataset.id;
       const type = event.currentTarget.dataset.type;
       const data = game.settings.get("tictac-tracker", "trackerData");
@@ -309,7 +321,7 @@ class TrackerApp extends foundry.applications.api.HandlebarsApplicationMixin(fou
       }
     });
 
-    html.find(".toggle-visibility").on("click", async (event) => {
+    html.querySelector(".toggle-visibility").on("click", async (event) => {
       const id = event.currentTarget.dataset.id;
       const data = game.settings.get("tictac-tracker", "trackerData");
       const tracker = data.find(t => t.id === id);
@@ -320,7 +332,7 @@ class TrackerApp extends foundry.applications.api.HandlebarsApplicationMixin(fou
       }
     });
 
-    html.find(".pip-mod").on("click", async (event) => {
+    html.querySelector(".pip-mod").on("click", async (event) => {
       const id = event.currentTarget.dataset.id;
       const action = event.currentTarget.dataset.action;
       const data = game.settings.get("tictac-tracker", "trackerData");
@@ -340,14 +352,16 @@ class TrackerApp extends foundry.applications.api.HandlebarsApplicationMixin(fou
       this.render();
     });
 
-    html.find(".tracker-list").sortable({
+    html.querySelector(".tracker-list").sortable({
       handle: ".drag-handle",
       update: async (event, ui) => {
         const newOrder = html.find(".tracker-row").map((i, el) => el.dataset.id).get();
         await game.settings.set("tictac-tracker", "trackerOrder", newOrder);
       }
     });
-  }
+    */
+    
+  } // end activate listeners
 
   
 }
