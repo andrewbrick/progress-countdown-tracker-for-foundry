@@ -131,7 +131,10 @@ Hooks.once('ready', () => {
 
 });
 
-class TrackerApp extends foundry.applications.api.ApplicationV2 {
+import { foundry } from "foundry";
+import { HandlebarsApplicationMixin } from "@league-of-foundry-developers/foundry-vtt-types/runtime/foundry.applications.api";
+
+class TrackerApp extends HandlebarsApplicationMixin(foundry.applications.api.ApplicationV2) { //foundry.applications.api.ApplicationV2 {
   static get defaultOptions() {
     return foundry.utils.mergeObject(super.defaultOptions, {
       id: "trackers-app",
@@ -145,29 +148,43 @@ class TrackerApp extends foundry.applications.api.ApplicationV2 {
     });
   }
 
-  //async _renderHTML() {
-  //  const data = await this.getData();
-  //  const html = await renderTemplate("modules/trackers/templates/trackers.html", data);
-  //  return html;
-  //}
+  async _prepareContext() {
+    const data = game.settings.get("tictac-tracker", "trackerData");
+    const collapsed = game.settings.get("tictac-tracker", "collapsed");
+    const order = game.settings.get("tictac-tracker", "trackerOrder");
+    const isGM = game.user.isGM;
+    console.log("isGM _prepareContext:", isGM);
 
-  //async _replaceHTML(container, html) {
-  //  container.innerHTML = html;
-  //  this._element = $(container);
-  //  this.activateListeners(this._element);
-  //}
+    // Apply saved ordering
+    const ordered = order
+      .map(id => data.find(t => t.id == id))
+      .filter(Boolean);
+
+    const unordered = data.filter(t => !order.includes(t.id));
+    const fullList = [...ordered, ...unordered];
+
+    return {
+      isGM,
+      collapsed: collapsed,
+      progressColor: game.settings.get("tictac-tracker", "progressPipColor"),
+      consequenceColor: game.settings.get("tictac-tracker", "consequencePipColor"),
+      trackers: fullList
+    };
+  }
 
   async _renderHTML() {
     //const html = await foundry.applications.handlebars.renderTemplate(this.options.template, await this.getData());
-    const html = await foundry.applications.handlebars.renderTemplate("modules/tictac-tracker/templates/trackers.html", this.getData()); //this.getData()); //context);
+    const html = await foundry.applications.handlebars.renderTemplate("modules/tictac-tracker/templates/trackers.html", context); //this.getData()); //this.getData()); //context);
     //const template = document.createElement("template");
     //template.innerHTML = html.trim();
     //return template.content.firstElementChild;
+    console.log("isGM:", context.isGM);
     return html;
   }
 
   async _replaceHTML(element, html) {
     console.log("element passed to _replaceHTML:", element);
+    console.log("html passed to _replaceHTML:", html);
     const content = html instanceof HTMLElement ? html : (() => {
       const template = document.createElement("template");
       template.innerHTML = html.trim();
@@ -200,29 +217,6 @@ class TrackerApp extends foundry.applications.api.ApplicationV2 {
     //}
     //element.replaceChildren(content);
     
-  }
-
-  async getData() {
-    const data = game.settings.get("tictac-tracker", "trackerData");
-    const collapsed = game.settings.get("tictac-tracker", "collapsed");
-    const order = game.settings.get("tictac-tracker", "trackerOrder");
-    const isGM = game.user.isGM;
-
-    // Apply saved ordering
-    const ordered = order
-      .map(id => data.find(t => t.id == id))
-      .filter(Boolean);
-
-    const unordered = data.filter(t => !order.includes(t.id));
-    const fullList = [...ordered, ...unordered];
-
-    return {
-      isGM,
-      collapsed,
-      progressColor: game.settings.get("tictac-tracker", "progressPipColor"),
-      consequenceColor: game.settings.get("tictac-tracker", "consequencePipColor"),
-      trackers: fullList
-    };
   }
 
   activateListeners(html) {
@@ -336,6 +330,8 @@ class TrackerApp extends foundry.applications.api.ApplicationV2 {
       }
     });
   }
+
+  
 }
 
 function randomId() {
