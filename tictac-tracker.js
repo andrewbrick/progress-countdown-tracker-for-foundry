@@ -155,14 +155,14 @@ class TrackerApp extends foundry.applications.api.ApplicationV2 {
   //  this.activateListeners(this._element);
   //}
 
-  async _renderHTML() {
-    const html = await renderTemplate(this.options.template, await this._getContext());
-    return html;
-  }
+  //async _renderHTML() {
+  //  const html = await foundry.applications.handlebars.renderTemplate(this.options.template, await this._getContext());
+  //  return html;
+  //}
 
-  async _replaceHTML(element, html) {
-    element.innerHTML = html;
-  }
+  //async _replaceHTML(element, html) {
+  //  element.innerHTML = html;
+  //}
 
   async data() {
     const data = game.settings.get("tictac-tracker", "trackerData");
