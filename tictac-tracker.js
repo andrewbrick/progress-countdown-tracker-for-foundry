@@ -119,7 +119,7 @@ Hooks.once("init", () => {
 }); // end init
 
 Hooks.once('ready', () => {
-  import { renderTemplate } from 'foundry.applications.handlebars';
+  //import { renderTemplate } from 'foundry.applications.handlebars';
   const html = await renderTemplate('/modules/tictac-tracker/templates/trackers.html', data);
   
   new TrackerApp().render(true);
