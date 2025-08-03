@@ -117,14 +117,32 @@ Hooks.once("init", () => {
   });
 
   Handlebars.registerHelper("or", function(...args) {
-    const options = args.pop();
-    const result = args.some(Boolean);
-    if(result) {
-      return options.fn(this);
+    const options = args.pop(); // options is always the last argument
+
+    // The actual values to check for truthiness are everything else
+    const values = args;
+
+    const result = values.some(Boolean); // Check if any value is truthy
+
+    // Check if it's being used as a BLOCK helper (i.e., it has an inner block to render)
+    if (options.fn && typeof options.fn === 'function') {
+        if (result) {
+            return options.fn(this); // Render the block if true
+        } else {
+            // Only try to call options.inverse if it exists (for {{else}} blocks)
+            if (options.inverse && typeof options.inverse === 'function') {
+                return options.inverse(this); // Render the else block if false
+            } else {
+                // If no {{else}} block, just return an empty string or nothing
+                return ""; // Or you could return nothing, depending on desired behavior
+            }
+        }
     } else {
-      return options.inverse(this);
+        // If it's *not* a block helper, just return the boolean result
+        // This makes it behave like an inline helper `{{or a b}}`
+        return result;
     }
-  });
+});
   
 }); // end init
 
@@ -155,8 +173,42 @@ class TrackerApp extends foundry.applications.api.HandlebarsApplicationMixin(fou
       title: "Trackers",
       width: 500,
       height: "auto",
-      classes: ["trackers-window"]
+      classes: ["trackers-window"],
+      actions: {
+        addTracker: TrackerApp._onAddTracker
+      }
     });
+  }
+
+  static async _onAddTracker(event, app) {
+    event.preventDefault();
+    console.log("add tracker clicked");
+  
+    const data = game.settings.get("tictac-tracker", "trackerData");
+        const order = game.settings.get("tictac-tracker", "trackerOrder");
+        let base = "New Tracker";
+        let i = 0 ;
+        let name;
+        do {
+          name = base + (i ? ` ${i}` : "");
+          i++;
+        } while (data.find(t => t.name === name));
+  
+        const id = randomID();
+        const newTracker = {
+          id,
+          name,
+          type: "progress",
+          pip_cnt: 4,
+          filled_cnt: 4,
+          visible: false
+        };
+        data.push(newTracker);
+        order.push(id);
+  
+        await game.settings.set("tictac-tracker", "trackerData", data);
+        await game.settings.set("tictac-tracker", "trackerOrder", order);
+        app.render()
   }
 
   async _prepareContext(options) {
@@ -203,8 +255,8 @@ class TrackerApp extends foundry.applications.api.HandlebarsApplicationMixin(fou
   }
 
   async _replaceHTML(element, html) {
-    console.log("element passed to _replaceHTML:", element);
-    console.log("html passed to _replaceHTML:", html);
+    //console.log("element passed to _replaceHTML:", element);
+    //console.log("html passed to _replaceHTML:", html);
     //const content = html instanceof HTMLElement ? html : (() => {
     //  const template = document.createElement("template");
     //  template.innerHTML = html.trim();
@@ -217,7 +269,7 @@ class TrackerApp extends foundry.applications.api.HandlebarsApplicationMixin(fou
   activateListeners(html) {
     super.activateListeners(html);
     console.log("ACTIVATE LISTENERS CALLED!");
-    /*
+    
     html.querySelector(".toggle-collapse").on("click", async () => {
       const current = game.settings.get("tictac-tracker", "collapsed");
       await game.settings.set("tictac-tracker", "collapsed", !current);
@@ -285,7 +337,7 @@ class TrackerApp extends foundry.applications.api.HandlebarsApplicationMixin(fou
       await game.settings.set("tictac-tracker", "trackerOrder", order);
       this.render()
     });
-    //end comment here
+    */ //end comment here
 
     html.querySelector(".delete-tracker").on("click", async (event) => {
       const id = event.currentTarget.dataset.id;
@@ -359,7 +411,7 @@ class TrackerApp extends foundry.applications.api.HandlebarsApplicationMixin(fou
         await game.settings.set("tictac-tracker", "trackerOrder", newOrder);
       }
     });
-    */
+    
     
   } // end activate listeners
 
