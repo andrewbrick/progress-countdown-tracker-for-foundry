@@ -146,12 +146,19 @@ Hooks.once("init", () => {
   
 }); // end init
 
-Hooks.once('ready', () => {
+Hooks.once('ready', async () => {
   
   game.tictacTracker = new TrackerApp();
-  game.tictacTracker.render(true);
+  await game.tictacTracker.render(true);
   //new TrackerApp().render(true);
-  console.log(TrackerApp.prototype instanceof foundry.applications.api.ApplicationV2);
+  console.log("DEBUG: foundry object available:", typeof foundry);
+  console.log("DEBUG: foundry.applications.api available:", typeof foundry?.applications?.api);
+  console.log("DEBUG: HandlebarsApplicationMixin available:", typeof foundry?.applications?.api?.HandlebarsApplicationMixin);
+  console.log("DEBUG: ApplicationV2 available:", typeof foundry?.applications?.api?.ApplicationV2);
+  console.log("DEBUG: TrackerApp Instance Options:", game.tictacTracker.options);
+  console.log("DEBUG: TrackerApp Instance Frame Options:", game.tictacTracker.options.frame); // Check if frame options are inherited/set
+  console.log("DEBUG: TrackerApp Instance HTML Element:", game.tictacTracker.element); // Check the element reference
+  console.log("DEBUG: Does TrackerApp have _onRender method?", typeof game.tictacTracker._onRender); // Should be 'function'
   console.log("num trackers:", game.settings.get("tictac-tracker", "trackerData").length);
   
   // Load position
@@ -164,52 +171,34 @@ Hooks.once('ready', () => {
 //const { HandlebarsApplicationMixin } = foundry.applications.api;
 
 class TrackerApp extends foundry.applications.api.HandlebarsApplicationMixin(foundry.applications.api.ApplicationV2) { //HandlebarsApplicationMixin(foundry.applications.api.ApplicationV2) {
-  static get defaultOptions() {
-    return foundry.utils.mergeObject(super.defaultOptions, {
-      id: "trackers-app",
-      template: "modules/tictac-tracker/templates/trackers.html",
-      popOut: true,
-      resizeable: false,
+  static DEFAULT_OPTIONS = { //static get defaultOptions() {
+    //return foundry.utils.mergeObject(super.defaultOptions, {
+    id: "trackers-app",
+    template: "modules/tictac-tracker/templates/trackers.html",
+    popOut: true,
+    resizeable: false,
+    window: {
       title: "Trackers",
+    },
+    position: {
       width: 500,
-      height: "auto",
-      classes: ["trackers-window"],
-      actions: {
-        addTracker: TrackerApp._onAddTracker
-      }
-    });
-  }
-
-  static async _onAddTracker(event, app) {
-    event.preventDefault();
-    console.log("add tracker clicked");
-  
-    const data = game.settings.get("tictac-tracker", "trackerData");
-        const order = game.settings.get("tictac-tracker", "trackerOrder");
-        let base = "New Tracker";
-        let i = 0 ;
-        let name;
-        do {
-          name = base + (i ? ` ${i}` : "");
-          i++;
-        } while (data.find(t => t.name === name));
-  
-        const id = randomID();
-        const newTracker = {
-          id,
-          name,
-          type: "progress",
-          pip_cnt: 4,
-          filled_cnt: 4,
-          visible: false
-        };
-        data.push(newTracker);
-        order.push(id);
-  
-        await game.settings.set("tictac-tracker", "trackerData", data);
-        await game.settings.set("tictac-tracker", "trackerOrder", order);
-        app.render()
-  }
+      height: "auto"
+    },
+    classes: ["trackers-window"],
+    actions: {
+      addTracker: TrackerApp._onAddTracker,
+      delTracker: TrackerApp._onDelTracker,
+      addPipCont: TrackerApp._onAddPipCont, // add a pip to the tracker
+      subPipCont: TrackerApp._onSubPipCont, // subtract a pip from the tracker
+      addPip: TrackerApp._onAddPip, // color in the next pip in the tracker
+      subPip: TrackerApp._onSubPip, // gray out the next pip in the tracker
+      toggleType: TrackerApp._onToggleType, // toggle between consequence and progress
+      toggleVis: TrackerApp._onToggleVis, // toggle visibility of the tracker
+      //moveTracker: TrackerApp._onMoveTracker, // grab one tracker and re-position it within the list
+      collapseTrackers: TrackerApp._onCollapseTrackers // toggle to collapse / expand the tracker bars
+      //editTrackerName: TrackerApp._onEditTrackerName
+    }
+  } //);
 
   async _prepareContext(options) {
     const data = game.settings.get("tictac-tracker", "trackerData");
@@ -266,90 +255,156 @@ class TrackerApp extends foundry.applications.api.HandlebarsApplicationMixin(fou
     html.innerHTML = element;    
   }
 
-  activateListeners(html) {
-    super.activateListeners(html);
-    console.log("ACTIVATE LISTENERS CALLED!");
-    
-    html.querySelector(".toggle-collapse").on("click", async () => {
-      const current = game.settings.get("tictac-tracker", "collapsed");
-      await game.settings.set("tictac-tracker", "collapsed", !current);
-      this.render();
-    });
+  static async _onAddTracker(event, app) {
+    event.preventDefault();
+    console.log("add tracker clicked");
+  
+    const data = game.settings.get("tictac-tracker", "trackerData");
+    const order = game.settings.get("tictac-tracker", "trackerOrder");
+    let base = "New Tracker";
+    let i = 0 ;
+    let name;
+    do {
+      name = base + (i ? ` ${i}` : "");
+      i++;
+    } while (data.find(t => t.name === name));
 
-    const addButton = html.querySelector(".add-tracker");
-    console.log("add button element", addButton);
-    addButton.addEventListener("click", async (event) => {
-      console.log("add button click");
-      event.preventDefault();
-      
-      const data = game.settings.get("tictac-tracker", "trackerData");
-      const order = game.settings.get("tictac-tracker", "trackerOrder");
-      let base = "New Tracker";
-      let i = 0 ;
-      let name;
-      do {
-        name = base + (i ? ` ${i}` : "");
-        i++;
-      } while (data.find(t => t.name === name));
+    const id = foundry.utils.randomID(16);
+    const newTracker = {
+      id,
+      name,
+      type: "progress",
+      pip_cnt: 4,
+      filled_cnt: 4,
+      visible: false
+    };
+    data.push(newTracker);
+    order.push(id);
 
-      const id = randomID();
-      const newTracker = {
-        id,
-        name,
-        type: "progress",
-        pip_cnt: 4,
-        filled_cnt: 4,
-        visible: false
-      };
-      data.push(newTracker);
-      order.push(id);
+    await game.settings.set("tictac-tracker", "trackerData", data);
+    await game.settings.set("tictac-tracker", "trackerOrder", order);
+    app.render()
+  }
 
+  static async _onDelTracker(event, app) {
+    console.log("delete tracker clicked")
+    const id = event.currentTarget.dataset.id;
+    let data = game.settings.get("tictac-tracker", "trackerData");
+    let order = game.settings.get("tictac-tracker", "trackerOrder");
+    data = data.filter(t => t.id !== id);
+    order = order.filter(i => i !== id);
+    await game.settings.set("tictac-tracker", "trackerData", data);
+    await game.settings.set("tictac-tracker", "trackerOrder", order);
+    app.render();
+  }
+
+  static async _onCollapseTrackers(event, app) {
+    console.log("collapse/expand toggle clicked")
+    const current = game.settings.get("tictac-tracker", "collapsed");
+    await game.settings.set("tictac-tracker", "collapsed", !current);
+    app.render();
+  }
+
+  static async _onToggleType(event, app) { // .toggle-type
+    const id = event.currentTarget.dataset.id;
+    const type = event.currentTarget.dataset.type;
+    const data = game.settings.get("tictac-tracker", "trackerData");
+    const tracker = data.find(t => t.id === id);
+    if(tracker && tracker.type !== type) {
+      tracker.type = type;
       await game.settings.set("tictac-tracker", "trackerData", data);
-      await game.settings.set("tictac-tracker", "trackerOrder", order);
-      this.render()
-    });
-                               
-    /*
-    html.querySelector(".add-tracker").on("click", async () => {
-      const data = game.settings.get("tictac-tracker", "trackerData");
-      const order = game.settings.get("tictac-tracker", "trackerOrder");
-      let base = "New Tracker";
-      let i = 0 ;
-      let name;
-      do {
-        name = base + (i ? ` ${i}` : "");
-        i++;
-      } while (data.find(t => t.name === name));
+      app.render();
+    }
+  }
 
-      const id = randomID();
-      const newTracker = {
-        id,
-        name,
-        type: "progress",
-        pip_cnt: 4,
-        filled_cnt: 4,
-        visible: false
-      };
-      data.push(newTracker);
-      order.push(id);
-
+  static async _onToggleVis(event, app) { //.toggle-visibility
+    const id = event.currentTarget.dataset.id;
+    const data = game.settings.get("tictac-tracker", "trackerData");
+    const tracker = data.find(t => t.id === id);
+    if(tracker) {
+      tracker.visible = !tracker.visible;
       await game.settings.set("tictac-tracker", "trackerData", data);
-      await game.settings.set("tictac-tracker", "trackerOrder", order);
-      this.render()
-    });
-    */ //end comment here
+      app.render();
+    }
+  }
 
-    html.querySelector(".delete-tracker").on("click", async (event) => {
-      const id = event.currentTarget.dataset.id;
-      let data = game.settings.get("tictac-tracker", "trackerData");
-      let order = game.settings.get("tictac-tracker", "trackerOrder");
-      data = data.filter(t => t.id !== id);
-      order = order.filter(i => i !== id);
-      await game.settings.set("tictac-tracker", "trackerData", data);
-      await game.settings.set("tictac-tracker", "trackerOrder", order);
-      this.render();
-    });
+  /*
+  static async _onAddPipCont(event, app) {
+  }
 
+  static async _onSubPipCont(event, app) {
+  }
+
+  static async _onAddPip (event, app) {
+  }
+
+  static async _onSubPip (event, app) {
+  }
+
+  static async _onMoveTracker (event, app) {
+  }
+  */
+
+  static async _onPipMod (event, app) { //.pip-mod
+    const id = event.currentTarget.dataset.id;
+    const action = event.currentTarget.dataset.action;
+    const data = game.settings.get("tictac-tracker", "trackerData");
+    const tracker = data.find(t => t.id === id);
+    if(!tracker) return;
+
+    if (action === "pip--" && tracker.filled_cnt > 0) tracker.filled_cnt--;
+    else if (action === "pip++" && tracker.filled_cnt < tracker.pip_cnt) tracker.filled_cnt++;
+    else if (action === "cnt--" && tracker.pip_cnt > 1) {
+      tracker.pip_cnt--;
+      if (tracker.filled_cnt > tracker.pip_cnt) tracker.filled_cnt = tracker.pip_cnt;
+    } else if (action === "cnt++" && tracker.pip_cnt < 24) {
+      tracker.pip_cnt++;
+    }
+
+    await game.settings.set("tictac-tracker", "trackerData", data);
+    app.render();
+  }
+
+  _onRender(context, options) {
+    super._onRender(context, options);
+
+    // re-ordering the trackers
+    const $trackerList = this.element.find(".tracker-list"); 
+    if ($trackerList.length) { // Ensure the element exists
+      $trackerList.sortable({
+        handle: ".drag-handle",
+        update: async (event, ui) => {
+          // This is still within the callback, so you can make it async
+          const newOrder = $trackerList.find(".tracker-row").map((i, el) => el.dataset.id).get();
+          await game.settings.set("tictac-tracker", "trackerOrder", newOrder);
+          // Might want to re-render here if the sort order affects other elements
+          this.render(false); // Re-render without forcing a re-draw of the whole app
+        }
+      });
+    } else {
+      console.warn("DEBUG: Sortable container with class 'tracker-list' NOT FOUND during _onRender!");
+    }
+
+    // editing the tracker names
+    const editNameInputs = this.element[0].querySelectorAll(".edit-name"); // this.element is a jQuery obj, get the native HTMLElement
+    editNameInputs.forEach(input => {
+      input.addEventListener("blur", async (event) => {
+        const id = event.currentTarget.dataset.id;
+        const newName = event.currentTarget.value.trim();
+        const data = game.settings.get("tictac-tracker", "trackerData");
+        const tracker = data.find(t => t.id === id);
+        if (tracker) {
+          tracker.name = newName;
+          await game.settings.set("tictac-tracker", "trackerData", data);
+          // UI to update visually based on name change, consider re-rendering
+          this.render(false); 
+        }
+      });
+    });
+  }
+  
+// Old activateListeners    
+/*
     html.querySelector(".edit-name").on("blur", async (event) => {
       const id = event.currentTarget.dataset.id;
       const newName = event.currentTarget.value.trim();
@@ -360,7 +415,7 @@ class TrackerApp extends foundry.applications.api.HandlebarsApplicationMixin(fou
         await game.settings.set("tictac-tracker", "trackerData", data);
       }
     });
-
+    
     html.querySelector(".toggle-type").on("click", async (event) => {
       const id = event.currentTarget.dataset.id;
       const type = event.currentTarget.dataset.type;
@@ -383,6 +438,7 @@ class TrackerApp extends foundry.applications.api.HandlebarsApplicationMixin(fou
         this.render();
       }
     });
+    
 
     html.querySelector(".pip-mod").on("click", async (event) => {
       const id = event.currentTarget.dataset.id;
@@ -403,6 +459,7 @@ class TrackerApp extends foundry.applications.api.HandlebarsApplicationMixin(fou
       await game.settings.set("tictac-tracker", "trackerData", data);
       this.render();
     });
+    
 
     html.querySelector(".tracker-list").sortable({
       handle: ".drag-handle",
@@ -414,10 +471,6 @@ class TrackerApp extends foundry.applications.api.HandlebarsApplicationMixin(fou
     
     
   } // end activate listeners
-
-  
+  */
 }
 
-function randomId() {
-  return randomId = foundry.utils.randomID(16);
-}
