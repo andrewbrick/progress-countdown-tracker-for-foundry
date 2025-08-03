@@ -155,12 +155,12 @@ class TrackerApp extends foundry.applications.api.ApplicationV2 {
   //  this.activateListeners(this._element);
   //}
 
-  override async _renderHTML() {
+  async _renderHTML() {
     const html = await renderTemplate(this.options.template, await this._getContext());
     return html;
   }
 
-  override async _replaceHTML(element, html) {
+  async _replaceHTML(element, html) {
     element.innerHTML = html;
   }
 
