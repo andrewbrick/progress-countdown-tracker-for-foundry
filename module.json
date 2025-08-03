@@ -9,7 +9,7 @@
   },
   "styles": ["styles/trackers.css"],
   "scripts": ["tictac-tracker.js"],
-  "esmodules": [],
+  "esmodules": ["tictac-tracker.js"],
   "packs": [],
   "languages": [],
   "socket": true,
