@@ -1,6 +1,6 @@
 import { renderTemplate } from 'foundry.applications.handlebars';
 
-const html = await renderTemplate('/modules/tictac-tracker-for-foundry/templates/trackers.html', data);
+const html = await renderTemplate('/modules/tictac-tracker/templates/trackers.html', data);
 
 Hooks.once("init", () => {
 
