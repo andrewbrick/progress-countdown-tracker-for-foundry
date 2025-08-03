@@ -130,7 +130,7 @@ Hooks.once('ready', () => {
 
 });
 
-class TrackerApp extends foundry.applications.api.ApplicationV2 {
+export class TrackerApp extends foundry.applications.api.ApplicationV2 {
   static get defaultOptions() {
     return foundry.utils.mergeObject(super.defaultOptions, {
       id: "trackers-app",
@@ -156,14 +156,14 @@ class TrackerApp extends foundry.applications.api.ApplicationV2 {
   //  this.activateListeners(this._element);
   //}
 
-  async _renderHTML() {
-    //const html = await foundry.applications.handlebars.renderTemplate(this.options.template, await this.getData());
-    const html = await foundry.applications.handlebars.renderTemplate("modules/tictac-tracker/templates/trackers.html", context);
-    return html;
-  }
+  //async _renderHTML() {
+  //  //const html = await foundry.applications.handlebars.renderTemplate(this.options.template, await this.getData());
+  //  const html = await foundry.applications.handlebars.renderTemplate("modules/tictac-tracker/templates/trackers.html", context);
+  //  return html;
+  //}
 
   //async _replaceHTML(element, html) {
-  //  //element.innerHTML = html;
+  //  element.innerHTML = html;
   //  const range = document.createRange();
   //  const newContent = range.createContextualFragment(html);
   //  element.replaceChildren(...newContent.childNodes);
@@ -191,118 +191,123 @@ class TrackerApp extends foundry.applications.api.ApplicationV2 {
       trackers: fullList
     };
   }
+}
 
-  activateListeners(html) {
-    super.activateListeners(html);
-    const self = this;
+Hooks.on("renderTrackerApp", (app, html) => {
 
-    html.find(".toggle-collapse").on("click", async () => {
-      const current = game.settings.get("tictac-tracker", "collapsed");
-      await game.settings.set("tictac-tracker", "collapsed", !current);
-      this.render();
-    });
+  //activateListeners(html) {
+  //  super.activateListeners(html);
+  //  const self = this;
 
-    html.find(".add-tracker").on("click", async () => {
-      const data = game.settings.get("tictac-tracker", "trackerData");
-      const order = game.settings.get("tictac-tracker", "trackerOrder");
-      let base = "New Tracker";
-      let i = 0 ;
-      let name;
-      do {
-        name = base + (i ? ` ${i}` : "");
-        i++;
-      } while (data.find(t => t.name === name));
+  html.find(".toggle-collapse").on("click", async () => {
+    const current = game.settings.get("tictac-tracker", "collapsed");
+    await game.settings.set("tictac-tracker", "collapsed", !current);
+    this.render();
+  });
 
-      const id = randomID();
-      const newTracker = {
-        id,
-        name,
-        type: "progress",
-        pip_cnt: 4,
-        filled_cnt: 4,
-        visible: false
-      };
-      data.push(newTracker);
-      order.push(id);
+  html.find(".add-tracker").on("click", async () => {
+    const data = game.settings.get("tictac-tracker", "trackerData");
+    const order = game.settings.get("tictac-tracker", "trackerOrder");
+    let base = "New Tracker";
+    let i = 0 ;
+    let name;
+    do {
+      name = base + (i ? ` ${i}` : "");
+      i++;
+    } while (data.find(t => t.name === name));
 
+    const id = randomID();
+    const newTracker = {
+      id,
+      name,
+      type: "progress",
+      pip_cnt: 4,
+      filled_cnt: 4,
+      visible: false
+    };
+    data.push(newTracker);
+    order.push(id);
+
+    await game.settings.set("tictac-tracker", "trackerData", data);
+    await game.settings.set("tictac-tracker", "trackerOrder", order);
+    this.render()
+  });
+
+  html.find(".delete-tracker").on("click", async (event) => {
+    const id = event.currentTarget.dataset.id;
+    let data = game.settings.get("tictac-tracker", "trackerData");
+    let order = game.settings.get("tictac-tracker", "trackerOrder");
+    data = data.filter(t => t.id !== id);
+    order = order.filter(i => i !== id);
+    await game.settings.set("tictac-tracker", "trackerData", data);
+    await game.settings.set("tictac-tracker", "trackerOrder", order);
+    this.render();
+  });
+
+  html.find(".edit-name").on("blur", async (event) => {
+    const id = event.currentTarget.dataset.id;
+    const newName = event.currentTarget.value.trim();
+    const data = game.settings.get("tictac-tracker", "trackerData");
+    const tracker = data.find(t => t.id === id);
+    if(tracker) {
+      tracker.name = newName;
       await game.settings.set("tictac-tracker", "trackerData", data);
-      await game.settings.set("tictac-tracker", "trackerOrder", order);
-      this.render()
-    });
+    }
+  });
 
-    html.find(".delete-tracker").on("click", async (event) => {
-      const id = event.currentTarget.dataset.id;
-      let data = game.settings.get("tictac-tracker", "trackerData");
-      let order = game.settings.get("tictac-tracker", "trackerOrder");
-      data = data.filter(t => t.id !== id);
-      order = order.filter(i => i !== id);
-      await game.settings.set("tictac-tracker", "trackerData", data);
-      await game.settings.set("tictac-tracker", "trackerOrder", order);
-      this.render();
-    });
-
-    html.find(".edit-name").on("blur", async (event) => {
-      const id = event.currentTarget.dataset.id;
-      const newName = event.currentTarget.value.trim();
-      const data = game.settings.get("tictac-tracker", "trackerData");
-      const tracker = data.find(t => t.id === id);
-      if(tracker) {
-        tracker.name = newName;
-        await game.settings.set("tictac-tracker", "trackerData", data);
-      }
-    });
-
-    html.find(".toggle-type").on("click", async (event) => {
-      const id = event.currentTarget.dataset.id;
-      const type = event.currentTarget.dataset.type;
-      const data = game.settings.get("tictac-tracker", "trackerData");
-      const tracker = data.find(t => t.id === id);
-      if(tracker && tracker.type !== type) {
-        tracker.type = type;
-        await game.settings.set("tictac-tracker", "trackerData", data);
-        this.render();
-      }
-    });
-
-    html.find(".toggle-visibility").on("click", async (event) => {
-      const id = event.currentTarget.dataset.id;
-      const data = game.settings.get("tictac-tracker", "trackerData");
-      const tracker = data.find(t => t.id === id);
-      if(tracker) {
-        tracker.visible = !tracker.visible;
-        await game.settings.set("tictac-tracker", "trackerData", data);
-        this.render();
-      }
-    });
-
-    html.find(".pip-mod").on("click", async (event) => {
-      const id = event.currentTarget.dataset.id;
-      const action = event.currentTarget.dataset.action;
-      const data = game.settings.get("tictac-tracker", "trackerData");
-      const tracker = data.find(t => t.id === id);
-      if(!tracker) return;
-
-      if (action === "pip--" && tracker.filled_cnt > 0) tracker.filled_cnt--;
-      else if (action === "pip++" && tracker.filled_cnt < tracker.pip_cnt) tracker.filled_cnt++;
-      else if (action === "cnt--" && tracker.pip_cnt > 1) {
-        tracker.pip_cnt--;
-        if (tracker.filled_cnt > tracker.pip_cnt) tracker.filled_cnt = tracker.pip_cnt;
-      } else if (action === "cnt++" && tracker.pip_cnt < 24) {
-        tracker.pip_cnt++;
-      }
-
+  html.find(".toggle-type").on("click", async (event) => {
+    const id = event.currentTarget.dataset.id;
+    const type = event.currentTarget.dataset.type;
+    const data = game.settings.get("tictac-tracker", "trackerData");
+    const tracker = data.find(t => t.id === id);
+    if(tracker && tracker.type !== type) {
+      tracker.type = type;
       await game.settings.set("tictac-tracker", "trackerData", data);
       this.render();
-    });
+    }
+  });
 
-    html.find(".tracker-list").sortable({
-      handle: ".drag-handle",
-      update: async (event, ui) => {
-        const newOrder = html.find(".tracker-row").map((i, el) => el.dataset.id).get();
-        await game.settings.set("tictac-tracker", "trackerOrder", newOrder);
-      }
-    });
-  }
+  html.find(".toggle-visibility").on("click", async (event) => {
+    const id = event.currentTarget.dataset.id;
+    const data = game.settings.get("tictac-tracker", "trackerData");
+    const tracker = data.find(t => t.id === id);
+    if(tracker) {
+      tracker.visible = !tracker.visible;
+      await game.settings.set("tictac-tracker", "trackerData", data);
+      this.render();
+    }
+  });
+
+  html.find(".pip-mod").on("click", async (event) => {
+    const id = event.currentTarget.dataset.id;
+    const action = event.currentTarget.dataset.action;
+    const data = game.settings.get("tictac-tracker", "trackerData");
+    const tracker = data.find(t => t.id === id);
+    if(!tracker) return;
+
+    if (action === "pip--" && tracker.filled_cnt > 0) tracker.filled_cnt--;
+    else if (action === "pip++" && tracker.filled_cnt < tracker.pip_cnt) tracker.filled_cnt++;
+    else if (action === "cnt--" && tracker.pip_cnt > 1) {
+      tracker.pip_cnt--;
+      if (tracker.filled_cnt > tracker.pip_cnt) tracker.filled_cnt = tracker.pip_cnt;
+    } else if (action === "cnt++" && tracker.pip_cnt < 24) {
+      tracker.pip_cnt++;
+    }
+
+    await game.settings.set("tictac-tracker", "trackerData", data);
+    this.render();
+  });
+
+  html.find(".tracker-list").sortable({
+    handle: ".drag-handle",
+    update: async (event, ui) => {
+      const newOrder = html.find(".tracker-row").map((i, el) => el.dataset.id).get();
+      await game.settings.set("tictac-tracker", "trackerOrder", newOrder);
+    }
+  });
+
+  app.render();
+  
 }
 
 function randomId() {
