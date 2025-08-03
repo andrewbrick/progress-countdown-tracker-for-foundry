@@ -156,7 +156,7 @@ class TrackerApp extends foundry.applications.api.ApplicationV2 {
   //}
 
   async _renderHTML() {
-    const html = await foundry.applications.handlebars.renderTemplate(this.options.template, await this._getContext());
+    const html = await foundry.applications.handlebars.renderTemplate(this.options.template, await this.getContext());
     return html;
   }
 
