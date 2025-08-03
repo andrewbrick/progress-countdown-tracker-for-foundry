@@ -123,15 +123,15 @@ Hooks.once('ready', () => {
   new TrackerApp().render(true);
   
   // Load position
-  const pos = game.settings.get("tictac-tracker", "trackerPosition");
-  tracker.style.top = pos.top; 
-  tracker.style.left = pos.left; 
+  //const pos = game.settings.get("tictac-tracker", "trackerPosition");
+  //tracker.style.top = pos.top; 
+  //tracker.style.left = pos.left; 
 
 });
 
-class TrackerApp extends Application {
+class TrackerApp extends foundry.applications.api.ApplicationV2 {
   static get defaultOptions() {
-    return mergeObject(super.defaultOptions, {
+    return foundry.utils.mergeObject(super.defaultOptions, {
       id: "trackers-app",
       template: "modules/tictac-tracker/templates/trackers.html",
       popOut: true,
@@ -143,7 +143,7 @@ class TrackerApp extends Application {
     });
   }
 
-  getData() {
+  async data() {
     const data = game.settings.get("tictac-tracker", "trackerData");
     const collapsed = game.settings.get("tictac-tracker", "collapsed");
     const order = game.settings.get("tictac-tracker", "trackerOrder");
