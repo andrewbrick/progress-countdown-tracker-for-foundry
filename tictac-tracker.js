@@ -143,16 +143,25 @@ class TrackerApp extends foundry.applications.api.ApplicationV2 {
     });
   }
 
-  async _renderHTML() {
-    const data = await this.getData();
-    const html = await renderTemplate("modules/trackers/templates/trackers.html", data);
+  //async _renderHTML() {
+  //  const data = await this.getData();
+  //  const html = await renderTemplate("modules/trackers/templates/trackers.html", data);
+  //  return html;
+  //}
+
+  //async _replaceHTML(container, html) {
+  //  container.innerHTML = html;
+  //  this._element = $(container);
+  //  this.activateListeners(this._element);
+  //}
+
+  override async _renderHTML() {
+    const html = await renderTemplate(this.options.template, await this._getContext());
     return html;
   }
 
-  async _replaceHTML(container, html) {
-    container.innerHTML = html;
-    this._element = $(container);
-    this.activateListeners(this._element);
+  override async _replaceHTML(element, html) {
+    element.innerHTML = html;
   }
 
   async data() {
