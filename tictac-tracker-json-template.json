@@ -3,7 +3,6 @@
   "params": {
     "pip_cnt": 5,
     "filled_cnt": 3,
-    "fill_color": "#33333",
     "visible": true,
   }
 }
