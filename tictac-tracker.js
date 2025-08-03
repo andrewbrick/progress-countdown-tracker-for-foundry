@@ -1,6 +1,3 @@
-
-import "./styles/trackers.css";
-
 Hooks.once("init", () => {
 
   // progress pip character
