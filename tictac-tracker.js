@@ -131,8 +131,7 @@ Hooks.once('ready', () => {
 
 });
 
-import { foundry } from "foundry";
-import { HandlebarsApplicationMixin } from "@league-of-foundry-developers/foundry-vtt-types/runtime/foundry.applications.api";
+const { HandlebarsApplicationMixin } = foundry.applications.api;
 
 class TrackerApp extends HandlebarsApplicationMixin(foundry.applications.api.ApplicationV2) { //foundry.applications.api.ApplicationV2 {
   static get defaultOptions() {
