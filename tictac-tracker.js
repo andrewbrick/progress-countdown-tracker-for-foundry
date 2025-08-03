@@ -19,7 +19,7 @@ Hooks.once("init", () => {
         ui.notifications.warn("You must enter exactly one character. Using only the first character.");
         await game.settings.set("tictac-tracker", "progressPipCharacter", firstChar);
       }
-      game.TrackerApp.render(true); //reRender();
+      game.tictacTracker.render(true); //reRender();
     }
   });
   
@@ -42,7 +42,7 @@ Hooks.once("init", () => {
         ui.notifications.warn("You must enter exactly one character. Using only the first character.");
         await game.settings.set("tictac-tracker", "consequencePipCharacter", firstChar);
       }
-      game.TrackerApp.render(true); //reRender();
+      game.tictacTracker.render(true); //reRender();
     }
   });
 
@@ -55,7 +55,7 @@ Hooks.once("init", () => {
     type: new game.colorPicker.ColorPickerField(),
     default: "#A02B93",
     onChange: () => {
-      game.TrackerApp.render(true); //reRender();
+      game.tictacTracker.render(true); //reRender();
     }
   });
 
@@ -68,7 +68,7 @@ Hooks.once("init", () => {
     type: new game.colorPicker.ColorPickerField(),
     default: "#A02B93",
     onChange: () => {
-      game.TrackerApp.render(true); //reRender();
+      game.tictacTracker.render(true); //reRender();
     }
   });
 
