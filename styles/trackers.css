@@ -1,50 +1,104 @@
-.trackers-app {
-  background: rgba(0, 0, 0, 0.4);
-  border: none;
+.trackers-window {
+  background: rgba(30, 30, 30, 0.8);
+  padding: 0.5em;
+  border-radius: 8px;
+  color: white;
+  font-family: var(--font-primary);
 }
 
-.trackers-window.collapsed .tracker-list,
-.trackers-window.collapsed .controls {
-  display: none;
+.trackers-app-body.collapsed {
+  height: auto;
+  overflow: hidden;
 }
 
-.header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 6px;
-  font-weight: bold;
-}
-
-.controls {
+.toggle-collapse {
   text-align: center;
-  margin: 4px 0;
+  cursor: pointer;
+  margin-bottom: 0.3em;
+}
+
+.empty-add-button {
+  text-align: center;
+  margin-top: 1em;
+}
+
+.empty-add-button button {
+  background: none;
+  border: none;
+  color: #aaa;
+  font-size: 2em;
+  cursor: pointer;
+}
+
+.tracker-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5em;
 }
 
 .tracker-row {
+  background: rgba(255, 255, 255, 0.05);
+  padding: 0.5em;
+  border-radius: 6px;
   display: flex;
   align-items: center;
-  gap: 4px;
-  padding: 2px 6px;
+  gap: 0.5em;
+}
+
+.drag-handle {
+  cursor: grab;
+  color: #888;
+}
+
+.edit-name {
+  flex-grow: 1;
+  background: transparent;
+  border: none;
+  border-bottom: 1px solid #ccc;
+  color: white;
+  font-size: 1em;
+}
+
+.pips {
+  display: flex;
+  gap: 0.2em;
 }
 
 .pip {
-  width: 14px;
-  height: 14px;
+  width: 12px;
+  height: 12px;
   border-radius: 50%;
-  margin: 0 1px;
-  display: inline-block;
-  background-color: gray;
+  background-color: #555;
+  border: 1px solid #aaa;
+  opacity: 0.3;
 }
 
 .pip.filled {
-  background-color: var(--pip-color, #4CAF50);
+  opacity: 1;
 }
 
-.type-letter.white {
-  color: white;
+.pip-controls, .gm-controls {
+  display: flex;
+  gap: 0.2em;
 }
 
-.type-letter.gray {
-  color: gray;
+.pip-controls button, .gm-controls button {
+  background: none;
+  border: none;
+  color: #ccc;
+  font-size: 0.9em;
+  cursor: pointer;
+}
+
+.tracker-footer {
+  text-align: center;
+  margin-top: 0.5em;
+}
+
+.tracker-footer button {
+  background: none;
+  border: none;
+  color: #4CAF50;
+  cursor: pointer;
+  font-size: 1em;
 }
