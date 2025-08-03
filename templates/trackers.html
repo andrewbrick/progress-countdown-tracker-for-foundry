@@ -4,10 +4,12 @@
   {{else}}
     <div class="toggle-collapse"><i class="fas fa-chevron-up"></i></div>
 
-    {{#if (and isGM (eq trackers.length 0))}}
-      <div class="empty-add-button">
-        <button class="add-tracker"><i class="fas fa-circle-plus"></i></button>
-      </div>
+    {{#if isGM}}
+      {{#unless trackers.length}}
+        <div class="empty-add-button">
+          <button class="add-tracker"><i class="fas fa-circle-plus"></i></button>
+        </div>
+      {{/unless}}
     {{/if}}
 
     <div class="tracker-list">
