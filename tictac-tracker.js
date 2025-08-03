@@ -19,7 +19,7 @@ Hooks.once("init", () => {
         ui.notifications.warn("You must enter exactly one character. Using only the first character.");
         await game.settings.set("tictac-tracker", "progressPipCharacter", firstChar);
       }
-      reRender();
+      game.TrackerApp.render(true); //reRender();
     }
   });
   
@@ -42,7 +42,7 @@ Hooks.once("init", () => {
         ui.notifications.warn("You must enter exactly one character. Using only the first character.");
         await game.settings.set("tictac-tracker", "consequencePipCharacter", firstChar);
       }
-      reRender();
+      game.TrackerApp.render(true); //reRender();
     }
   });
 
@@ -55,7 +55,7 @@ Hooks.once("init", () => {
     type: new game.colorPicker.ColorPickerField(),
     default: "#A02B93",
     onChange: () => {
-      reRender();
+      game.TrackerApp.render(true); //reRender();
     }
   });
 
@@ -68,7 +68,7 @@ Hooks.once("init", () => {
     type: new game.colorPicker.ColorPickerField(),
     default: "#A02B93",
     onChange: () => {
-      reRender();
+      game.TrackerApp.render(true); //reRender();
     }
   });
 
@@ -133,7 +133,7 @@ Hooks.once('ready', () => {
 
 const { HandlebarsApplicationMixin } = foundry.applications.api;
 
-class TrackerApp extends HandlebarsApplicationMixin(foundry.applications.api.ApplicationV2) { //foundry.applications.api.ApplicationV2 {
+class TrackerApp extends HandlebarsApplicationMixin(foundry.applications.api.ApplicationV2) {
   static get defaultOptions() {
     return foundry.utils.mergeObject(super.defaultOptions, {
       id: "trackers-app",
@@ -147,7 +147,7 @@ class TrackerApp extends HandlebarsApplicationMixin(foundry.applications.api.App
     });
   }
 
-  async _prepareContext() {
+  async _prepareContext(options) {
     const data = game.settings.get("tictac-tracker", "trackerData");
     const collapsed = game.settings.get("tictac-tracker", "collapsed");
     const order = game.settings.get("tictac-tracker", "trackerOrder");
@@ -162,6 +162,14 @@ class TrackerApp extends HandlebarsApplicationMixin(foundry.applications.api.App
     const unordered = data.filter(t => !order.includes(t.id));
     const fullList = [...ordered, ...unordered];
 
+    console.log("_prepareContext return:", {
+      isGM,
+      collapsed: collapsed,
+      progressColor: game.settings.get("tictac-tracker", "progressPipColor"),
+      consequenceColor: game.settings.get("tictac-tracker", "consequencePipColor"),
+      trackers: fullList
+    });
+
     return {
       isGM,
       collapsed: collapsed,
@@ -173,6 +181,7 @@ class TrackerApp extends HandlebarsApplicationMixin(foundry.applications.api.App
 
   async _renderHTML() {
     //const html = await foundry.applications.handlebars.renderTemplate(this.options.template, await this.getData());
+    console.log("_renderHTML context:", context);
     const html = await foundry.applications.handlebars.renderTemplate("modules/tictac-tracker/templates/trackers.html", context); //this.getData()); //this.getData()); //context);
     //const template = document.createElement("template");
     //template.innerHTML = html.trim();
