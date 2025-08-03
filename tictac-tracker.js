@@ -163,7 +163,10 @@ class TrackerApp extends foundry.applications.api.ApplicationV2 {
   }
 
   async _replaceHTML(element, html) {
-    element.innerHTML = html;
+    //element.innerHTML = html;
+    const range = document.createRange();
+    const newContent = range.createContextualFragment(html);
+    element.replaceChildren(...newContent.childNodes);
   }
 
   async getData() {
