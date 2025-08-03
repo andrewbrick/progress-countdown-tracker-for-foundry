@@ -166,10 +166,37 @@ class TrackerApp extends foundry.applications.api.ApplicationV2 {
   }
 
   async _replaceHTML(element, html) {
-    element.innerHTML = html;
+    console.log("element passed to _replaceHTML:", element);
+    const content = html instanceof HTMLElement ? html : (() => {
+      const template = document.createElement("template");
+      template.innerHTML = html.trim();
+      return template.content;
+    })();
+    let windowContent = element.querySelector(".window-content");
+    if(!windowContent) {
+      console.log("no windowContent");
+      windowContent = document.createElement("div");
+      windowContent.classList.add("window-content");
+      element.appendChild(windowContent);
+    }
+    windowContent.replaceChildren(...content.childNodes);
+    //element.innerHTML = html;
+    
     //const range = document.createRange();
     //const newContent = range.createContextualFragment(html);
     //element.replaceChildren(...newContent.childNodes);
+
+    //const content = html instanceof HTMLElement ? html : (() => {
+    //  const template = document.createElement("template");
+    //  template.innerHTML = html.trim();
+    //  return template.content.firstElementChild;
+    //})();
+    //if (!(element instanceof HTMLElement)) {
+    //  console.error("TrackerApp: Invalid target element for HTML replacement.", element);
+    //  return;
+    //}
+    //element.replaceChildren(content);
+    
   }
 
   async getData() {
