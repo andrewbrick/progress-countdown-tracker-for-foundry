@@ -1,6 +1,7 @@
 {
   "id": "Escape the Thing",
   "params": {
+    "type": "progress",
     "pip_cnt": 5,
     "filled_cnt": 3,
     "visible": true,
