@@ -158,7 +158,7 @@ class TrackerApp extends foundry.applications.api.ApplicationV2 {
 
   async _renderHTML() {
     //const html = await foundry.applications.handlebars.renderTemplate(this.options.template, await this.getData());
-    const html = await foundry.applications.handlebars.renderTemplate("modules/tictac-tracker/templates/trackers.html", context); //this.getData()); //context);
+    const html = await foundry.applications.handlebars.renderTemplate("modules/tictac-tracker/templates/trackers.html", this.getData()); //this.getData()); //context);
     const template = document.createElement("template");
     template.innerHTML = html.trim();
     return template.content.firstElementChild;
