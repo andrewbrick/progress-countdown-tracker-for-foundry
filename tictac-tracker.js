@@ -255,8 +255,8 @@ class TrackerApp extends foundry.applications.api.HandlebarsApplicationMixin(fou
   }
 
   async _replaceHTML(element, html) {
-    //console.log("element passed to _replaceHTML:", element);
-    //console.log("html passed to _replaceHTML:", html);
+    console.log("element passed to _replaceHTML:", element);
+    console.log("html passed to _replaceHTML:", html);
     //const content = html instanceof HTMLElement ? html : (() => {
     //  const template = document.createElement("template");
     //  template.innerHTML = html.trim();
