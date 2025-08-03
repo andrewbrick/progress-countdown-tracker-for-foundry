@@ -172,7 +172,7 @@ class TrackerApp extends foundry.applications.api.ApplicationV2 {
       template.innerHTML = html.trim();
       return template.content;
     })();
-    let windowContent = element.querySelector("#window-content");
+    let windowContent = element.querySelector(".window-content");
     if(!windowContent) {
       console.log("no windowContent");
       windowContent = document.createElement("div");
