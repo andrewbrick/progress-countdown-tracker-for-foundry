@@ -8,7 +8,6 @@
     "verified": "13.346"
   },
   "styles": ["styles/trackers.css"],
-  "templates": ["templates/trackers.html"],
   "scripts": ["tictac-tracker.js"],
   "esmodules": [],
   "packs": [],
