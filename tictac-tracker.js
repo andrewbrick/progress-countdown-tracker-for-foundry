@@ -1,6 +1,3 @@
-//import { renderTemplate } from 'foundry.applications.handlebars';
-const html = await renderTemplate('/modules/tictac-tracker/templates/trackers.html', data);
-
 Hooks.once("init", () => {
 
   // progress pip character
@@ -159,14 +156,15 @@ class TrackerApp extends foundry.applications.api.ApplicationV2 {
   //  this.activateListeners(this._element);
   //}
 
-  //async _renderHTML() {
-  //  const html = await foundry.applications.handlebars.renderTemplate(this.options.template, await this.getData());
-  //  return html;
-  //}
+  async _renderHTML() {
+    //const html = await foundry.applications.handlebars.renderTemplate(this.options.template, await this.getData());
+    const html = await foundry.applications.handlebars.renderTemplate("modules/tictac-tracker/templates/trackers.html", context);
+    return html;
+  }
 
-  //async _replaceHTML(element, html) {
-  //  element.innerHTML = html;
-  //}
+  async _replaceHTML(element, html) {
+    element.innerHTML = html;
+  }
 
   async getData() {
     const data = game.settings.get("tictac-tracker", "trackerData");
