@@ -8,7 +8,7 @@
     "verified": "13.346"
   },
   "styles": ["styles/trackers.css"],
-  "scripts": [],
+  "scripts": ["lib/jquery-ui/jquery-ui.min.js"],
   "esmodules": ["tictac-tracker.js"],
   "packs": [],
   "languages": [],
