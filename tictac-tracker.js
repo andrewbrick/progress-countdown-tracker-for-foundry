@@ -1,3 +1,66 @@
+export class TrackerApp extends foundry.applications.api.ApplicationV2 {
+  static get defaultOptions() {
+    return foundry.utils.mergeObject(super.defaultOptions, {
+      id: "trackers-app",
+      template: "modules/tictac-tracker/templates/trackers.html",
+      popOut: true,
+      resizeable: false,
+      title: "Trackers",
+      width: 500,
+      height: "auto",
+      classes: ["trackers-window"]
+    });
+  }
+
+  //async _renderHTML() {
+  //  const data = await this.getData();
+  //  const html = await renderTemplate("modules/trackers/templates/trackers.html", data);
+  //  return html;
+  //}
+
+  //async _replaceHTML(container, html) {
+  //  container.innerHTML = html;
+  //  this._element = $(container);
+  //  this.activateListeners(this._element);
+  //}
+
+  //async _renderHTML() {
+  //  //const html = await foundry.applications.handlebars.renderTemplate(this.options.template, await this.getData());
+  //  const html = await foundry.applications.handlebars.renderTemplate("modules/tictac-tracker/templates/trackers.html", context);
+  //  return html;
+  //}
+
+  //async _replaceHTML(element, html) {
+  //  element.innerHTML = html;
+  //  const range = document.createRange();
+  //  const newContent = range.createContextualFragment(html);
+  //  element.replaceChildren(...newContent.childNodes);
+  //}
+
+  async getData() {
+    const data = game.settings.get("tictac-tracker", "trackerData");
+    const collapsed = game.settings.get("tictac-tracker", "collapsed");
+    const order = game.settings.get("tictac-tracker", "trackerOrder");
+    const isGM = game.user.isGM;
+
+    // Apply saved ordering
+    const ordered = order
+      .map(id => data.find(t => t.id == id))
+      .filter(Boolean);
+
+    const unordered = data.filter(t => !order.includes(t.id));
+    const fullList = [...ordered, ...unordered];
+
+    return {
+      isGM,
+      collapsed,
+      progressColor: game.settings.get("tictac-tracker", "progressPipColor"),
+      consequenceColor: game.settings.get("tictac-tracker", "consequencePipColor"),
+      trackers: fullList
+    };
+  }
+}
+
 Hooks.once("init", () => {
 
   // progress pip character
@@ -129,69 +192,6 @@ Hooks.once('ready', () => {
   //tracker.style.left = pos.left; 
 
 });
-
-export class TrackerApp extends foundry.applications.api.ApplicationV2 {
-  static get defaultOptions() {
-    return foundry.utils.mergeObject(super.defaultOptions, {
-      id: "trackers-app",
-      template: "modules/tictac-tracker/templates/trackers.html",
-      popOut: true,
-      resizeable: false,
-      title: "Trackers",
-      width: 500,
-      height: "auto",
-      classes: ["trackers-window"]
-    });
-  }
-
-  //async _renderHTML() {
-  //  const data = await this.getData();
-  //  const html = await renderTemplate("modules/trackers/templates/trackers.html", data);
-  //  return html;
-  //}
-
-  //async _replaceHTML(container, html) {
-  //  container.innerHTML = html;
-  //  this._element = $(container);
-  //  this.activateListeners(this._element);
-  //}
-
-  //async _renderHTML() {
-  //  //const html = await foundry.applications.handlebars.renderTemplate(this.options.template, await this.getData());
-  //  const html = await foundry.applications.handlebars.renderTemplate("modules/tictac-tracker/templates/trackers.html", context);
-  //  return html;
-  //}
-
-  //async _replaceHTML(element, html) {
-  //  element.innerHTML = html;
-  //  const range = document.createRange();
-  //  const newContent = range.createContextualFragment(html);
-  //  element.replaceChildren(...newContent.childNodes);
-  //}
-
-  async getData() {
-    const data = game.settings.get("tictac-tracker", "trackerData");
-    const collapsed = game.settings.get("tictac-tracker", "collapsed");
-    const order = game.settings.get("tictac-tracker", "trackerOrder");
-    const isGM = game.user.isGM;
-
-    // Apply saved ordering
-    const ordered = order
-      .map(id => data.find(t => t.id == id))
-      .filter(Boolean);
-
-    const unordered = data.filter(t => !order.includes(t.id));
-    const fullList = [...ordered, ...unordered];
-
-    return {
-      isGM,
-      collapsed,
-      progressColor: game.settings.get("tictac-tracker", "progressPipColor"),
-      consequenceColor: game.settings.get("tictac-tracker", "consequencePipColor"),
-      trackers: fullList
-    };
-  }
-}
 
 Hooks.on("renderTrackerApp", (app, html) => {
 
