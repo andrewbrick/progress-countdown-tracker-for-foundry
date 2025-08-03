@@ -115,6 +115,16 @@ Hooks.once("init", () => {
   Handlebars.registerHelper("ifEquals", function (a, b, options) {
     return (a === b) ? options.fn(this) : options.inverse(this);
   });
+
+  Handlebars.registerHelper("or", function(...args) {
+    const options = args.pop();
+    const result = args.some(Boolean);
+    if(result) {
+      return options.fn(this);
+    } else {
+      return options.inverse(this);
+    }
+  });
   
 }); // end init
 
