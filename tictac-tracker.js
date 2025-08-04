@@ -219,7 +219,7 @@ class TictacTrackerApp extends foundry.applications.api.HandlebarsApplicationMix
       title: "Trackers",
     },
     position: {
-      width: 500,
+      //width: 500,
       height: "auto"
     },
     classes: ["tictac-trackers-window"],
