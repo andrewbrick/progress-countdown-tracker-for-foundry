@@ -46,21 +46,21 @@
 
           <div class="pip-controls">
             <!--
-            <button class="pip-mod" data-id="{{this.id}}" data-action="pip--">-</button>
-            <button class="pip-mod" data-id="{{this.id}}" data-action="pip++">+</button>
-            <button class="pip-mod" data-id="{{this.id}}" data-action="cnt--">[-]</button>
-            <button class="pip-mod" data-id="{{this.id}}" data-action="cnt++">[+]</button>
+            <button class="pip-mod" data-id="{{this.id}}" data-action="pip--"><i class="fas fa-circle-minus"></i></button>
+            <button class="pip-mod" data-id="{{this.id}}" data-action="pip++"><i class="fas fa-circle-plus"></i></button>
+            <button class="pip-mod" data-id="{{this.id}}" data-action="cnt--"><i class="fas fa-square-minus"></i></button>
+            <button class="pip-mod" data-id="{{this.id}}" data-action="cnt++"><i class="fas fa-square-plus"></i></button>
             -->
-            <button class="pip-mod" data-id="{{this.id}}" data-action="subPip">-</button>
-            <button class="pip-mod" data-id="{{this.id}}" data-action="addPip">+</button>
-            <button class="pip-mod" data-id="{{this.id}}" data-action="subPipCont">[-]</button>
-            <button class="pip-mod" data-id="{{this.id}}" data-action="addPipCont">[+]</button>
+            <button class="pip-mod" data-id="{{this.id}}" data-action="subPip"><i class="fas fa-circle-minus"></i></button>
+            <button class="pip-mod" data-id="{{this.id}}" data-action="addPip"><i class="fas fa-circle-plus"></i></button>
+            <button class="pip-mod" data-id="{{this.id}}" data-action="subPipCont"><i class="fas fa-square-minus"></i></button>
+            <button class="pip-mod" data-id="{{this.id}}" data-action="addPipCont"><i class="fas fa-square-plus"></i></button>
           </div>
 
           {{#if ../isGM}}
           <div class="gm-controls">
-            <button class="toggle-type" data-action="changeToProg" data-id="{{this.id}}" data-type="progress"><i class="fas fa-leaf"></i></button>
-            <button class="toggle-type" data-action="changeToCons" data-id="{{this.id}}" data-type="consequence"><i class="fas fa-fire"></i></button>
+            <button class="toggle-type" data-action="changeToProg" data-id="{{this.id}}" data-type="progress">P</button>
+            <button class="toggle-type" data-action="changeToCons" data-id="{{this.id}}" data-type="consequence">C</button>
             <button class="toggle-visibility" data-action="toggleVis" data-id="{{this.id}}">
               <i class="fas {{#if this.visible}}fa-eye{{else}}fa-eye-slash{{/if}}"></i>
             </button>
