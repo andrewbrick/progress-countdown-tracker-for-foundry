@@ -22,12 +22,25 @@
 
           <input class="edit-name" data-id="{{this.id}}" type="text" value="{{this.name}}" />
 
+          <!--
           <div class="pips">
             {{#range this.pip_cnt}}
               <div class="pip {{#if (lt @index ../this.filled_cnt)}}filled{{/if}}"
                    style="background-color: {{#ifEquals ../this.type 'progress'}}{{../progressColor}}{{else}}{{../consequenceColor}}{{/ifEquals}};">
               </div>
             {{/range}}
+          </div>
+          -->
+          <div class="pips">
+            {{#range this.pip_cnt}}
+                <div class="pip {{#if (lt @index ../this.filled_cnt)}}filled{{/if}}"
+                   style="
+                       {{#if (lt @index ../this.filled_cnt)}} /* Only apply background-color if pip is filled */
+                           background-color: {{#ifEquals ../this.type 'progress'}}{{../progressColor}}{{else}}{{../consequenceColor}}{{/ifEquals}};
+                       {{/if}}
+                       ">
+                  </div>
+              {{/range}}
           </div>
 
           <div class="pip-controls">
