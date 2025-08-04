@@ -106,13 +106,13 @@ Hooks.once("init", () => {
     default: []
   });
 
-  /*
-  Handlebars.registerHelper("range", function(n, block) {
-    let accum = '';
-    for (let i = 0; i < n; ++i) accum += block.fn(i);
-    return accum;
+  game.settings.register("tictac-tracker", "trackerDataChanged", { // store whether trackerData has changed since user collapsed the trackers
+    name: "Tracker Data Changed Tracker",
+    scope: "client",
+    config: false,
+    type: Boolean,
+    default: false
   });
-  */
 
   Handlebars.registerHelper("range", function(n, block) {
     let accum = '';
@@ -175,6 +175,7 @@ Hooks.once('ready', async () => {
   console.log("DEBUG: Does TictacTrackerApp have _onRender method?", typeof game.tictacTracker._onRender); // Should be 'function'
   console.log("num trackers:", game.settings.get("tictac-tracker", "trackerData").length);
 
+  // Re-render socket
   game.socket.on("module.tictac-tracker", (payload) => {
     if (payload.action === "renderApplication") {
       console.log("payload.action is renderApplication");
@@ -185,7 +186,11 @@ Hooks.once('ready', async () => {
         applicationInstance.render(true);
       }
     }
-  });
+    // trackerDataChanged force client update
+    if (payload.action === "syncTrackerDataChanged") {
+      game.settings.set("tictac-tracker", "trackerDataChanged", true);
+    }
+  });  
   
   // Load position
   //const pos = game.settings.get("tictac-tracker", "trackerPosition");
@@ -313,6 +318,7 @@ class TictacTrackerApp extends foundry.applications.api.HandlebarsApplicationMix
     await game.settings.set("tictac-tracker", "trackerData", data);
     await game.settings.set("tictac-tracker", "trackerOrder", order);
     this.render();
+    game.socket.emit("module.tictac-tracker", { action: "syncTrackerDataChanged" });
     game.socket.emit("module.tictac-tracker", { action: "renderApplication" });
   }
 
@@ -327,12 +333,16 @@ class TictacTrackerApp extends foundry.applications.api.HandlebarsApplicationMix
     await game.settings.set("tictac-tracker", "trackerData", data);
     await game.settings.set("tictac-tracker", "trackerOrder", order);
     this.render();
+    game.socket.emit("module.tictac-tracker", { action: "syncTrackerDataChanged" });
     game.socket.emit("module.tictac-tracker", { action: "renderApplication" });
   }
 
   static async _onCollapseTrackers(event, element) {
     console.log("collapse/expand toggle clicked")
     const current = game.settings.get("tictac-tracker", "collapsed");
+    if (current) { // if the tracker is collapsed, clear trackerDataUpdated (b/c the user is now expanding it)
+      game.settings.set("tictac-tracker", "trackerDataUpdated", false);
+    }
     await game.settings.set("tictac-tracker", "collapsed", !current);
     this.render();
   }
@@ -356,6 +366,7 @@ class TictacTrackerApp extends foundry.applications.api.HandlebarsApplicationMix
       });
       await game.settings.set("tictac-tracker", "trackerData", updatedData);
       this.render();
+      game.socket.emit("module.tictac-tracker", { action: "syncTrackerDataChanged" });
       game.socket.emit("module.tictac-tracker", { action: "renderApplication" });
     }
   }
@@ -379,6 +390,7 @@ class TictacTrackerApp extends foundry.applications.api.HandlebarsApplicationMix
       });
       await game.settings.set("tictac-tracker", "trackerData", updatedData);
       this.render();
+      game.socket.emit("module.tictac-tracker", { action: "syncTrackerDataChanged" });
       game.socket.emit("module.tictac-tracker", { action: "renderApplication" });
     }
   }
@@ -403,6 +415,7 @@ class TictacTrackerApp extends foundry.applications.api.HandlebarsApplicationMix
     
     await game.settings.set("tictac-tracker", "trackerData", updatedData);
     this.render();
+    game.socket.emit("module.tictac-tracker", { action: "syncTrackerDataChanged" });
     game.socket.emit("module.tictac-tracker", { action: "renderApplication" });
   }
 
@@ -427,6 +440,7 @@ class TictacTrackerApp extends foundry.applications.api.HandlebarsApplicationMix
     
     await game.settings.set("tictac-tracker", "trackerData", updatedData);
     this.render();
+    game.socket.emit("module.tictac-tracker", { action: "syncTrackerDataChanged" });
     game.socket.emit("module.tictac-tracker", { action: "renderApplication" });
   }
 
@@ -452,6 +466,7 @@ class TictacTrackerApp extends foundry.applications.api.HandlebarsApplicationMix
     
     await game.settings.set("tictac-tracker", "trackerData", updatedData);
     this.render();
+    game.socket.emit("module.tictac-tracker", { action: "syncTrackerDataChanged" });
     game.socket.emit("module.tictac-tracker", { action: "renderApplication" });
   }
 
@@ -477,6 +492,7 @@ class TictacTrackerApp extends foundry.applications.api.HandlebarsApplicationMix
     console.log("_onAddPip updatedData:", updatedData);
     await game.settings.set("tictac-tracker", "trackerData", updatedData);
     this.render();
+    game.socket.emit("module.tictac-tracker", { action: "syncTrackerDataChanged" });
     game.socket.emit("module.tictac-tracker", { action: "renderApplication" });
   }
 
@@ -501,6 +517,7 @@ class TictacTrackerApp extends foundry.applications.api.HandlebarsApplicationMix
 
     await game.settings.set("tictac-tracker", "trackerData", updatedData);
     this.render();
+    game.socket.emit("module.tictac-tracker", { action: "syncTrackerDataChanged" });
     game.socket.emit("module.tictac-tracker", { action: "renderApplication" });
   }
 
