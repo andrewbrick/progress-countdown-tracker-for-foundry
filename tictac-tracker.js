@@ -244,8 +244,9 @@ class TrackerApp extends foundry.applications.api.HandlebarsApplicationMixin(fou
   }
 
   async _replaceHTML(element, html) {
-    console.log("element passed to _replaceHTML:", element);
-    console.log("html passed to _replaceHTML:", html);
+    //console.log("element passed to _replaceHTML:", element);
+    //console.log("html passed to _replaceHTML:", html);
+    
     //const content = html instanceof HTMLElement ? html : (() => {
     //  const template = document.createElement("template");
     //  template.innerHTML = html.trim();
@@ -255,7 +256,7 @@ class TrackerApp extends foundry.applications.api.HandlebarsApplicationMixin(fou
     html.innerHTML = element;    
   }
 
-  static async _onAddTracker(event, app) {
+  static async _onAddTracker(event, element) {
     event.preventDefault();
     console.log("add tracker clicked");
   
@@ -283,29 +284,30 @@ class TrackerApp extends foundry.applications.api.HandlebarsApplicationMixin(fou
 
     await game.settings.set("tictac-tracker", "trackerData", data);
     await game.settings.set("tictac-tracker", "trackerOrder", order);
-    app.render(true)
+    this.render()
   }
 
-  static async _onDelTracker(event, app) {
+  static async _onDelTracker(event, element) {
     console.log("delete tracker clicked")
-    const id = event.currentTarget.dataset.id;
+    const trackerRow = element.closest(".tracker-row");
+    const id = trackerRow.dataset.id;
     let data = game.settings.get("tictac-tracker", "trackerData");
     let order = game.settings.get("tictac-tracker", "trackerOrder");
     data = data.filter(t => t.id !== id);
     order = order.filter(i => i !== id);
     await game.settings.set("tictac-tracker", "trackerData", data);
     await game.settings.set("tictac-tracker", "trackerOrder", order);
-    app.render();
+    this.render();
   }
 
-  static async _onCollapseTrackers(event, app) {
+  static async _onCollapseTrackers(event, element) {
     console.log("collapse/expand toggle clicked")
     const current = game.settings.get("tictac-tracker", "collapsed");
     await game.settings.set("tictac-tracker", "collapsed", !current);
-    app.render();
+    this.render();
   }
 
-  static async _onToggleType(event, app) { // .toggle-type
+  static async _onToggleType(event, element) { // .toggle-type
     const id = event.currentTarget.dataset.id;
     const type = event.currentTarget.dataset.type;
     const data = game.settings.get("tictac-tracker", "trackerData");
@@ -313,18 +315,18 @@ class TrackerApp extends foundry.applications.api.HandlebarsApplicationMixin(fou
     if(tracker && tracker.type !== type) {
       tracker.type = type;
       await game.settings.set("tictac-tracker", "trackerData", data);
-      app.render();
+      this.render();
     }
   }
 
-  static async _onToggleVis(event, app) { //.toggle-visibility
+  static async _onToggleVis(event, element) { //.toggle-visibility
     const id = event.currentTarget.dataset.id;
     const data = game.settings.get("tictac-tracker", "trackerData");
     const tracker = data.find(t => t.id === id);
     if(tracker) {
       tracker.visible = !tracker.visible;
       await game.settings.set("tictac-tracker", "trackerData", data);
-      app.render();
+      this.render();
     }
   }
 
@@ -345,7 +347,7 @@ class TrackerApp extends foundry.applications.api.HandlebarsApplicationMixin(fou
   }
   */
 
-  static async _onPipMod (event, app) { //.pip-mod
+  static async _onPipMod (event, element) { //.pip-mod
     const id = event.currentTarget.dataset.id;
     const action = event.currentTarget.dataset.action;
     const data = game.settings.get("tictac-tracker", "trackerData");
@@ -362,7 +364,7 @@ class TrackerApp extends foundry.applications.api.HandlebarsApplicationMixin(fou
     }
 
     await game.settings.set("tictac-tracker", "trackerData", data);
-    app.render();
+    this.render();
   }
 
   _onRender(context, options) {
