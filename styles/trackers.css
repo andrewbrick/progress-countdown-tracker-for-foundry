@@ -75,6 +75,8 @@
 
 .pip.filled {
   opacity: 1;
+  background-color: #d703fc;
+  border: 1px solid #aaaaaa;
 }
 
 .pip-controls, .gm-controls {
