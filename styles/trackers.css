@@ -1,10 +1,10 @@
-#trackers-app:not(:hover):not(.minimized) header, 
-#trackers-app:not(:hover):not(.minimized) .controls,  
-#trackers-app:not(:hover):not(.minimized) .window-resize-handle {
+#tictac-tracker:not(:hover):not(.minimized) header, 
+#tictac-tracker:not(:hover):not(.minimized) .controls,  
+#tictac-tracker:not(:hover):not(.minimized) .window-resize-handle {
     opacity: 0;
 }
 
-#trackers-app .window-content {
+#tictac-tracker .window-content {
     backdrop-filter: none;
     border-radius: 8px;
     background: rgba(0, 0, 0, 0.8);
