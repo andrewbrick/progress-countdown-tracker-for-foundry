@@ -28,7 +28,7 @@
 }
 
 .tictac-trackers-app-body {
-  min-width: 400px;
+  width: auto;
 }
 .tictac-trackers-app-body.collapsed {
   min-width: 400px;
