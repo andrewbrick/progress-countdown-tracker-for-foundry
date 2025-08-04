@@ -35,6 +35,9 @@
 .tictac-header {
   display: flex;
 }
+.tictac-header span {
+  margin-right: 10px;
+}
 .tictac-header-last-span {
   margin-left: auto;
 }
