@@ -1,8 +1,8 @@
 <div class="trackers-app-body{{#if collapsed}}collapsed{{/if}}">
   {{#if collapsed}}
-    <div class="toggle-collapse"><i class="fas fa-chevron-down"></i></div>
+    <div class="toggle-collapse" data-action="collapseTrackers"><i class="fas fa-chevron-down"></i></div>
   {{else}}
-    <div class="toggle-collapse"><i class="fas fa-chevron-up"></i></div>
+    <div class="toggle-collapse" data-action="collapseTrackers"><i class="fas fa-chevron-up"></i></div>
 
     <div class="tracker-list">
       {{#each trackers}}
