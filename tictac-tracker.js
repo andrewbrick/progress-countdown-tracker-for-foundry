@@ -174,6 +174,17 @@ Hooks.once('ready', async () => {
   console.log("DEBUG: TrackerApp Instance HTML Element:", game.tictacTracker.element); // Check the element reference
   console.log("DEBUG: Does TrackerApp have _onRender method?", typeof game.tictacTracker._onRender); // Should be 'function'
   console.log("num trackers:", game.settings.get("tictac-tracker", "trackerData").length);
+
+  game.socket.on("module.tictac-tracker", (payload) => {
+    if (payload.action === "renderApplication") {
+      const applicationInstance = Object.values(ui.windows).find(
+        (app) => app.options.id === "tictac-tracker"
+      );
+      if (applicationInstance) {
+        applicationInstance.render(true);
+      }
+    }
+  });
   
   // Load position
   //const pos = game.settings.get("tictac-tracker", "trackerPosition");
@@ -301,6 +312,7 @@ class TrackerApp extends foundry.applications.api.HandlebarsApplicationMixin(fou
     await game.settings.set("tictac-tracker", "trackerData", data);
     await game.settings.set("tictac-tracker", "trackerOrder", order);
     this.render()
+    game.socket.emit("module.tictac-tracker", { action: "renderApplication" });
   }
 
   static async _onDelTracker(event, element) {
@@ -314,6 +326,7 @@ class TrackerApp extends foundry.applications.api.HandlebarsApplicationMixin(fou
     await game.settings.set("tictac-tracker", "trackerData", data);
     await game.settings.set("tictac-tracker", "trackerOrder", order);
     this.render();
+    game.socket.emit("module.tictac-tracker", { action: "renderApplication" });
   }
 
   static async _onCollapseTrackers(event, element) {
@@ -342,6 +355,7 @@ class TrackerApp extends foundry.applications.api.HandlebarsApplicationMixin(fou
       });
       await game.settings.set("tictac-tracker", "trackerData", updatedData);
       this.render();
+      game.socket.emit("module.tictac-tracker", { action: "renderApplication" });
     }
   }
 
@@ -364,6 +378,7 @@ class TrackerApp extends foundry.applications.api.HandlebarsApplicationMixin(fou
       });
       await game.settings.set("tictac-tracker", "trackerData", updatedData);
       this.render();
+      game.socket.emit("module.tictac-tracker", { action: "renderApplication" });
     }
   }
     
@@ -387,6 +402,7 @@ class TrackerApp extends foundry.applications.api.HandlebarsApplicationMixin(fou
     
     await game.settings.set("tictac-tracker", "trackerData", updatedData);
     this.render();
+    game.socket.emit("module.tictac-tracker", { action: "renderApplication" });
   }
 
   static async _onAddPipCont(event, element) {
@@ -410,6 +426,7 @@ class TrackerApp extends foundry.applications.api.HandlebarsApplicationMixin(fou
     
     await game.settings.set("tictac-tracker", "trackerData", updatedData);
     this.render();
+    game.socket.emit("module.tictac-tracker", { action: "renderApplication" });
   }
 
   static async _onSubPipCont(event, element) {
@@ -434,6 +451,7 @@ class TrackerApp extends foundry.applications.api.HandlebarsApplicationMixin(fou
     
     await game.settings.set("tictac-tracker", "trackerData", updatedData);
     this.render();
+    game.socket.emit("module.tictac-tracker", { action: "renderApplication" });
   }
 
   static async _onAddPip (event, element) {
@@ -458,6 +476,7 @@ class TrackerApp extends foundry.applications.api.HandlebarsApplicationMixin(fou
     console.log("_onAddPip updatedData:", updatedData);
     await game.settings.set("tictac-tracker", "trackerData", updatedData);
     this.render();
+    game.socket.emit("module.tictac-tracker", { action: "renderApplication" });
   }
 
   static async _onSubPip (event, element) {
@@ -481,6 +500,7 @@ class TrackerApp extends foundry.applications.api.HandlebarsApplicationMixin(fou
 
     await game.settings.set("tictac-tracker", "trackerData", updatedData);
     this.render();
+    game.socket.emit("module.tictac-tracker", { action: "renderApplication" });
   }
 
   /*
