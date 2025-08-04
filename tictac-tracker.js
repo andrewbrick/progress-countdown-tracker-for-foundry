@@ -591,10 +591,10 @@ class TictacTrackerApp extends foundry.applications.api.HandlebarsApplicationMix
       });
     });
 
-    // resize text input fields for GM
+    // resize text input fields for GM and players
     const rootElement = this.element;
     let maxWidth = 50;
-    const elementsToMeasure = rootElement.querySelectorAll(".tictac-edit-name");
+    const elementsToMeasure = rootElement.querySelectorAll(".tictac-edit-name, .tictac-display-name");
     const tempSpan = document.createElement("span");
     tempSpan.style.visibility = "hidden";
     tempSpan.style.whiteSpace = "pre";
