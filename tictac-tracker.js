@@ -574,7 +574,7 @@ class TictacTrackerApp extends foundry.applications.api.HandlebarsApplicationMix
     }
 
     // editing the tracker names
-    const editNameInputs = appHtmlElement.querySelectorAll(".edit-name"); //this.element[0].querySelectorAll(".edit-name"); // this.element is a jQuery obj, get the native HTMLElement
+    const editNameInputs = appHtmlElement.querySelectorAll(".tictac-edit-name"); //this.element[0].querySelectorAll(".edit-name"); // this.element is a jQuery obj, get the native HTMLElement
     editNameInputs.forEach(input => {
       input.addEventListener("blur", async (event) => {
         const id = event.currentTarget.dataset.id;
@@ -586,6 +586,7 @@ class TictacTrackerApp extends foundry.applications.api.HandlebarsApplicationMix
           await game.settings.set("tictac-tracker", "trackerData", data);
           // UI to update visually based on name change, consider re-rendering
           this.render(false); 
+          game.socket.emit("module.tictac-tracker", { action: "renderApplication" });
         }
       });
     });
