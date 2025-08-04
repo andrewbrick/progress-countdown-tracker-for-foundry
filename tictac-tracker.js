@@ -178,9 +178,8 @@ Hooks.once('ready', async () => {
   game.socket.on("module.tictac-tracker", (payload) => {
     if (payload.action === "renderApplication") {
       console.log("payload.action is renderApplication");
-      const applicationInstance = Object.values(ui.windows).find(
-        (app) => app.options.id === "tictac-tracker"
-      );
+      const applicationInstance = foundry.applications.instances.get("tictac-tracker");
+      console.log("applicationInstance", applicationInstance);
       if (applicationInstance) {
         console.log("applicationInstance exists");
         applicationInstance.render(true);
