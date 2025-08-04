@@ -210,7 +210,7 @@ class TictacTrackerApp extends foundry.applications.api.HandlebarsApplicationMix
       width: 500,
       height: "auto"
     },
-    classes: ["trackers-window"],
+    classes: ["tictac-trackers-window"],
     actions: {
       addTracker: TictacTrackerApp._onAddTracker,
       delTracker: TictacTrackerApp._onDelTracker,
