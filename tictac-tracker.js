@@ -19,7 +19,7 @@ Hooks.once("init", () => {
         ui.notifications.warn("You must enter exactly one character. Using only the first character.");
         await game.settings.set("tictac-tracker", "progressPipCharacter", firstChar);
       }
-      game.tictacTracker.render(true); //reRender();
+      game.tictacTracker.render(true); 
     }
   });
   
@@ -42,7 +42,7 @@ Hooks.once("init", () => {
         ui.notifications.warn("You must enter exactly one character. Using only the first character.");
         await game.settings.set("tictac-tracker", "consequencePipCharacter", firstChar);
       }
-      game.tictacTracker.render(true); //reRender();
+      game.tictacTracker.render(true); 
     }
   });
 
@@ -55,7 +55,7 @@ Hooks.once("init", () => {
     type: new game.colorPicker.ColorPickerField(),
     default: "#A02B93",
     onChange: () => {
-      game.tictacTracker.render(true); //reRender();
+      game.tictacTracker.render(true); 
     }
   });
 
@@ -68,7 +68,7 @@ Hooks.once("init", () => {
     type: new game.colorPicker.ColorPickerField(),
     default: "#A02B93",
     onChange: () => {
-      game.tictacTracker.render(true); //reRender();
+      game.tictacTracker.render(true); 
     }
   });
 
@@ -192,7 +192,10 @@ Hooks.once('ready', async () => {
     }
     // trackerDataChanged force client update
     if (payload.action === "syncTrackerDataChanged") {
-      game.settings.set("tictac-tracker", "trackerDataChanged", true);
+      const collapsed = game.settings.get("tictac-tracker", "collapsed");
+      if (collapsed) {
+        game.settings.set("tictac-tracker", "trackerDataChanged", true);
+      }
     }
   });  
   
@@ -553,20 +556,21 @@ class TictacTrackerApp extends foundry.applications.api.HandlebarsApplicationMix
 
     // re-ordering the trackers
     const appHtmlElement = this.element;
-    const $trackerList = $(appHtmlElement).find(".tracker-list");
+    const $trackerList = $(appHtmlElement).find(".tictac-tracker-list");
     if ($trackerList.length) { // Ensure the element exists
       $trackerList.sortable({
-        handle: ".drag-handle",
+        handle: ".tictac-drag-handle",
         update: async (event, ui) => {
           // This is still within the callback, so you can make it async
-          const newOrder = $trackerList.find(".tracker-row").map((i, el) => el.dataset.id).get();
+          const newOrder = $trackerList.find(".tictac-tracker-row").map((i, el) => el.dataset.id).get();
           await game.settings.set("tictac-tracker", "trackerOrder", newOrder);
           // Might want to re-render here if the sort order affects other elements
           this.render(false); // Re-render without forcing a re-draw of the whole app
+          game.socket.emit("module.tictac-tracker", { action: "renderApplication" });
         }
       });
     } else {
-      console.warn("DEBUG: Sortable container with class 'tracker-list' NOT FOUND during _onRender!");
+      console.warn("DEBUG: Sortable container with class 'tictac-tracker-list' NOT FOUND during _onRender!");
     }
 
     // editing the tracker names
