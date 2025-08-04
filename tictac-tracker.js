@@ -255,6 +255,7 @@ class TictacTrackerApp extends foundry.applications.api.HandlebarsApplicationMix
     const unordered = data.filter(t => !order.includes(t.id));
     const fullList = [...ordered, ...unordered];
 
+    /*
     console.log("_prepareContext return:", {
       isGM,
       collapsed: collapsed,
@@ -262,13 +263,23 @@ class TictacTrackerApp extends foundry.applications.api.HandlebarsApplicationMix
       consequenceColor: game.settings.get("tictac-tracker", "consequencePipColor"),
       trackers: fullList
     });
+    */
+
+    // Get max pip count of any tracker bar (so all bars can be uniform)
+    let maxPips = 0;
+    for (const tracker of data) {
+      if (tracker.pip_cnt > maxPips) {
+        maxPips = tracker.pip_cnt;
+      }
+    }
 
     return {
       isGM,
       collapsed: collapsed,
       progressColor: game.settings.get("tictac-tracker", "progressPipColor"),
       consequenceColor: game.settings.get("tictac-tracker", "consequencePipColor"),
-      trackers: fullList
+      trackers: fullList,
+      maxPips: maxPips
     };
   }
 
