@@ -16,7 +16,8 @@
         <div class="tictac-tracker-row" data-id="{{this.id}}">
           <div class="tictac-drag-handle"><i class="fas fa-grip-lines"></i></div>
 
-          <input class="tictac-edit-name" data-id="{{this.id}}" type="text" value="{{this.name}}" />
+          {{#if ../isGM}}<input class="tictac-edit-name" data-id="{{this.id}}" type="text" value="{{this.name}}" />
+          {{else}}<span class="tictac-display-name">{{this.name}}</span>{{/if}}
 
           {{#if ../isGM}}
           <div class="tictac-pip-controls">
@@ -48,11 +49,6 @@
             <button class="tictac-toggle-visibility" data-action="toggleVis" data-id="{{this.id}}">
               <i class="fas {{#if this.visible}}fa-eye{{else}}fa-eye-slash{{/if}}"></i>
             </button>
-          </div>
-          {{/if}}
-
-          {{#if ../isGM}}
-          <div class="tictac-gm-controls">
           </div>
           {{/if}}
         </div>
