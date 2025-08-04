@@ -31,17 +31,23 @@
           </div>
 
           <div class="pip-controls">
+            <!--
             <button class="pip-mod" data-id="{{this.id}}" data-action="pip--">-</button>
             <button class="pip-mod" data-id="{{this.id}}" data-action="pip++">+</button>
             <button class="pip-mod" data-id="{{this.id}}" data-action="cnt--">[-]</button>
             <button class="pip-mod" data-id="{{this.id}}" data-action="cnt++">[+]</button>
+            -->
+            <button class="pip-mod" data-id="{{this.id}}" data-action="subPip">-</button>
+            <button class="pip-mod" data-id="{{this.id}}" data-action="addPip">+</button>
+            <button class="pip-mod" data-id="{{this.id}}" data-action="subPipCont">[-]</button>
+            <button class="pip-mod" data-id="{{this.id}}" data-action="addPipCont">[+]</button>
           </div>
 
           {{#if ../isGM}}
           <div class="gm-controls">
-            <button class="toggle-type" data-id="{{this.id}}" data-type="progress"><i class="fas fa-leaf"></i></button>
-            <button class="toggle-type" data-id="{{this.id}}" data-type="consequence"><i class="fas fa-fire"></i></button>
-            <button class="toggle-visibility" data-id="{{this.id}}">
+            <button class="toggle-type" data-action="toggleType" data-id="{{this.id}}" data-type="progress"><i class="fas fa-leaf"></i></button>
+            <button class="toggle-type" data-action="toggleType" data-id="{{this.id}}" data-type="consequence"><i class="fas fa-fire"></i></button>
+            <button class="toggle-visibility" data-action="toggleVis" data-id="{{this.id}}">
               <i class="fas {{#if this.visible}}fa-eye{{else}}fa-eye-slash{{/if}}"></i>
             </button>
             <button class="delete-tracker" data-action="delTracker" data-id="{{this.id}}"><i class="fas fa-trash"></i></button>
