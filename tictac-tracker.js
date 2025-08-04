@@ -78,7 +78,7 @@ Hooks.once("init", () => {
     scope: "client",
     config: false,
     type: Object,
-    default: {top:100, left:100}
+    default: {x:100, y:100}
   });
 
   // store collapsed state
