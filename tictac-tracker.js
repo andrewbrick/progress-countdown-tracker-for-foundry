@@ -207,6 +207,8 @@ class TrackerApp extends foundry.applications.api.HandlebarsApplicationMixin(fou
       addPip: TrackerApp._onAddPip, // color in the next pip in the tracker
       subPip: TrackerApp._onSubPip, // gray out the next pip in the tracker
       toggleType: TrackerApp._onToggleType, // toggle between consequence and progress
+      changeToProg: TrackerApp._onChangeToProg,
+      changeToCons: TrackerApp._onChangeToCons,
       toggleVis: TrackerApp._onToggleVis, // toggle visibility of the tracker
       //moveTracker: TrackerApp._onMoveTracker, // grab one tracker and re-position it within the list
       collapseTrackers: TrackerApp._onCollapseTrackers // toggle to collapse / expand the tracker bars
@@ -321,27 +323,70 @@ class TrackerApp extends foundry.applications.api.HandlebarsApplicationMixin(fou
     this.render();
   }
 
-  static async _onToggleType(event, element) { // .toggle-type
-    const id = event.currentTarget.dataset.id;
-    const type = event.currentTarget.dataset.type;
+  static async _onChangeToProg(event, element) { // .toggle-type
+    const trackerRow = element.closest(".tracker-row");
+    const id = trackerRow.dataset.id;
     const data = game.settings.get("tictac-tracker", "trackerData");
-    const tracker = data.find(t => t.id === id);
-    if(tracker && tracker.type !== type) {
-      tracker.type = type;
-      await game.settings.set("tictac-tracker", "trackerData", data);
+    const thisTracker = data.find(t => t.id === id);
+    const type = thisTracker.type;
+    if(thisTracker && thisTracker.type !== "progress") {
+      const updatedData = data.map(tracker => {
+        if(tracker.id === id) {
+          return {
+            ...tracker,
+            type: "consequence"
+          };
+        } else {
+          return tracker
+        }
+      });
+      await game.settings.set("tictac-tracker", "trackerData", updatedData);
       this.render();
     }
   }
 
-  static async _onToggleVis(event, element) { //.toggle-visibility
-    const id = event.currentTarget.dataset.id;
+  static async _onChangeToCons(event, element) { // .toggle-type
+    const trackerRow = element.closest(".tracker-row");
+    const id = trackerRow.dataset.id;
     const data = game.settings.get("tictac-tracker", "trackerData");
-    const tracker = data.find(t => t.id === id);
-    if(tracker) {
-      tracker.visible = !tracker.visible;
-      await game.settings.set("tictac-tracker", "trackerData", data);
+    const thisTracker = data.find(t => t.id === id);
+    const type = thisTracker.type;
+    if(thisTracker && thisTracker.type !== "consequence") {
+      const updatedData = data.map(tracker => {
+        if(tracker.id === id) {
+          return {
+            ...tracker,
+            type: "progress"
+          };
+        } else {
+          return tracker
+        }
+      });
+      await game.settings.set("tictac-tracker", "trackerData", updatedData);
       this.render();
     }
+  }
+    
+  static async _onToggleVis(event, element) { //.toggle-visibility
+    const trackerRow = element.closest(".tracker-row");
+    const id = trackerRow.dataset.id;
+    const data = game.settings.get("tictac-tracker", "trackerData");
+    const thisTracker = data.find(t => t.id === id);
+    if(!thisTracker) return;
+
+    const updatedData = data.map(tracker => {
+      if(tracker.id === id) {
+        return {
+          ...tracker,
+          visible: !tracker.visible
+        };
+      } else {
+        return tracker
+      }
+    });
+    
+    await game.settings.set("tictac-tracker", "trackerData", updatedData);
+    this.render();
   }
 
   static async _onAddPipCont(event, element) {
@@ -358,12 +403,11 @@ class TrackerApp extends foundry.applications.api.HandlebarsApplicationMixin(fou
           ...tracker,
           pip_cnt: Math.min(tracker.pip_cnt + 1, 24)
         };
+      } else {
+        return tracker
       }
     });
     
-    //if (tracker.pip_cnt < 24) {
-    //  tracker.pip_cnt++;
-    //}
     await game.settings.set("tictac-tracker", "trackerData", updatedData);
     this.render();
   }
@@ -383,13 +427,11 @@ class TrackerApp extends foundry.applications.api.HandlebarsApplicationMixin(fou
           pip_cnt: Math.max(tracker.pip_cnt - 1, 1),
           filled_cnt: Math.min(tracker.pip_cnt - 1, tracker.filled_cnt)
         };
+      } else {
+        return tracker
       }
     });
     
-    //if (tracker.pip_cnt > 1) {
-    //  tracker.pip_cnt--;
-    //  if (tracker.filled_cnt > tracker.pip_cnt) tracker.filled_cnt = tracker.pip_cnt;
-    //}
     await game.settings.set("tictac-tracker", "trackerData", updatedData);
     this.render();
   }
@@ -409,10 +451,11 @@ class TrackerApp extends foundry.applications.api.HandlebarsApplicationMixin(fou
           ...tracker,
           filled_cnt: Math.min(tracker.filled_cnt + 1, tracker.pip_cnt)
         };
+      } else {
+        return tracker
       }
     });
-    console.log("_onAddPip data:", updatedData);
-    //if (tracker.filled_cnt < tracker.pip_cnt) tracker.filled_cnt++;
+    console.log("_onAddPip updatedData:", updatedData);
     await game.settings.set("tictac-tracker", "trackerData", updatedData);
     this.render();
   }
@@ -431,10 +474,11 @@ class TrackerApp extends foundry.applications.api.HandlebarsApplicationMixin(fou
           ...tracker,
           filled_cnt: Math.max(tracker.filled_cnt - 1, 0)
         };
+      } else {
+        return tracker
       }
     });
 
-    //if (tracker.filled_cnt > 0) tracker.filled_cnt--;
     await game.settings.set("tictac-tracker", "trackerData", updatedData);
     this.render();
   }
