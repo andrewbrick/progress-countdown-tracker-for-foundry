@@ -1,6 +1,12 @@
+#trackers-app:not(:hover):not(.minimized) header, 
+#trackers-app:not(:hover):not(.minimized) .controls, 
+#trackers-app:not(:hover):not(.minimized) .window-resize-handle {
+    opacity: 0;
+}
+
 .trackers-window {
   background: rgba(30, 30, 30, 0.8);
-  padding: 0.5em;
+  padding: 0.1em;
   border-radius: 8px;
   color: white;
   font-family: var(--font-primary);
@@ -33,21 +39,22 @@
 .tracker-list {
   display: flex;
   flex-direction: column;
-  gap: 0.5em;
+  gap: 0.3em;
 }
 
 .tracker-row {
   background: rgba(255, 255, 255, 0.05);
-  padding: 0.5em;
+  padding: 0.2em;
   border-radius: 6px;
   display: flex;
   align-items: center;
-  gap: 0.5em;
+  gap: 0.1em;
 }
 
 .drag-handle {
   cursor: grab;
   color: #888888;
+  margin-left: 0.2em;
 }
 
 .edit-name {
@@ -62,6 +69,8 @@
 .pips {
   display: flex;
   gap: 0.2em;
+  margin-left: 0.5em;
+  margin-right: 0.5em;
 }
 
 .pip {
@@ -81,7 +90,8 @@
 
 .pip-controls, .gm-controls {
   display: flex;
-  gap: 0.2em;
+  gap: 0.01em;
+  padding: 0.01em;
 }
 
 .pip-controls button, .gm-controls button {
@@ -90,6 +100,8 @@
   color: #cccccc;
   font-size: 0.9em;
   cursor: pointer;
+  gap: 1px;
+  padding: 0.2em;
 }
 
 .tracker-footer {
