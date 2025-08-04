@@ -6,6 +6,7 @@
 
 #trackers-app .window-content {
     backdrop-filter: none;
+    border-radius: 8px;
     background: rgba(0, 0, 0, 0.8);
 }
 
