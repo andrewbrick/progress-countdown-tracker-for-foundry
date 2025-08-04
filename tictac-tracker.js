@@ -200,7 +200,7 @@ Hooks.once('ready', async () => {
 class TrackerApp extends foundry.applications.api.HandlebarsApplicationMixin(foundry.applications.api.ApplicationV2) { //HandlebarsApplicationMixin(foundry.applications.api.ApplicationV2) {
   static DEFAULT_OPTIONS = { //static get defaultOptions() {
     //return foundry.utils.mergeObject(super.defaultOptions, {
-    id: "trackers-app",
+    id: "tictac-tracker",
     template: "modules/tictac-tracker/templates/trackers.html",
     popOut: true,
     resizeable: false,
