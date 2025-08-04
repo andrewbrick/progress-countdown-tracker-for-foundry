@@ -29,17 +29,19 @@
           </div>
           {{/if}}
 
-          <div class="tictac-pips">
-            {{#range this.pip_cnt}}
-            {{log '@index:' @index 'filled_cnt:' ../this.filled_cnt 'pip_cnt:' ../this.pip_cnt}}
-                <div class="tictac-pip {{#if (lt @index ../this.filled_cnt)}}filled{{/if}}"
-                   style="
-                       {{#if (lt @index ../this.filled_cnt)}} /* Only apply background-color if pip is filled */
-                           background-color: {{#ifEquals ../this.type 'progress'}}{{../../progressColor}}{{else}}{{../../consequenceColor}}{{/ifEquals}};
-                       {{/if}}
-                       ">
-                  </div>
-              {{/range}}
+          <div class="tictac-pips-container" style="--max-pips: {{../maxPips}};">
+            <div class="tictac-pips">
+              {{#range this.pip_cnt}}
+              {{log '@index:' @index 'filled_cnt:' ../this.filled_cnt 'pip_cnt:' ../this.pip_cnt}}
+                  <div class="tictac-pip {{#if (lt @index ../this.filled_cnt)}}filled{{/if}}"
+                     style="
+                         {{#if (lt @index ../this.filled_cnt)}} /* Only apply background-color if pip is filled */
+                             background-color: {{#ifEquals ../this.type 'progress'}}{{../../progressColor}}{{else}}{{../../consequenceColor}}{{/ifEquals}};
+                         {{/if}}
+                         ">
+                    </div>
+                {{/range}}
+            </div>
           </div>
 
           {{#if ../isGM}}
