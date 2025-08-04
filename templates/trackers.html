@@ -59,8 +59,8 @@
 
           {{#if ../isGM}}
           <div class="gm-controls">
-            <button class="toggle-type" data-action="toggleType" data-id="{{this.id}}" data-type="progress"><i class="fas fa-leaf"></i></button>
-            <button class="toggle-type" data-action="toggleType" data-id="{{this.id}}" data-type="consequence"><i class="fas fa-fire"></i></button>
+            <button class="toggle-type" data-action="changeToProg" data-id="{{this.id}}" data-type="progress"><i class="fas fa-leaf"></i></button>
+            <button class="toggle-type" data-action="changeToCons" data-id="{{this.id}}" data-type="consequence"><i class="fas fa-fire"></i></button>
             <button class="toggle-visibility" data-action="toggleVis" data-id="{{this.id}}">
               <i class="fas {{#if this.visible}}fa-eye{{else}}fa-eye-slash{{/if}}"></i>
             </button>
