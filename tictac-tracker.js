@@ -590,6 +590,33 @@ class TictacTrackerApp extends foundry.applications.api.HandlebarsApplicationMix
         }
       });
     });
+
+    // resize text input fields for GM
+    const rootElement = this.element;
+    console.log("rootelement", rootElement);
+    const nameInputs = rootElement.querySelectorAll(".tictac-edit-name");
+    nameInputs.forEach((inputElement) => {
+      const textContent = inputElement.value;
+      const tempSpan = document.createElement("span");
+      tempSpan.style.visibility = "hidden";
+      tempSpan.style.whiteSpace = "pre";
+      tempSpan.style.fontSize = getComputedStyle(inputElement).fontSize;
+      tempSpan.style.fontFamily = getComputedStyle(inputElement).fontFamily;
+      tempSpan.textContent = textContent;
+      document.body.appendChild(tempSpan);
+      const textWidth = tempSpan.offsetWidth;
+      document.body.removeChild(tempSpan);
+
+      const newWidth = Math.max(textWidth + 15, 50);
+      inputElement.style.width = `${newWidth}px`;
+
+      inputElement.addEventListener('input', () => {
+        tempSpan.textContent = inputElement.value;
+        const dynamicWidth = Math.max(tempSpan.offsetWidth + 15, 50);
+        inputElement.style.width = `${dynamicWidth}px`;
+      });
+    });
+    
   }
   
 // Old activateListeners    
