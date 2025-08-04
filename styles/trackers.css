@@ -10,7 +10,7 @@
     background: rgba(0, 0, 0, 0.8);
 }
 
-.trackers-window {
+.tictac-trackers-window {
   background: rgba(0, 0, 0, 0);
   box-shadow: none;
   transition: background-color 0.3s ease-in-out, 
@@ -22,28 +22,29 @@
   font-family: var(--font-primary);
 }
 
-.trackers-window:hover {
+.tictac-trackers-window:hover {
   background: rgba(30, 30, 30, 0.8);
   box-shadow: 0 0 10px #000;
 }
 
-.trackers-app-body.collapsed {
+.tictac-trackers-app-body.collapsed {
   height: auto;
   overflow: hidden;
 }
 
-.toggle-collapse {
+
+.tictac-toggle-collapse {
   text-align: center;
   cursor: pointer;
   margin-bottom: 0.3em;
 }
 
-.empty-add-button {
+.tictac-empty-add-button {
   text-align: center;
   margin-top: 1em;
 }
 
-.empty-add-button button {
+.tictac-empty-add-button button {
   background: none;
   border: none;
   color: #aaaaaa;
@@ -51,13 +52,13 @@
   cursor: pointer;
 }
 
-.tracker-list {
+.tictac-tracker-list {
   display: flex;
   flex-direction: column;
   gap: 0.3em;
 }
 
-.tracker-row {
+.tictac-tracker-row {
   background: rgba(255, 255, 255, 0.05);
   padding: 0.2em;
   border-radius: 6px;
@@ -66,13 +67,13 @@
   gap: 0.1em;
 }
 
-.drag-handle {
+.tictac-drag-handle {
   cursor: grab;
   color: #888888;
   margin-left: 0.2em;
 }
 
-.edit-name {
+.tictac-edit-name {
   flex-grow: 1;
   background: transparent;
   border: none;
@@ -81,14 +82,14 @@
   font-size: 1em;
 }
 
-.pips {
+.tictac-pips {
   display: flex;
   gap: 0.2em;
   margin-left: 0.5em;
   margin-right: 0.5em;
 }
 
-.pip {
+.tictac-pip {
   width: 12px;
   height: 12px;
   border-radius: 50%;
@@ -97,19 +98,19 @@
   opacity: 0.3;
 }
 
-.pip.filled {
+.tictac-pip.filled {
   opacity: 1;
   background-color: #d703fc;
   border: 1px solid #aaaaaa;
 }
 
-.pip-controls, .gm-controls {
+.tictac-pip-controls, .tictac-gm-controls {
   display: flex;
   gap: 0.01em;
   padding: 0.01em;
 }
 
-.pip-controls button, .gm-controls button {
+.tictac-pip-controls button, .tictac-gm-controls button {
   background: none;
   border: none;
   color: #cccccc;
@@ -119,12 +120,12 @@
   padding: 0.2em;
 }
 
-.tracker-footer {
+.tictac-tracker-footer {
   text-align: center;
   margin-top: 0.5em;
 }
 
-.tracker-footer button {
+.tictac-tracker-footer button {
   background: none;
   border: none;
   color: #4CAF50;
