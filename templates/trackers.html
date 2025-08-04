@@ -4,16 +4,6 @@
   {{else}}
     <div class="toggle-collapse"><i class="fas fa-chevron-up"></i></div>
 
-    <!--
-    {{#if isGM}}
-      {{#unless trackers.length}}
-        <div class="empty-add-button">
-          <button class="add-tracker"><i class="fas fa-circle-plus"></i></button>
-        </div>
-      {{/unless}}
-    {{/if}}
-   -->
-
     <div class="tracker-list">
       {{#each trackers}}
         {{#if (or ../isGM this.visible)}}
@@ -22,15 +12,16 @@
 
           <input class="edit-name" data-id="{{this.id}}" type="text" value="{{this.name}}" />
 
-          <!--
-          <div class="pips">
-            {{#range this.pip_cnt}}
-              <div class="pip {{#if (lt @index ../this.filled_cnt)}}filled{{/if}}"
-                   style="background-color: {{#ifEquals ../this.type 'progress'}}{{../progressColor}}{{else}}{{../consequenceColor}}{{/ifEquals}};">
-              </div>
-            {{/range}}
+          {{#if ../isGM}}
+          <div class="pip-controls">
+            <button class="toggle-type" data-action="changeToProg" data-id="{{this.id}}" data-type="progress">P</button>
+            <button class="toggle-type" data-action="changeToCons" data-id="{{this.id}}" data-type="consequence">C</button>
+            <button class="delete-tracker" data-action="delTracker" data-id="{{this.id}}"><i class="fas fa-trash"></i></button>
+            <button class="pip-mod" data-id="{{this.id}}" data-action="subPipCont"><i class="fas fa-square-minus"></i></button>
+            <button class="pip-mod" data-id="{{this.id}}" data-action="subPip"><i class="fas fa-circle-minus"></i></button>
           </div>
-          -->
+          {{/if}}
+
           <div class="pips">
             {{#range this.pip_cnt}}
             {{log '@index:' @index 'filled_cnt:' ../this.filled_cnt 'pip_cnt:' ../this.pip_cnt}}
@@ -44,27 +35,18 @@
               {{/range}}
           </div>
 
-          <div class="pip-controls">
-            <!--
-            <button class="pip-mod" data-id="{{this.id}}" data-action="pip--"><i class="fas fa-circle-minus"></i></button>
-            <button class="pip-mod" data-id="{{this.id}}" data-action="pip++"><i class="fas fa-circle-plus"></i></button>
-            <button class="pip-mod" data-id="{{this.id}}" data-action="cnt--"><i class="fas fa-square-minus"></i></button>
-            <button class="pip-mod" data-id="{{this.id}}" data-action="cnt++"><i class="fas fa-square-plus"></i></button>
-            -->
-            <button class="pip-mod" data-id="{{this.id}}" data-action="subPip"><i class="fas fa-circle-minus"></i></button>
-            <button class="pip-mod" data-id="{{this.id}}" data-action="addPip"><i class="fas fa-circle-plus"></i></button>
-            <button class="pip-mod" data-id="{{this.id}}" data-action="subPipCont"><i class="fas fa-square-minus"></i></button>
-            <button class="pip-mod" data-id="{{this.id}}" data-action="addPipCont"><i class="fas fa-square-plus"></i></button>
-          </div>
-
           {{#if ../isGM}}
-          <div class="gm-controls">
-            <button class="toggle-type" data-action="changeToProg" data-id="{{this.id}}" data-type="progress">P</button>
-            <button class="toggle-type" data-action="changeToCons" data-id="{{this.id}}" data-type="consequence">C</button>
+          <div class="pip-controls">
+            <button class="pip-mod" data-id="{{this.id}}" data-action="addPip"><i class="fas fa-circle-plus"></i></button>
+            <button class="pip-mod" data-id="{{this.id}}" data-action="addPipCont"><i class="fas fa-square-plus"></i></button>
             <button class="toggle-visibility" data-action="toggleVis" data-id="{{this.id}}">
               <i class="fas {{#if this.visible}}fa-eye{{else}}fa-eye-slash{{/if}}"></i>
             </button>
-            <button class="delete-tracker" data-action="delTracker" data-id="{{this.id}}"><i class="fas fa-trash"></i></button>
+          </div>
+          {{/if}}
+
+          {{#if ../isGM}}
+          <div class="gm-controls">
           </div>
           {{/if}}
         </div>
