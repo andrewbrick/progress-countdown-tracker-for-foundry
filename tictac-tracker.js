@@ -61,7 +61,7 @@ Hooks.once("init", () => {
 
   // consequence pip color
   game.settings.register("tictac-tracker", "consequencePipColor", {
-    name: "Progress Pip Color",
+    name: "Consequence Pip Color",
     hint: "Change the color of active pips for consequence trackers. Applies only to you.",
     scope: "client",
     config: true,
@@ -323,7 +323,7 @@ class TrackerApp extends foundry.applications.api.HandlebarsApplicationMixin(fou
     this.render();
   }
 
-  static async _onChangeToProg(event, element) { // .toggle-type
+  static async _onChangeToProg(event, element) { 
     const trackerRow = element.closest(".tracker-row");
     const id = trackerRow.dataset.id;
     const data = game.settings.get("tictac-tracker", "trackerData");
@@ -334,7 +334,7 @@ class TrackerApp extends foundry.applications.api.HandlebarsApplicationMixin(fou
         if(tracker.id === id) {
           return {
             ...tracker,
-            type: "consequence"
+            type: "progress"
           };
         } else {
           return tracker
@@ -345,7 +345,7 @@ class TrackerApp extends foundry.applications.api.HandlebarsApplicationMixin(fou
     }
   }
 
-  static async _onChangeToCons(event, element) { // .toggle-type
+  static async _onChangeToCons(event, element) { 
     const trackerRow = element.closest(".tracker-row");
     const id = trackerRow.dataset.id;
     const data = game.settings.get("tictac-tracker", "trackerData");
@@ -356,7 +356,7 @@ class TrackerApp extends foundry.applications.api.HandlebarsApplicationMixin(fou
         if(tracker.id === id) {
           return {
             ...tracker,
-            type: "progress"
+            type: "consequence"
           };
         } else {
           return tracker
