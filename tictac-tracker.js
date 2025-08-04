@@ -106,9 +106,23 @@ Hooks.once("init", () => {
     default: []
   });
 
+  /*
   Handlebars.registerHelper("range", function(n, block) {
     let accum = '';
     for (let i = 0; i < n; ++i) accum += block.fn(i);
+    return accum;
+  });
+  */
+
+  Handlebars.registerHelper("range", function(n, block) {
+    let accum = '';
+    for (let i = 0; i < n; ++i) {
+        // Create a new data frame for each iteration
+        let data = Handlebars.createFrame(block.data); 
+        // Set the @index property on the data frame
+        data.index = i; 
+        accum += block.fn(i, { data: data }); // Pass the new context and data frame
+    }
     return accum;
   });
 
