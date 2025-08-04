@@ -177,10 +177,12 @@ Hooks.once('ready', async () => {
 
   game.socket.on("module.tictac-tracker", (payload) => {
     if (payload.action === "renderApplication") {
+      console.log("payload.action is renderApplication");
       const applicationInstance = Object.values(ui.windows).find(
         (app) => app.options.id === "tictac-tracker"
       );
       if (applicationInstance) {
+        console.log("applicationInstance exists");
         applicationInstance.render(true);
       }
     }
@@ -311,7 +313,7 @@ class TrackerApp extends foundry.applications.api.HandlebarsApplicationMixin(fou
 
     await game.settings.set("tictac-tracker", "trackerData", data);
     await game.settings.set("tictac-tracker", "trackerOrder", order);
-    this.render()
+    this.render();
     game.socket.emit("module.tictac-tracker", { action: "renderApplication" });
   }
 
