@@ -33,10 +33,11 @@
           -->
           <div class="pips">
             {{#range this.pip_cnt}}
+            {{log '@index:' @index 'filled_cnt:' ../this.filled_cnt}}
                 <div class="pip {{#if (lt @index ../this.filled_cnt)}}filled{{/if}}"
                    style="
                        {{#if (lt @index ../this.filled_cnt)}} /* Only apply background-color if pip is filled */
-                           background-color: {{#ifEquals ../this.type 'progress'}}{{../progressColor}}{{else}}{{../consequenceColor}}{{/ifEquals}};
+                           background-color: {{#ifEquals ../this.type 'progress'}}{{../../progressColor}}{{else}}{{../../consequenceColor}}{{/ifEquals}};
                        {{/if}}
                        ">
                   </div>
