@@ -142,7 +142,11 @@ Hooks.once("init", () => {
         // This makes it behave like an inline helper `{{or a b}}`
         return result;
     }
-});
+  });
+
+  Handlebars.registerHelper("lt", function(a, b, options) {
+    return (a <= b)
+  });
   
 }); // end init
 
