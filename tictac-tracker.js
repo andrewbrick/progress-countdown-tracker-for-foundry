@@ -143,10 +143,6 @@ Hooks.once("init", () => {
         return result;
     }
   });
-
-  Handlebars.registerHelper("lt", function(a, b, options) {
-    return (a <= b)
-  });
   
 }); // end init
 
