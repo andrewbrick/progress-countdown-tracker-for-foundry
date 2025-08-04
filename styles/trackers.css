@@ -1,15 +1,29 @@
 #trackers-app:not(:hover):not(.minimized) header, 
-#trackers-app:not(:hover):not(.minimized) .controls, 
+#trackers-app:not(:hover):not(.minimized) .controls,  
 #trackers-app:not(:hover):not(.minimized) .window-resize-handle {
     opacity: 0;
 }
 
+#trackers-app .window-content {
+    backdrop-filter: none;
+    background: rgba(0, 0, 0, 0.8);
+}
+
 .trackers-window {
-  background: rgba(30, 30, 30, 0.8);
+  background: rgba(0, 0, 0, 0);
+  box-shadow: none;
+  transition: background-color 0.3s ease-in-out, 
+      box-shadow 0.3s ease-in-out;
+  border: none;
   padding: 0.1em;
   border-radius: 8px;
   color: white;
   font-family: var(--font-primary);
+}
+
+.trackers-window:hover {
+  background: rgba(30, 30, 30, 0.8);
+  box-shadow: 0 0 10px #000;
 }
 
 .trackers-app-body.collapsed {
