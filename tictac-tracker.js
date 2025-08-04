@@ -162,17 +162,17 @@ Hooks.once("init", () => {
 
 Hooks.once('ready', async () => {
   
-  game.tictacTracker = new TrackerApp();
+  game.tictacTracker = new TictacTrackerApp();
   await game.tictacTracker.render(true);
-  //new TrackerApp().render(true);
+  //new TictacTrackerApp().render(true);
   console.log("DEBUG: foundry object available:", typeof foundry);
   console.log("DEBUG: foundry.applications.api available:", typeof foundry?.applications?.api);
   console.log("DEBUG: HandlebarsApplicationMixin available:", typeof foundry?.applications?.api?.HandlebarsApplicationMixin);
   console.log("DEBUG: ApplicationV2 available:", typeof foundry?.applications?.api?.ApplicationV2);
-  console.log("DEBUG: TrackerApp Instance Options:", game.tictacTracker.options);
-  console.log("DEBUG: TrackerApp Instance Frame Options:", game.tictacTracker.options.frame); // Check if frame options are inherited/set
-  console.log("DEBUG: TrackerApp Instance HTML Element:", game.tictacTracker.element); // Check the element reference
-  console.log("DEBUG: Does TrackerApp have _onRender method?", typeof game.tictacTracker._onRender); // Should be 'function'
+  console.log("DEBUG: TictacTrackerApp Instance Options:", game.tictacTracker.options);
+  console.log("DEBUG: TictacTrackerApp Instance Frame Options:", game.tictacTracker.options.frame); // Check if frame options are inherited/set
+  console.log("DEBUG: TictacTrackerApp Instance HTML Element:", game.tictacTracker.element); // Check the element reference
+  console.log("DEBUG: Does TictacTrackerApp have _onRender method?", typeof game.tictacTracker._onRender); // Should be 'function'
   console.log("num trackers:", game.settings.get("tictac-tracker", "trackerData").length);
 
   game.socket.on("module.tictac-tracker", (payload) => {
@@ -197,7 +197,7 @@ Hooks.once('ready', async () => {
 
 //const { HandlebarsApplicationMixin } = foundry.applications.api;
 
-class TrackerApp extends foundry.applications.api.HandlebarsApplicationMixin(foundry.applications.api.ApplicationV2) { //HandlebarsApplicationMixin(foundry.applications.api.ApplicationV2) {
+class TictacTrackerApp extends foundry.applications.api.HandlebarsApplicationMixin(foundry.applications.api.ApplicationV2) { //HandlebarsApplicationMixin(foundry.applications.api.ApplicationV2) {
   static DEFAULT_OPTIONS = { //static get defaultOptions() {
     //return foundry.utils.mergeObject(super.defaultOptions, {
     id: "tictac-tracker",
@@ -213,19 +213,19 @@ class TrackerApp extends foundry.applications.api.HandlebarsApplicationMixin(fou
     },
     classes: ["trackers-window"],
     actions: {
-      addTracker: TrackerApp._onAddTracker,
-      delTracker: TrackerApp._onDelTracker,
-      addPipCont: TrackerApp._onAddPipCont, // add a pip to the tracker
-      subPipCont: TrackerApp._onSubPipCont, // subtract a pip from the tracker
-      addPip: TrackerApp._onAddPip, // color in the next pip in the tracker
-      subPip: TrackerApp._onSubPip, // gray out the next pip in the tracker
-      toggleType: TrackerApp._onToggleType, // toggle between consequence and progress
-      changeToProg: TrackerApp._onChangeToProg,
-      changeToCons: TrackerApp._onChangeToCons,
-      toggleVis: TrackerApp._onToggleVis, // toggle visibility of the tracker
-      //moveTracker: TrackerApp._onMoveTracker, // grab one tracker and re-position it within the list
-      collapseTrackers: TrackerApp._onCollapseTrackers // toggle to collapse / expand the tracker bars
-      //editTrackerName: TrackerApp._onEditTrackerName
+      addTracker: TictacTrackerApp._onAddTracker,
+      delTracker: TictacTrackerApp._onDelTracker,
+      addPipCont: TictacTrackerApp._onAddPipCont, // add a pip to the tracker
+      subPipCont: TictacTrackerApp._onSubPipCont, // subtract a pip from the tracker
+      addPip: TictacTrackerApp._onAddPip, // color in the next pip in the tracker
+      subPip: TictacTrackerApp._onSubPip, // gray out the next pip in the tracker
+      toggleType: TictacTrackerApp._onToggleType, // toggle between consequence and progress
+      changeToProg: TictacTrackerApp._onChangeToProg,
+      changeToCons: TictacTrackerApp._onChangeToCons,
+      toggleVis: TictacTrackerApp._onToggleVis, // toggle visibility of the tracker
+      //moveTracker: TictacTrackerApp._onMoveTracker, // grab one tracker and re-position it within the list
+      collapseTrackers: TictacTrackerApp._onCollapseTrackers // toggle to collapse / expand the tracker bars
+      //editTrackerName: TictacTrackerApp._onEditTrackerName
     }
   } //);
 
