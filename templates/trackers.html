@@ -2,7 +2,7 @@
   {{#if collapsed}}
     <div class="tictac-header">
       <span>Trackers </span>
-      {{#if ../../trackerDataChanged}}<span>Trackers Updated!</span>{{/if}}
+      {{#if (getSetting "tictac-tracker" "trackerDataChanged")}}<span>Trackers Updated!</span>{{/if}}
       <span class="tictac-header-last-span" data-action="collapseTrackers"><button class="tictac-collapse-button"><i class="fas fa-chevron-down"></i></button></span>
     </div>
   {{else}}
