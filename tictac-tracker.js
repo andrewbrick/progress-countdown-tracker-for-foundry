@@ -334,15 +334,23 @@ class TrackerApp extends foundry.applications.api.HandlebarsApplicationMixin(fou
     console.log("add pip container clicked")
     const trackerRow = element.closest(".tracker-row");
     const id = trackerRow.dataset.id;
-    const action = event.currentTarget.dataset.action;
     const data = game.settings.get("tictac-tracker", "trackerData");
-    const tracker = data.find(t => t.id === id);
-    if(!tracker) return;
+    const thisTracker = data.find(t => t.id === id);
+    if(!thisTracker) return;
 
-    if (tracker.pip_cnt < 24) {
-      tracker.pip_cnt++;
-    }
-    await game.settings.set("tictac-tracker", "trackerData", data);
+    const updatedData = data.map(tracker => {
+      if(tracker.id === id) {
+        return {
+          ...tracker,
+          pip_cnt: Math.min(tracker.pip_cnt + 1, 24)
+        };
+      }
+    });
+    
+    //if (tracker.pip_cnt < 24) {
+    //  tracker.pip_cnt++;
+    //}
+    await game.settings.set("tictac-tracker", "trackerData", updatedData);
     this.render();
   }
 
@@ -350,16 +358,25 @@ class TrackerApp extends foundry.applications.api.HandlebarsApplicationMixin(fou
     console.log("sub pip container clicked")
     const trackerRow = element.closest(".tracker-row");
     const id = trackerRow.dataset.id;
-    const action = event.currentTarget.dataset.action;
     const data = game.settings.get("tictac-tracker", "trackerData");
-    const tracker = data.find(t => t.id === id);
-    if(!tracker) return;
+    const thisTracker = data.find(t => t.id === id);
+    if(!thisTracker) return;
 
-    if (tracker.pip_cnt > 1) {
-      tracker.pip_cnt--;
-      if (tracker.filled_cnt > tracker.pip_cnt) tracker.filled_cnt = tracker.pip_cnt;
-    }
-    await game.settings.set("tictac-tracker", "trackerData", data);
+    const updatedData = data.map(tracker => {
+      if(tracker.id === id) {
+        return {
+          ...tracker,
+          pip_cnt: Math.max(tracker.pip_cnt - 1, 1),
+          filled_cnt: Math.min(tracker.pip_cnt - 1, tracker.filled_cnt)
+        };
+      }
+    });
+    
+    //if (tracker.pip_cnt > 1) {
+    //  tracker.pip_cnt--;
+    //  if (tracker.filled_cnt > tracker.pip_cnt) tracker.filled_cnt = tracker.pip_cnt;
+    //}
+    await game.settings.set("tictac-tracker", "trackerData", updatedData);
     this.render();
   }
 
@@ -367,13 +384,22 @@ class TrackerApp extends foundry.applications.api.HandlebarsApplicationMixin(fou
     console.log("add pip clicked")
     const trackerRow = element.closest(".tracker-row");
     const id = trackerRow.dataset.id;
-    const action = event.currentTarget.dataset.action;
     const data = game.settings.get("tictac-tracker", "trackerData");
-    const tracker = data.find(t => t.id === id);
-    if(!tracker) return;
+    console.log("_onAddPip data:", data);
+    const thisTracker = data.find(t => t.id === id);
+    if(!thisTracker) return;
 
-    if (tracker.filled_cnt < tracker.pip_cnt) tracker.filled_cnt++;
-    await game.settings.set("tictac-tracker", "trackerData", data);
+    const updatedData = data.map(tracker => {
+      if (tracker.id === id) {
+        return {
+          ...tracker,
+          filled_cnt: Math.min(tracker.filled_cnt + 1, tracker.pip_cnt)
+        };
+      }
+    });
+    console.log("_onAddPip data:", updatedData);
+    //if (tracker.filled_cnt < tracker.pip_cnt) tracker.filled_cnt++;
+    await game.settings.set("tictac-tracker", "trackerData", updatedData);
     this.render();
   }
 
@@ -381,13 +407,21 @@ class TrackerApp extends foundry.applications.api.HandlebarsApplicationMixin(fou
     console.log("sub pip clicked")
     const trackerRow = element.closest(".tracker-row");
     const id = trackerRow.dataset.id;
-    const action = event.currentTarget.dataset.action;
     const data = game.settings.get("tictac-tracker", "trackerData");
-    const tracker = data.find(t => t.id === id);
-    if(!tracker) return;
+    const thisTracker = data.find(t => t.id === id);
+    if(!thisTracker) return;
 
-    if (tracker.filled_cnt > 0) tracker.filled_cnt--;
-    await game.settings.set("tictac-tracker", "trackerData", data);
+    const updatedData = data.map(tracker => {
+      if (tracker.id === id) {
+        return {
+          ...tracker,
+          filled_cnt: Math.max(tracker.filled_cnt - 1, 0)
+        };
+      }
+    });
+
+    //if (tracker.filled_cnt > 0) tracker.filled_cnt--;
+    await game.settings.set("tictac-tracker", "trackerData", updatedData);
     this.render();
   }
 
