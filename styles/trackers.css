@@ -32,6 +32,15 @@
   overflow: hidden;
 }
 
+.tictac-header {
+  display: flex;
+}
+.tictac-header-last-span {
+  margin-left: auto;
+}
+.tictac-collapse-button {
+  font-size: 10px;
+}
 
 .tictac-toggle-collapse {
   text-align: center;
@@ -56,6 +65,7 @@
   display: flex;
   flex-direction: column;
   gap: 0.3em;
+  margin-top: 0.5em;
 }
 
 .tictac-tracker-row {
