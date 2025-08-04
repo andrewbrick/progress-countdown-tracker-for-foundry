@@ -1,31 +1,31 @@
-<div class="trackers-app-body{{#if collapsed}}collapsed{{/if}}">
+<div class="tictac-trackers-app-body{{#if collapsed}}collapsed{{/if}}">
   {{#if collapsed}}
-    <div class="toggle-collapse" data-action="collapseTrackers"><i class="fas fa-chevron-down"></i></div>
+    <div class="tictac-toggle-collapse" data-action="collapseTrackers">"Trackers "<i class="fas fa-chevron-down"></i></div>
   {{else}}
-    <div class="toggle-collapse" data-action="collapseTrackers"><i class="fas fa-chevron-up"></i></div>
+    <div class="tictac-toggle-collapse" data-action="collapseTrackers">"Trackers "<i class="fas fa-chevron-up"></i></div>
 
-    <div class="tracker-list">
+    <div class="tictac-tracker-list">
       {{#each trackers}}
         {{#if (or ../isGM this.visible)}}
-        <div class="tracker-row" data-id="{{this.id}}">
-          <div class="drag-handle"><i class="fas fa-grip-lines"></i></div>
+        <div class="tictac-tracker-row" data-id="{{this.id}}">
+          <div class="tictac-drag-handle"><i class="fas fa-grip-lines"></i></div>
 
-          <input class="edit-name" data-id="{{this.id}}" type="text" value="{{this.name}}" />
+          <input class="tictac-edit-name" data-id="{{this.id}}" type="text" value="{{this.name}}" />
 
           {{#if ../isGM}}
-          <div class="pip-controls">
-            <button class="toggle-type" data-action="changeToProg" data-id="{{this.id}}" data-type="progress">P</button>
-            <button class="toggle-type" data-action="changeToCons" data-id="{{this.id}}" data-type="consequence">C</button>
-            <button class="delete-tracker" data-action="delTracker" data-id="{{this.id}}"><i class="fas fa-trash"></i></button>
-            <button class="pip-mod" data-id="{{this.id}}" data-action="subPipCont"><i class="fas fa-square-minus"></i></button>
-            <button class="pip-mod" data-id="{{this.id}}" data-action="subPip"><i class="fas fa-circle-minus"></i></button>
+          <div class="tictac-pip-controls">
+            <button class="tictac-toggle-type" data-action="changeToProg" data-id="{{this.id}}" data-type="progress">P</button>
+            <button class="tictac-toggle-type" data-action="changeToCons" data-id="{{this.id}}" data-type="consequence">C</button>
+            <button class="tictac-delete-tracker" data-action="delTracker" data-id="{{this.id}}"><i class="fas fa-trash"></i></button>
+            <button class="tictac-pip-mod" data-id="{{this.id}}" data-action="subPipCont"><i class="fas fa-square-minus"></i></button>
+            <button class="tictac-pip-mod" data-id="{{this.id}}" data-action="subPip"><i class="fas fa-circle-minus"></i></button>
           </div>
           {{/if}}
 
-          <div class="pips">
+          <div class="tictac-pips">
             {{#range this.pip_cnt}}
             {{log '@index:' @index 'filled_cnt:' ../this.filled_cnt 'pip_cnt:' ../this.pip_cnt}}
-                <div class="pip {{#if (lt @index ../this.filled_cnt)}}filled{{/if}}"
+                <div class="tictac-pip {{#if (lt @index ../this.filled_cnt)}}filled{{/if}}"
                    style="
                        {{#if (lt @index ../this.filled_cnt)}} /* Only apply background-color if pip is filled */
                            background-color: {{#ifEquals ../this.type 'progress'}}{{../../progressColor}}{{else}}{{../../consequenceColor}}{{/ifEquals}};
@@ -36,17 +36,17 @@
           </div>
 
           {{#if ../isGM}}
-          <div class="pip-controls">
-            <button class="pip-mod" data-id="{{this.id}}" data-action="addPip"><i class="fas fa-circle-plus"></i></button>
-            <button class="pip-mod" data-id="{{this.id}}" data-action="addPipCont"><i class="fas fa-square-plus"></i></button>
-            <button class="toggle-visibility" data-action="toggleVis" data-id="{{this.id}}">
+          <div class="tictac-pip-controls">
+            <button class="tictac-pip-mod" data-id="{{this.id}}" data-action="addPip"><i class="fas fa-circle-plus"></i></button>
+            <button class="tictac-pip-mod" data-id="{{this.id}}" data-action="addPipCont"><i class="fas fa-square-plus"></i></button>
+            <button class="tictac-toggle-visibility" data-action="toggleVis" data-id="{{this.id}}">
               <i class="fas {{#if this.visible}}fa-eye{{else}}fa-eye-slash{{/if}}"></i>
             </button>
           </div>
           {{/if}}
 
           {{#if ../isGM}}
-          <div class="gm-controls">
+          <div class="tictac-gm-controls">
           </div>
           {{/if}}
         </div>
@@ -55,8 +55,8 @@
     </div>
 
     {{#if isGM}}
-    <div class="tracker-footer">
-      <button class="add-tracker" data-action="addTracker"><i class="fas fa-circle-plus"></i> Add Tracker</button>
+    <div class="tictac-tracker-footer">
+      <button class="tictac-add-tracker" data-action="addTracker"><i class="fas fa-circle-plus"></i> Add Tracker</button>
     </div>
     {{/if}}
   {{/if}}
