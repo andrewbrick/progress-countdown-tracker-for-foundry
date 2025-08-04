@@ -27,7 +27,11 @@
   box-shadow: 0 0 10px #000;
 }
 
+.tictac-trackers-app-body {
+  min-width: 400px;
+}
 .tictac-trackers-app-body.collapsed {
+  min-width: 400px;
   height: auto;
   overflow: hidden;
 }
@@ -69,6 +73,7 @@
   flex-direction: column;
   gap: 0.3em;
   margin-top: 0.5em;
+  width: auto;
 }
 
 .tictac-tracker-row {
@@ -78,6 +83,7 @@
   display: flex;
   align-items: center;
   gap: 0.1em;
+  width: auto;
 }
 
 .tictac-drag-handle {
@@ -87,12 +93,13 @@
 }
 
 .tictac-edit-name {
-  flex-grow: 1;
+  /*flex-grow: 1;*/
   background: transparent;
   border: none;
-  border-bottom: 1px solid #cccccc;
   color: white;
   font-size: 1em;
+  width: auto;
+  min-width: 50px;
 }
 
 .tictac-pips {
