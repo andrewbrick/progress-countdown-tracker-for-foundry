@@ -1,8 +1,13 @@
 <div class="tictac-trackers-app-body{{#if collapsed}}collapsed{{/if}}">
   {{#if collapsed}}
-    <div class="tictac-toggle-collapse" data-action="collapseTrackers">"Trackers "<i class="fas fa-chevron-down"></i></div>
+    <div class="tictac-header">
+      <span>Trackers</span>
+      <span class="tictac-header-last-span" data-action="collapseTrackers"><button class="tictac-collapse-button"><i class="fas fa-chevron-down"></i></button></span>
+    </div>
   {{else}}
-    <div class="tictac-toggle-collapse" data-action="collapseTrackers">"Trackers "<i class="fas fa-chevron-up"></i></div>
+    <div class="tictac-header">
+      <span class="tictac-header-last-span" data-action="collapseTrackers"><button class="tictac-collapse-button"><i class="fas fa-chevron-up"></i></button></span>
+    </div>
 
     <div class="tictac-tracker-list">
       {{#each trackers}}
