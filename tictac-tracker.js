@@ -7,7 +7,7 @@ Hooks.once("init", () => {
     scope: "client",
     config: true,
     type: String,
-    default: "\u25CF", // unicode black circle
+    default: "fa-solid fa-circle-small", // unicode black circle
     onChange: async (value) => {
       /*// Validate single char
       const trimmed = value.trim();
@@ -30,7 +30,7 @@ Hooks.once("init", () => {
     scope: "client",
     config: true,
     type: String,
-    default: "\u25CF", // unicode black circle
+    default: "fa-solid fa-bolt", // unicode black circle
     onChange: async (value) => {
       /*// Validate single char
       const trimmed = value.trim();
@@ -162,24 +162,6 @@ Hooks.once("init", () => {
     return game.settings.get(module, settingName);
   });
 
-  Handlebars.registerHelper("getPip", function(type, progIsFa, consIsFa) {
-    if(type === 'progress') {
-      const char = game.settings.get("tictac-tracker", "progressPipCharacter");
-      if(progIsFa) {
-        return `<i class="${char}"></i>`
-      } else {
-        return `data-pip-char="${char}"`
-      }
-    } else {
-      const char = game.settings.get("tictac-tracker", "consequencePipCharacter");
-      if(consIsFa) {
-        return `<i class="${char}"></i>`
-      } else {
-        return `data-pip-char="${char}"`
-      }
-    }
-  });
-  
 }); // end init
 
 Hooks.once('ready', async () => {
@@ -214,6 +196,10 @@ Hooks.once('ready', async () => {
       if (collapsed) {
         game.settings.set("tictac-tracker", "trackerDataChanged", true);
       }
+    }
+    // GM forceUncollapse force client update
+    if (payload.action === "forceUncollapse") {
+      game.settings.set("tictac-tracker", "collapsed", false);
     }
   });  
   
@@ -358,6 +344,7 @@ class TictacTrackerApp extends foundry.applications.api.HandlebarsApplicationMix
     return {
       isGM,
       collapsed: collapsed,
+      //collapsed: finalCollapsed,
       progressColor: game.settings.get("tictac-tracker", "progressPipColor"),
       consequenceColor: game.settings.get("tictac-tracker", "consequencePipColor"),
       trackers: fullList,
@@ -519,7 +506,8 @@ class TictacTrackerApp extends foundry.applications.api.HandlebarsApplicationMix
     
     await game.settings.set("tictac-tracker", "trackerData", updatedData);
     this.render();
-    if(!thisTracker.visible) { game.socket.emit("module.tictac-tracker", { action: "syncTrackerDataChanged" }); }
+    //if(!thisTracker.visible) { game.socket.emit("module.tictac-tracker", { action: "syncTrackerDataChanged" }); }
+    if(!thisTracker.visible) { game.socket.emit("module.tictac-tracker", { action: "forceUncollapse" }); }
     game.socket.emit("module.tictac-tracker", { action: "renderApplication" });
   }
 
