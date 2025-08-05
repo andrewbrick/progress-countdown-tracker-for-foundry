@@ -169,7 +169,7 @@ Hooks.once('ready', async () => {
   const fontChoices = {};
   const FontConfigAPI = foundry.applications.settings.menus.FontConfig;
   const availableFonts = FontConfigAPI.getAvailableFonts();
-  console.log("availablefonts", availableFonts);
+  //console.log("availablefonts", availableFonts);
   for (const fontName of availableFonts) {
     fontChoices[fontName] = fontName;
   }
@@ -190,25 +190,25 @@ Hooks.once('ready', async () => {
   // Module init
   game.tictacTracker = new TictacTrackerApp();
   await game.tictacTracker.render(true);
-  //new TictacTrackerApp().render(true);
-  console.log("DEBUG: foundry object available:", typeof foundry);
-  console.log("DEBUG: foundry.applications.api available:", typeof foundry?.applications?.api);
-  console.log("DEBUG: HandlebarsApplicationMixin available:", typeof foundry?.applications?.api?.HandlebarsApplicationMixin);
-  console.log("DEBUG: ApplicationV2 available:", typeof foundry?.applications?.api?.ApplicationV2);
-  console.log("DEBUG: TictacTrackerApp Instance Options:", game.tictacTracker.options);
-  console.log("DEBUG: TictacTrackerApp Instance Frame Options:", game.tictacTracker.options.frame); // Check if frame options are inherited/set
-  console.log("DEBUG: TictacTrackerApp Instance HTML Element:", game.tictacTracker.element); // Check the element reference
-  console.log("DEBUG: Does TictacTrackerApp have _onRender method?", typeof game.tictacTracker._onRender); // Should be 'function'
-  console.log("num trackers:", game.settings.get("tictac-tracker", "trackerData").length);
+
+  //console.log("DEBUG: foundry object available:", typeof foundry);
+  //console.log("DEBUG: foundry.applications.api available:", typeof foundry?.applications?.api);
+  //console.log("DEBUG: HandlebarsApplicationMixin available:", typeof foundry?.applications?.api?.HandlebarsApplicationMixin);
+  //console.log("DEBUG: ApplicationV2 available:", typeof foundry?.applications?.api?.ApplicationV2);
+  //console.log("DEBUG: TictacTrackerApp Instance Options:", game.tictacTracker.options);
+  //console.log("DEBUG: TictacTrackerApp Instance Frame Options:", game.tictacTracker.options.frame); // Check if frame options are inherited/set
+  //console.log("DEBUG: TictacTrackerApp Instance HTML Element:", game.tictacTracker.element); // Check the element reference
+  //console.log("DEBUG: Does TictacTrackerApp have _onRender method?", typeof game.tictacTracker._onRender); // Should be 'function'
+  //console.log("num trackers:", game.settings.get("tictac-tracker", "trackerData").length);
 
   // Re-render socket
   game.socket.on("module.tictac-tracker", (payload) => {
     if (payload.action === "renderApplication") {
-      console.log("payload.action is renderApplication");
+      //console.log("payload.action is renderApplication");
       const applicationInstance = foundry.applications.instances.get("tictac-tracker");
-      console.log("applicationInstance", applicationInstance);
+      //console.log("applicationInstance", applicationInstance);
       if (applicationInstance) {
-        console.log("applicationInstance exists");
+        //console.log("applicationInstance exists");
         applicationInstance.render(true);
       }
     }
@@ -225,14 +225,7 @@ Hooks.once('ready', async () => {
     }
   });  
   
-  // Load position
-  //const pos = game.settings.get("tictac-tracker", "trackerPosition");
-  //tracker.style.top = pos.top; 
-  //tracker.style.left = pos.left; 
-
 });
-
-//const { HandlebarsApplicationMixin } = foundry.applications.api;
 
 class TictacTrackerApp extends foundry.applications.api.HandlebarsApplicationMixin(foundry.applications.api.ApplicationV2) { //HandlebarsApplicationMixin(foundry.applications.api.ApplicationV2) {
   
@@ -272,24 +265,6 @@ class TictacTrackerApp extends foundry.applications.api.HandlebarsApplicationMix
     }
     return foundry.utils.mergeObject(baseOptions, customOptions);
   }
-  /*
-  constructor(options = {}) {
-    super(options);
-    this.savePositionDebounced = foundry.utils.debounce(this._savePosition.bind(this), 500);
-    this.frame.addEventListener("close", this._savePosition.bind(this));
-    this.frame.addEventListener("reposition", (event) => {
-      if (event.target !== this.frame) return;
-      this.savePositionDebounced(this.position);
-    });
-  }
-  async _savePosition(position) {
-    await game.settings.set("tictac-tracker", "trackerPosition", {
-      top: position.top,
-      left: position.left
-    });
-    console.log("position saved:", position);
-  }
-  */
   
   /*
   static DEFAULT_OPTIONS = { //static get defaultOptions() {
@@ -328,7 +303,7 @@ class TictacTrackerApp extends foundry.applications.api.HandlebarsApplicationMix
     const collapsed = game.settings.get("tictac-tracker", "collapsed");
     const order = game.settings.get("tictac-tracker", "trackerOrder");
     const isGM = game.user.isGM;
-    console.log("isGM _prepareContext:", isGM);
+    //console.log("isGM _prepareContext:", isGM);
 
     // Apply saved ordering
     const ordered = order
@@ -380,12 +355,12 @@ class TictacTrackerApp extends foundry.applications.api.HandlebarsApplicationMix
 
   async _renderHTML(context, options) {
     //const html = await foundry.applications.handlebars.renderTemplate(this.options.template, await this.getData());
-    console.log("_renderHTML context:", context);
+    //console.log("_renderHTML context:", context);
     const html = await foundry.applications.handlebars.renderTemplate("modules/tictac-tracker/templates/trackers.html", context); //this.getData()); //this.getData()); //context);
     //const template = document.createElement("template");
     //template.innerHTML = html.trim();
     //return template.content.firstElementChild;
-    console.log("isGM:", context.isGM);
+    //console.log("isGM:", context.isGM);
     return html;
   }
 
@@ -404,7 +379,7 @@ class TictacTrackerApp extends foundry.applications.api.HandlebarsApplicationMix
 
   static async _onAddTracker(event, element) {
     event.preventDefault();
-    console.log("add tracker clicked");
+    //console.log("add tracker clicked");
   
     const data = game.settings.get("tictac-tracker", "trackerData");
     const order = game.settings.get("tictac-tracker", "trackerOrder");
@@ -435,7 +410,7 @@ class TictacTrackerApp extends foundry.applications.api.HandlebarsApplicationMix
   }
 
   static async _onDelTracker(event, element) {
-    console.log("delete tracker clicked")
+    //console.log("delete tracker clicked")
     const trackerRow = element.closest(".tictac-tracker-row");
     const id = trackerRow.dataset.id;
     let data = game.settings.get("tictac-tracker", "trackerData");
@@ -451,7 +426,7 @@ class TictacTrackerApp extends foundry.applications.api.HandlebarsApplicationMix
   }
 
   static async _onCollapseTrackers(event, element) {
-    console.log("collapse/expand toggle clicked")
+    //console.log("collapse/expand toggle clicked")
     const current = game.settings.get("tictac-tracker", "collapsed");
     if (current) { // if the tracker is collapsed, clear trackerDataChanged (b/c the user is now expanding it)
       game.settings.set("tictac-tracker", "trackerDataChanged", false);
@@ -534,7 +509,7 @@ class TictacTrackerApp extends foundry.applications.api.HandlebarsApplicationMix
   }
 
   static async _onAddPipCont(event, element) {
-    console.log("add pip container clicked")
+    //console.log("add pip container clicked")
     const trackerRow = element.closest(".tictac-tracker-row");
     const id = trackerRow.dataset.id;
     const data = game.settings.get("tictac-tracker", "trackerData");
@@ -559,7 +534,7 @@ class TictacTrackerApp extends foundry.applications.api.HandlebarsApplicationMix
   }
 
   static async _onSubPipCont(event, element) {
-    console.log("sub pip container clicked")
+    //console.log("sub pip container clicked")
     const trackerRow = element.closest(".tictac-tracker-row");
     const id = trackerRow.dataset.id;
     const data = game.settings.get("tictac-tracker", "trackerData");
@@ -585,12 +560,12 @@ class TictacTrackerApp extends foundry.applications.api.HandlebarsApplicationMix
   }
 
   static async _onAddPip (event, element) {
-    console.log("add pip clicked")
+    //console.log("add pip clicked")
     const trackerRow = element.closest(".tictac-tracker-row");
-    console.log("trackerRow", trackerRow);
+    //console.log("trackerRow", trackerRow);
     const id = trackerRow.dataset.id;
     const data = game.settings.get("tictac-tracker", "trackerData");
-    console.log("_onAddPip data:", data);
+    //console.log("_onAddPip data:", data);
     const thisTracker = data.find(t => t.id === id);
     if(!thisTracker) return;
 
@@ -604,7 +579,7 @@ class TictacTrackerApp extends foundry.applications.api.HandlebarsApplicationMix
         return tracker
       }
     });
-    console.log("_onAddPip updatedData:", updatedData);
+    //console.log("_onAddPip updatedData:", updatedData);
     await game.settings.set("tictac-tracker", "trackerData", updatedData);
     this.render();
     if(thisTracker.visible) { game.socket.emit("module.tictac-tracker", { action: "syncTrackerDataChanged" }); }
@@ -612,7 +587,7 @@ class TictacTrackerApp extends foundry.applications.api.HandlebarsApplicationMix
   }
 
   static async _onSubPip (event, element) {
-    console.log("sub pip clicked")
+    //console.log("sub pip clicked")
     const trackerRow = element.closest(".tictac-tracker-row");
     const id = trackerRow.dataset.id;
     const data = game.settings.get("tictac-tracker", "trackerData");
