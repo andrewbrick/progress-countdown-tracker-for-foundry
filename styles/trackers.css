@@ -92,10 +92,10 @@
     grid-template-columns: repeat(var(--max-pips), 1fr);
     gap: 2px;
     --pip-size: 12px;
-    width: calc(var(--max-pips) * var(--pip-size) + (var(--max-pips) - 1) * 2px);
+    width: calc(var(--max-pips) * var(--pip-size)*1.2 + (var(--max-pips) - 1) * .5px);
     flex-shrink: 0;
     box-sizing: border-box;
-    margin-right: 1.5em;
+    margin-right: 10px;
     margin-bottom: 0px;
     margin-top: 1px;
 }
