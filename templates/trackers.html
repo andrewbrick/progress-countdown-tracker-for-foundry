@@ -21,10 +21,10 @@
 
           {{#if ../isGM}}
           <div class="tictac-pip-controls">
-            <button class="tictac-toggle-type" data-action="changeToProg" data-id="{{this.id}}" data-type="progress">P</button>
-            <button class="tictac-toggle-type" data-action="changeToCons" data-id="{{this.id}}" data-type="consequence">C</button>
-            <button class="tictac-delete-tracker" data-action="delTracker" data-id="{{this.id}}"><i class="fas fa-trash"></i></button>
-            <button class="tictac-pip-mod" data-id="{{this.id}}" data-action="subPipCont"><i class="fas fa-square-minus"></i></button>
+            <button class="tictac-toggle-type" data-action="changeToProg" data-id="{{this.id}}" data-type="progress" style="color: {{#ifEquals this.type 'progress'}}{{../progressColor}}{{else}}white{{/ifEquals}}">P</button>
+            <button class="tictac-toggle-type" data-action="changeToCons" data-id="{{this.id}}" data-type="consequence" style="color: {{#ifEquals this.type 'consequence'}}{{../consequenceColor}}{{else}}white{{/ifEquals}}">C</button>
+            <button class="tictac-delete-tracker" data-action="delTracker" data-id="{{this.id}}" style="color: FireBrick"><i class="fas fa-trash-can"></i></button>
+            <button class="tictac-pip-mod" data-id="{{this.id}}" data-action="subPipCont" style="color: DimGray"><i class="fas fa-square-minus"></i></button>
             <button class="tictac-pip-mod" data-id="{{this.id}}" data-action="subPip"><i class="fas fa-circle-minus"></i></button>
           </div>
           {{/if}}
@@ -47,7 +47,7 @@
           {{#if ../isGM}}
           <div class="tictac-pip-controls">
             <button class="tictac-pip-mod" data-id="{{this.id}}" data-action="addPip"><i class="fas fa-circle-plus"></i></button>
-            <button class="tictac-pip-mod" data-id="{{this.id}}" data-action="addPipCont"><i class="fas fa-square-plus"></i></button>
+            <button class="tictac-pip-mod" data-id="{{this.id}}" data-action="addPipCont" style="color: DimGray"><i class="fas fa-square-plus"></i></button>
             <button class="tictac-toggle-visibility" data-action="toggleVis" data-id="{{this.id}}">
               <i class="fas {{#if this.visible}}fa-eye{{else}}fa-eye-slash{{/if}}"></i>
             </button>
