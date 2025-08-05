@@ -32,3 +32,7 @@ Collapsed:
 Player warning on tracker change (if collapsed):
 
 ![Collapsed Warning](./screenshots/tictac-tracker-collapsed-warning.jpg)
+
+Quick-start guide:
+
+![How to](./screenshots/tictac-tracker-collapsed-howto.jpg)
