@@ -1,5 +1,4 @@
 Hooks.once("init", () => {
-
   // progress pip character
   game.settings.register("tictac-tracker", "progressPipCharacter", {
     name: "Progress Pip Character",
@@ -165,7 +164,36 @@ Hooks.once("init", () => {
 }); // end init
 
 Hooks.once('ready', async () => {
+
+  // Final config menu item
+  const fontChoices = {};
+  fontChoices["Arial, sans-serif"] = "Arial";
+  fontChoices["Times New Roman, serif"] = "Times New Roman";
+  fontChoices["Courier New, monospace"] = "Courier New";
+  fontChoices["Verdana, sans-serif"] = "Verdana";
+  fontChoices["Georgia, serif"] = "Georgia";
   
+  const FontConfigAPI = foundry.applications.settings.menus.FontConfig;
+  const availableFonts = FontConfigAPI.getAvailableFonts();
+  console.log("availablefonts", availableFonts);
+  for (const fontName of availableFonts) {
+    fontChoices[fontName] = fontName;
+  }
+  // font selector
+  game.settings.register("tictac-tracker", "moduleFontFamily", {
+    name: "Module Font Family",
+    hint: "Select a font for use by this module. Applies only to you.",
+    scope: "client",
+    config: true,
+    type: String,
+    choices: fontChoices,
+    default: "Arial, sans-serif",
+    onChange: () => {
+      game.tictacTracker.render(true); 
+    }
+  });
+
+  // Module init
   game.tictacTracker = new TictacTrackerApp();
   await game.tictacTracker.render(true);
   //new TictacTrackerApp().render(true);
