@@ -329,11 +329,13 @@ class TictacTrackerApp extends foundry.applications.api.HandlebarsApplicationMix
     for (const tracker of data) {
       if (tracker.pip_cnt > maxPips) {
         maxPips = tracker.pip_cnt;
-        if (tracker.visible) {
-          maxPipsPlayer = tracker.pip_cnt;
-        }
+      }
+      if (tracker.visible && tracker.pip_cnt > maxPipsPlayer) {
+        maxPipsPlayer = tracker.pip_cnt;
       }
     }
+    // Add 1 to maxPipsPlayer for easy buffer
+    maxPipsPlayer += 1;
 
     // Get pip characters
     const progressPipChar = game.settings.get("tictac-tracker", "progressPipCharacter");
