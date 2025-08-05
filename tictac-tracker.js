@@ -337,6 +337,9 @@ class TictacTrackerApp extends foundry.applications.api.HandlebarsApplicationMix
     // Get pip characters
     const progressPipChar = game.settings.get("tictac-tracker", "progressPipCharacter");
     const consequencePipChar = game.settings.get("tictac-tracker", "consequencePipCharacter");
+    // Are they font awesome icons?
+    const progIsFa = (progressPipChar.includes('fa-') || progressPipChar.startsWith('fas '))
+    const consIsFa = (consequencePipChar.includes('fa-') || consequencePipChar.startsWith('fas '))
 
     return {
       isGM,
@@ -347,6 +350,8 @@ class TictacTrackerApp extends foundry.applications.api.HandlebarsApplicationMix
       maxPips: maxPips,
       progressPipChar: progressPipChar,
       consequencePipChar: consequencePipChar,
+      progIsFa: progIsFa,
+      consIsFa: consIsFa
     };
   }
 
