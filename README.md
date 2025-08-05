@@ -35,4 +35,4 @@ Player warning on tracker change (if collapsed):
 
 Quick-start guide:
 
-![How to](./screenshots/tictac-tracker-collapsed-howto.jpg)
+![How to](./screenshots/tictac-tracker-howto.jpg)
