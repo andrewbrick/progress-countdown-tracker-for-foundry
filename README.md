@@ -38,3 +38,7 @@ Player warning on tracker change (if collapsed):
 Quick-start guide:
 
 ![How to](./screenshots/tictac-tracker-howto.jpg)
+
+Settings:
+
+![Module Settings](./screenshots/tictac-tracker-settings.jpg)
