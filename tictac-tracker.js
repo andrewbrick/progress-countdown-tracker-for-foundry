@@ -673,7 +673,7 @@ class TictacTrackerApp extends foundry.applications.api.HandlebarsApplicationMix
       top: pos.top,
       left: pos.left
     });
-    
+ 
     // re-ordering the trackers
     const appHtmlElement = this.element;
     const $trackerList = $(appHtmlElement).find(".tictac-tracker-list");
@@ -736,6 +736,10 @@ class TictacTrackerApp extends foundry.applications.api.HandlebarsApplicationMix
     elementsToMeasure.forEach((element) => {
       element.style.width = `${maxWidth}px`;
     });
+
+    // use selected font
+    const selectedFont = game.settings.get("tictac-tracker", "moduleFontFamily");
+    rootElement.style.setProperty('--tictac-font-family', selectedFont);
   }
   
 // Old activateListeners    
