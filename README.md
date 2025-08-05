@@ -22,10 +22,13 @@ Other notes:
 - window is sized dynamically to fit tracker names and the number of 'pips' for a uniform look
 
 Player view:
+
 ![Player Tracker](./screenshots/tictac-tracker-player1.jpg)
 
 Collapsed:
+
 ![Collapsed](./screenshots/tictac-tracker-collapsed.jpg)
 
 Player warning on tracker change (if collapsed):
+
 ![Collapsed Warning](./screenshots/tictac-tracker-collapsed-warning.jpg)
