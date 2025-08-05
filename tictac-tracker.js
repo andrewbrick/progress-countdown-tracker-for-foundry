@@ -161,6 +161,10 @@ Hooks.once("init", () => {
   Handlebars.registerHelper("getSetting", function(module, settingName) {
     return game.settings.get(module, settingName);
   });
+
+  Handlebars.registerHelper("isFontAwesomeIcon", function(settingValue) {
+    return settingValue.includes('fa-') || settingValue.startsWith('fas ');
+  });
   
 }); // end init
 
