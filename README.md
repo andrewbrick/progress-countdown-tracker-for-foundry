@@ -3,7 +3,7 @@ A compact, collapsable overlay for consequence and progress trackers.
 
 <p align="center">
   ![GM Tracker](./screenshots/tictac-tracker-gm2.jpg)
-<p> 
+</p> 
 
 Within the window, the GM can:
 - add and delete trackers
