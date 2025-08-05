@@ -29,7 +29,7 @@
           </div>
           {{/if}}
 
-          <div class="tictac-pips-container" style="--max-pips: {{../maxPips}};">
+          <div class="tictac-pips-container" style="--max-pips: {{#if ../isGM}}{{../maxPips}}{{else}}{{../maxPipsPlayer}}{{/if}};">
             <div class="tictac-pips">
               {{#range this.pip_cnt}}
               {{log '@index:' @index 'filled_cnt:' ../this.filled_cnt 'pip_cnt:' ../this.pip_cnt}}
