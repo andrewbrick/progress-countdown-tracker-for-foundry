@@ -9,7 +9,7 @@ Hooks.once("init", () => {
     type: String,
     default: "\u25CF", // unicode black circle
     onChange: async (value) => {
-      // Validate single char
+      /*// Validate single char
       const trimmed = value.trim();
       if (trimmed.length === 0) {
         ui.notifications.warn("Progress Pip Character is blank. Using default.");
@@ -18,7 +18,7 @@ Hooks.once("init", () => {
         const firstChar = trimmed.charAt(0);
         ui.notifications.warn("You must enter exactly one character. Using only the first character.");
         await game.settings.set("tictac-tracker", "progressPipCharacter", firstChar);
-      }
+      }*/
       game.tictacTracker.render(true); 
     }
   });
