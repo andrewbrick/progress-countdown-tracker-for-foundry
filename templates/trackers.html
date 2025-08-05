@@ -1,39 +1,39 @@
-<div class="tictac-trackers-app-body{{#if collapsed}}collapsed{{/if}}">
+<div class="progress-countdown-trackers-app-body{{#if collapsed}}collapsed{{/if}}">
   {{#if collapsed}}
-    <div class="tictac-header">
+    <div class="progress-countdown-tracker-header">
       <span>Trackers </span>
-      {{#if (getSetting "tictac-tracker" "trackerDataChanged")}}<span><i class="fas fa-exclamation-triangle" style="color: #FFC107;"></i> Trackers Updated!</span>{{/if}}
-      <span class="tictac-header-last-span" data-action="collapseTrackers"><button class="tictac-collapse-button"><i class="fas fa-chevron-down"></i></button></span>
+      {{#if (getSetting "progress-countdown-tracker" "trackerDataChanged")}}<span><i class="fas fa-exclamation-triangle" style="color: #FFC107;"></i> Trackers Updated!</span>{{/if}}
+      <span class="progress-countdown-tracker-header-last-span" data-action="collapseTrackers"><button class="progress-countdown-tracker-collapse-button"><i class="fas fa-chevron-down"></i></button></span>
     </div>
   {{else}}
-    <div class="tictac-header">
-      <span class="tictac-header-last-span" data-action="collapseTrackers"><button class="tictac-collapse-button"><i class="fas fa-chevron-up"></i></button></span>
+    <div class="progress-countdown-tracker-header">
+      <span class="progress-countdown-tracker-header-last-span" data-action="collapseTrackers"><button class="progress-countdown-tracker-collapse-button"><i class="fas fa-chevron-up"></i></button></span>
     </div>
 
-    <div class="tictac-tracker-list">
+    <div class="progress-countdown-tracker-list">
       {{#each trackers}}
         {{#if (or ../isGM this.visible)}}
-        <div class="tictac-tracker-row" data-id="{{this.id}}" {{#unless this.visible}}style="opacity: .4"{{/unless}}>
-          <div class="tictac-drag-handle"><i class="fas fa-grip-lines"></i></div>
+        <div class="progress-countdown-tracker-row" data-id="{{this.id}}" {{#unless this.visible}}style="opacity: .4"{{/unless}}>
+          <div class="progress-countdown-tracker-drag-handle"><i class="fas fa-grip-lines"></i></div>
 
-          {{#if ../isGM}}<input class="tictac-edit-name" data-id="{{this.id}}" type="text" value="{{this.name}}" />
-          {{else}}<span class="tictac-display-name">{{this.name}}</span>{{/if}}
+          {{#if ../isGM}}<input class="progress-countdown-tracker-edit-name" data-id="{{this.id}}" type="text" value="{{this.name}}" />
+          {{else}}<span class="progress-countdown-tracker-display-name">{{this.name}}</span>{{/if}}
 
           {{#if ../isGM}}
-          <div class="tictac-pip-controls">
-            <button class="tictac-toggle-type" data-action="changeToProg" data-id="{{this.id}}" data-type="progress" style="color: {{#ifEquals this.type 'progress'}}{{../progressColor}}{{else}}white{{/ifEquals}}">P</button>
-            <button class="tictac-toggle-type" data-action="changeToCons" data-id="{{this.id}}" data-type="consequence" style="color: {{#ifEquals this.type 'consequence'}}{{../consequenceColor}}{{else}}white{{/ifEquals}}">C</button>
-            <button class="tictac-delete-tracker" data-action="delTracker" data-id="{{this.id}}" style="color: FireBrick"><i class="fas fa-trash-can"></i></button>
-            <button class="tictac-pip-mod" data-id="{{this.id}}" data-action="subPipCont" style="color: DimGray"><i class="fas fa-square-minus"></i></button>
-            <button class="tictac-pip-mod" data-id="{{this.id}}" data-action="subPip"><i class="fas fa-circle-minus"></i></button>
+          <div class="progress-countdown-tracker-pip-controls">
+            <button class="progress-countdown-tracker-toggle-type" data-action="changeToProg" data-id="{{this.id}}" data-type="progress" style="color: {{#ifEquals this.type 'progress'}}{{../progressColor}}{{else}}white{{/ifEquals}}">P</button>
+            <button class="progress-countdown-tracker-toggle-type" data-action="changeToCons" data-id="{{this.id}}" data-type="consequence" style="color: {{#ifEquals this.type 'consequence'}}{{../consequenceColor}}{{else}}white{{/ifEquals}}">C</button>
+            <button class="progress-countdown-tracker-delete-tracker" data-action="delTracker" data-id="{{this.id}}" style="color: FireBrick"><i class="fas fa-trash-can"></i></button>
+            <button class="progress-countdown-tracker-pip-mod" data-id="{{this.id}}" data-action="subPipCont" style="color: DimGray"><i class="fas fa-square-minus"></i></button>
+            <button class="progress-countdown-tracker-pip-mod" data-id="{{this.id}}" data-action="subPip"><i class="fas fa-circle-minus"></i></button>
           </div>
           {{/if}}
 
-          <div class="tictac-pips-container" style="--max-pips: {{#if ../isGM}}{{../maxPips}}{{else}}{{../maxPipsPlayer}}{{/if}};">
-            <div class="tictac-pips">
+          <div class="progress-countdown-tracker-pips-container" style="--max-pips: {{#if ../isGM}}{{../maxPips}}{{else}}{{../maxPipsPlayer}}{{/if}};">
+            <div class="progress-countdown-tracker-pips">
               {{#range this.pip_cnt}}
               {{log '@index:' @index 'filled_cnt:' ../this.filled_cnt 'pip_cnt:' ../this.pip_cnt}}
-                  <div class="tictac-pip {{#if (lt @index ../this.filled_cnt)}}filled{{/if}}"
+                  <div class="progress-countdown-tracker-pip {{#if (lt @index ../this.filled_cnt)}}filled{{/if}}"
                      style="
                          {{#if (lt @index ../this.filled_cnt)}} 
                              color: {{#ifEquals ../this.type 'progress'}}{{../../progressColor}}{{else}}{{../../consequenceColor}}{{/ifEquals}};
@@ -45,10 +45,10 @@
           </div>
 
           {{#if ../isGM}}
-          <div class="tictac-pip-controls">
-            <button class="tictac-pip-mod" data-id="{{this.id}}" data-action="addPip"><i class="fas fa-circle-plus"></i></button>
-            <button class="tictac-pip-mod" data-id="{{this.id}}" data-action="addPipCont" style="color: DimGray"><i class="fas fa-square-plus"></i></button>
-            <button class="tictac-toggle-visibility" data-action="toggleVis" data-id="{{this.id}}">
+          <div class="progress-countdown-tracker-pip-controls">
+            <button class="progress-countdown-tracker-pip-mod" data-id="{{this.id}}" data-action="addPip"><i class="fas fa-circle-plus"></i></button>
+            <button class="progress-countdown-tracker-pip-mod" data-id="{{this.id}}" data-action="addPipCont" style="color: DimGray"><i class="fas fa-square-plus"></i></button>
+            <button class="progress-countdown-tracker-toggle-visibility" data-action="toggleVis" data-id="{{this.id}}">
               <i class="fas {{#if this.visible}}fa-eye{{else}}fa-eye-slash{{/if}}"></i>
             </button>
           </div>
@@ -59,8 +59,8 @@
     </div>
 
     {{#if isGM}}
-    <div class="tictac-tracker-footer">
-      <button class="tictac-add-tracker" data-action="addTracker"><i class="fas fa-circle-plus"></i> Add Tracker</button>
+    <div class="progress-countdown-tracker-tracker-footer">
+      <button class="progress-countdown-tracker-add-tracker" data-action="addTracker"><i class="fas fa-circle-plus"></i> Add Tracker</button>
     </div>
     {{/if}}
   {{/if}}
