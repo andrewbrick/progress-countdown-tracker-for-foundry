@@ -181,7 +181,7 @@ Hooks.once('ready', async () => {
     config: true,
     type: String,
     choices: fontChoices,
-    default: "Arial, sans-serif",
+    default: "Signika, sans-serif",
     onChange: () => {
       game.tictacTracker.render(true); 
     }
