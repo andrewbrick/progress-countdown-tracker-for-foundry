@@ -167,12 +167,6 @@ Hooks.once('ready', async () => {
 
   // Final config menu item
   const fontChoices = {};
-  fontChoices["Arial, sans-serif"] = "Arial";
-  fontChoices["Times New Roman, serif"] = "Times New Roman";
-  fontChoices["Courier New, monospace"] = "Courier New";
-  fontChoices["Verdana, sans-serif"] = "Verdana";
-  fontChoices["Georgia, serif"] = "Georgia";
-  
   const FontConfigAPI = foundry.applications.settings.menus.FontConfig;
   const availableFonts = FontConfigAPI.getAvailableFonts();
   console.log("availablefonts", availableFonts);
@@ -712,8 +706,12 @@ class TictacTrackerApp extends foundry.applications.api.HandlebarsApplicationMix
       });
     });
 
-    // resize text input fields for GM and players
+    // use selected font
+    const selectedFont = game.settings.get("tictac-tracker", "moduleFontFamily");
     const rootElement = this.element;
+    rootElement.style.setProperty('--tictac-font-family', selectedFont);
+    
+    // resize text input fields for GM and players
     let maxWidth = 50;
     const elementsToMeasure = rootElement.querySelectorAll(".tictac-edit-name, .tictac-display-name");
     const tempSpan = document.createElement("span");
@@ -731,15 +729,12 @@ class TictacTrackerApp extends foundry.applications.api.HandlebarsApplicationMix
       maxWidth = Math.max(maxWidth, currentWidth);
     });
     document.body.removeChild(tempSpan);
-    maxWidth += 15;
+    maxWidth += 20;
 
     elementsToMeasure.forEach((element) => {
       element.style.width = `${maxWidth}px`;
     });
-
-    // use selected font
-    const selectedFont = game.settings.get("tictac-tracker", "moduleFontFamily");
-    rootElement.style.setProperty('--tictac-font-family', selectedFont);
+    
   }
   
 // Old activateListeners    
