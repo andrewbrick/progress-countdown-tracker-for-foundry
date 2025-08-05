@@ -350,6 +350,7 @@ class TictacTrackerApp extends foundry.applications.api.HandlebarsApplicationMix
       consequenceColor: game.settings.get("tictac-tracker", "consequencePipColor"),
       trackers: fullList,
       maxPips: maxPips,
+      maxPipsPlayer: maxPipsPlayer,
       progressPipChar: progressPipChar,
       consequencePipChar: consequencePipChar
       //progIsFa: progIsFa,
