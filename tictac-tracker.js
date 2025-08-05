@@ -162,8 +162,22 @@ Hooks.once("init", () => {
     return game.settings.get(module, settingName);
   });
 
-  Handlebars.registerHelper("isFontAwesomeIcon", function(settingValue) {
-    return settingValue.includes('fa-') || settingValue.startsWith('fas ');
+  Handlebars.registerHelper("getPip", function(type, progIsFa, consIsFa) {
+    if(type === 'progress') {
+      const char = game.settings.get("tictac-tracker", "progressPipCharacter");
+      if(progIsFa) {
+        return `<i class="${char}"></i>`
+      } else {
+        return `data-pip-char="${char}"`
+      }
+    } else {
+      const char = game.settings.get("tictac-tracker", "consequencePipCharacter");
+      if(consIsFa) {
+        return `<i class="${char}"></i>`
+      } else {
+        return `data-pip-char="${char}"`
+      }
+    }
   });
   
 }); // end init
