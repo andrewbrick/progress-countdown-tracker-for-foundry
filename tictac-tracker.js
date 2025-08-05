@@ -330,13 +330,19 @@ class TictacTrackerApp extends foundry.applications.api.HandlebarsApplicationMix
       }
     }
 
+    // Get pip characters
+    const progressPipChar = game.settings.get("tictac-tracker", "progressPipCharacter");
+    const consequencePipChar = game.settings.get("tictac-tracker", "consequencePipCharacter");
+
     return {
       isGM,
       collapsed: collapsed,
       progressColor: game.settings.get("tictac-tracker", "progressPipColor"),
       consequenceColor: game.settings.get("tictac-tracker", "consequencePipColor"),
       trackers: fullList,
-      maxPips: maxPips
+      maxPips: maxPips,
+      progressPipChar: progressPipChar,
+      consequencePipChar: consequencePipChar,
     };
   }
 
