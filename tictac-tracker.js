@@ -323,11 +323,15 @@ class TictacTrackerApp extends foundry.applications.api.HandlebarsApplicationMix
     });
     */
 
-    // Get max pip count of any tracker bar (so all bars can be uniform)
+    // Get max pip count of any tracker bar (so all bars can be uniform) - needs to be separate for players and GM
     let maxPips = 0;
+    let maxPipsPlayer = 1; // in case there are visible trackers
     for (const tracker of data) {
       if (tracker.pip_cnt > maxPips) {
         maxPips = tracker.pip_cnt;
+        if (tracker.visible) {
+          maxPipsPlayer = tracker.pip_cnt;
+        }
       }
     }
 
