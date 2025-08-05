@@ -24,10 +24,17 @@ Other notes:
 - each tracker can have a max of 24 pips and min of 1 pip
 
 Player view:
+
 ![Player Tracker](./screenshots/tictac-tracker-player1.jpg)
+
 Collapsed:
+
 ![Collapsed](./screenshots/tictac-tracker-collapsed.jpg)
+
 Player warning on tracker change (if collapsed):
+
 ![Collapsed Warning](./screenshots/tictac-tracker-collapsed-warning.jpg)
+
 Quick-start guide:
+
 ![How to](./screenshots/tictac-tracker-howto.jpg)
