@@ -2,7 +2,7 @@
 A compact, collapsable overlay for consequence and progress trackers. 
 
 <p align="center">
-![GM Tracker](./screenshots/tictac-tracker-gm2.jpg)
+  ![GM Tracker](./screenshots/tictac-tracker-gm2.jpg)
 <p> 
 
 Within the window, the GM can:
@@ -24,19 +24,13 @@ Other notes:
 - players can re-order their own trackers, but they can't change anything else about the trackers
 - window is sized dynamically to fit tracker names and the number of 'pips' for a uniform look
 
-<p align="center">Player view:
-
-![Player Tracker](./screenshots/tictac-tracker-player1.jpg)
-
-Collapsed:
-
-![Collapsed](./screenshots/tictac-tracker-collapsed.jpg)
-
-Player warning on tracker change (if collapsed):
-
-![Collapsed Warning](./screenshots/tictac-tracker-collapsed-warning.jpg)
-
-Quick-start guide:
-
-![How to](./screenshots/tictac-tracker-howto.jpg)
+<p align="center">
+  Player view:
+  ![Player Tracker](./screenshots/tictac-tracker-player1.jpg)
+  Collapsed:
+  ![Collapsed](./screenshots/tictac-tracker-collapsed.jpg)
+  Player warning on tracker change (if collapsed):
+  ![Collapsed Warning](./screenshots/tictac-tracker-collapsed-warning.jpg)
+  Quick-start guide:
+  ![How to](./screenshots/tictac-tracker-howto.jpg)
 </p>
