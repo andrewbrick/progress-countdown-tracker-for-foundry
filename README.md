@@ -22,7 +22,7 @@ Other notes:
 - players can re-order their own trackers, but they can't change anything else about the trackers
 - window is sized dynamically to fit tracker names and the number of 'pips' for a uniform look
 
-<p align="center">
+<center>
   Player view:
   ![Player Tracker](./screenshots/tictac-tracker-player1.jpg)
   Collapsed:
@@ -31,4 +31,4 @@ Other notes:
   ![Collapsed Warning](./screenshots/tictac-tracker-collapsed-warning.jpg)
   Quick-start guide:
   ![How to](./screenshots/tictac-tracker-howto.jpg)
-</p>
+</center>
