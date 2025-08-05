@@ -18,7 +18,7 @@ Hooks.once("init", () => {
         ui.notifications.warn("You must enter exactly one character. Using only the first character.");
         await game.settings.set("progress-countdown-tracker", "progressPipCharacter", firstChar);
       }*/
-      game.tictacTracker.render(true); 
+      game.pcTracker.render(true); 
     }
   });
   
@@ -41,7 +41,7 @@ Hooks.once("init", () => {
         ui.notifications.warn("You must enter exactly one character. Using only the first character.");
         await game.settings.set("progress-countdown-tracker", "consequencePipCharacter", firstChar);
       }*/
-      game.tictacTracker.render(true); 
+      game.pcTracker.render(true); 
     }
   });
 
@@ -54,7 +54,7 @@ Hooks.once("init", () => {
     type: new game.colorPicker.ColorPickerField(),
     default: "#0CA011",
     onChange: () => {
-      game.tictacTracker.render(true); 
+      game.pcTracker.render(true); 
     }
   });
 
@@ -67,7 +67,7 @@ Hooks.once("init", () => {
     type: new game.colorPicker.ColorPickerField(),
     default: "#A02B93",
     onChange: () => {
-      game.tictacTracker.render(true); 
+      game.pcTracker.render(true); 
     }
   });
 
@@ -183,22 +183,22 @@ Hooks.once('ready', async () => {
     choices: fontChoices,
     default: "Signika, sans-serif",
     onChange: () => {
-      game.tictacTracker.render(true); 
+      game.pcTracker.render(true); 
     }
   });
 
   // Module init
-  game.tictacTracker = new TictacTrackerApp();
-  await game.tictacTracker.render(true);
+  game.pcTracker = new ProgressCountdownTrackerApp();
+  await game.pcTracker.render(true);
 
   //console.log("DEBUG: foundry object available:", typeof foundry);
   //console.log("DEBUG: foundry.applications.api available:", typeof foundry?.applications?.api);
   //console.log("DEBUG: HandlebarsApplicationMixin available:", typeof foundry?.applications?.api?.HandlebarsApplicationMixin);
   //console.log("DEBUG: ApplicationV2 available:", typeof foundry?.applications?.api?.ApplicationV2);
-  //console.log("DEBUG: TictacTrackerApp Instance Options:", game.tictacTracker.options);
-  //console.log("DEBUG: TictacTrackerApp Instance Frame Options:", game.tictacTracker.options.frame); // Check if frame options are inherited/set
-  //console.log("DEBUG: TictacTrackerApp Instance HTML Element:", game.tictacTracker.element); // Check the element reference
-  //console.log("DEBUG: Does TictacTrackerApp have _onRender method?", typeof game.tictacTracker._onRender); // Should be 'function'
+  //console.log("DEBUG: pcTracker Instance Options:", game.pcTracker.options);
+  //console.log("DEBUG: pcTracker Instance Frame Options:", game.pcTracker.options.frame); // Check if frame options are inherited/set
+  //console.log("DEBUG: pcTracker Instance HTML Element:", game.pcTracker.element); // Check the element reference
+  //console.log("DEBUG: Does pcTracker have _onRender method?", typeof game.pcTracker._onRender); // Should be 'function'
   //console.log("num trackers:", game.settings.get("progress-countdown-tracker", "trackerData").length);
 
   // Re-render socket
@@ -227,7 +227,7 @@ Hooks.once('ready', async () => {
   
 });
 
-class TictacTrackerApp extends foundry.applications.api.HandlebarsApplicationMixin(foundry.applications.api.ApplicationV2) { //HandlebarsApplicationMixin(foundry.applications.api.ApplicationV2) {
+class ProgressCountdownTrackerApp extends foundry.applications.api.HandlebarsApplicationMixin(foundry.applications.api.ApplicationV2) { //HandlebarsApplicationMixin(foundry.applications.api.ApplicationV2) {
   
   static get DEFAULT_OPTIONS() {
     const storedPosition = game.settings.get("progress-countdown-tracker", "trackerPosition");
@@ -248,19 +248,19 @@ class TictacTrackerApp extends foundry.applications.api.HandlebarsApplicationMix
       },
       classes: ["progress-countdown-trackers-window"],
       actions: {
-        addTracker: TictacTrackerApp._onAddTracker,
-        delTracker: TictacTrackerApp._onDelTracker,
-        addPipCont: TictacTrackerApp._onAddPipCont, // add a pip to the tracker
-        subPipCont: TictacTrackerApp._onSubPipCont, // subtract a pip from the tracker
-        addPip: TictacTrackerApp._onAddPip, // color in the next pip in the tracker
-        subPip: TictacTrackerApp._onSubPip, // gray out the next pip in the tracker
-        toggleType: TictacTrackerApp._onToggleType, // toggle between consequence and progress
-        changeToProg: TictacTrackerApp._onChangeToProg,
-        changeToCons: TictacTrackerApp._onChangeToCons,
-        toggleVis: TictacTrackerApp._onToggleVis, // toggle visibility of the tracker
-        //moveTracker: TictacTrackerApp._onMoveTracker, // grab one tracker and re-position it within the list
-        collapseTrackers: TictacTrackerApp._onCollapseTrackers // toggle to collapse / expand the tracker bars
-        //editTrackerName: TictacTrackerApp._onEditTrackerName
+        addTracker: ProgressCountdownTrackerApp._onAddTracker,
+        delTracker: ProgressCountdownTrackerApp._onDelTracker,
+        addPipCont: ProgressCountdownTrackerApp._onAddPipCont, // add a pip to the tracker
+        subPipCont: ProgressCountdownTrackerApp._onSubPipCont, // subtract a pip from the tracker
+        addPip: ProgressCountdownTrackerApp._onAddPip, // color in the next pip in the tracker
+        subPip: ProgressCountdownTrackerApp._onSubPip, // gray out the next pip in the tracker
+        toggleType: ProgressCountdownTrackerApp._onToggleType, // toggle between consequence and progress
+        changeToProg: ProgressCountdownTrackerApp._onChangeToProg,
+        changeToCons: ProgressCountdownTrackerApp._onChangeToCons,
+        toggleVis: ProgressCountdownTrackerApp._onToggleVis, // toggle visibility of the tracker
+        //moveTracker: ProgressCountdownTrackerApp._onMoveTracker, // grab one tracker and re-position it within the list
+        collapseTrackers: ProgressCountdownTrackerApp._onCollapseTrackers // toggle to collapse / expand the tracker bars
+        //editTrackerName: ProgressCountdownTrackerApp._onEditTrackerName
       }
     }
     return foundry.utils.mergeObject(baseOptions, customOptions);
@@ -281,19 +281,19 @@ class TictacTrackerApp extends foundry.applications.api.HandlebarsApplicationMix
     },
     classes: ["progress-countdown-trackers-window"],
     actions: {
-      addTracker: TictacTrackerApp._onAddTracker,
-      delTracker: TictacTrackerApp._onDelTracker,
-      addPipCont: TictacTrackerApp._onAddPipCont, // add a pip to the tracker
-      subPipCont: TictacTrackerApp._onSubPipCont, // subtract a pip from the tracker
-      addPip: TictacTrackerApp._onAddPip, // color in the next pip in the tracker
-      subPip: TictacTrackerApp._onSubPip, // gray out the next pip in the tracker
-      toggleType: TictacTrackerApp._onToggleType, // toggle between consequence and progress
-      changeToProg: TictacTrackerApp._onChangeToProg,
-      changeToCons: TictacTrackerApp._onChangeToCons,
-      toggleVis: TictacTrackerApp._onToggleVis, // toggle visibility of the tracker
-      //moveTracker: TictacTrackerApp._onMoveTracker, // grab one tracker and re-position it within the list
-      collapseTrackers: TictacTrackerApp._onCollapseTrackers // toggle to collapse / expand the tracker bars
-      //editTrackerName: TictacTrackerApp._onEditTrackerName
+      addTracker: ProgressCountdownTrackerApp._onAddTracker,
+      delTracker: ProgressCountdownTrackerApp._onDelTracker,
+      addPipCont: ProgressCountdownTrackerApp._onAddPipCont, // add a pip to the tracker
+      subPipCont: ProgressCountdownTrackerApp._onSubPipCont, // subtract a pip from the tracker
+      addPip: ProgressCountdownTrackerApp._onAddPip, // color in the next pip in the tracker
+      subPip: ProgressCountdownTrackerApp._onSubPip, // gray out the next pip in the tracker
+      toggleType: ProgressCountdownTrackerApp._onToggleType, // toggle between consequence and progress
+      changeToProg: ProgressCountdownTrackerApp._onChangeToProg,
+      changeToCons: ProgressCountdownTrackerApp._onChangeToCons,
+      toggleVis: ProgressCountdownTrackerApp._onToggleVis, // toggle visibility of the tracker
+      //moveTracker: ProgressCountdownTrackerApp._onMoveTracker, // grab one tracker and re-position it within the list
+      collapseTrackers: ProgressCountdownTrackerApp._onCollapseTrackers // toggle to collapse / expand the tracker bars
+      //editTrackerName: ProgressCountdownTrackerApp._onEditTrackerName
     }
   }
   */
@@ -655,7 +655,7 @@ class TictacTrackerApp extends foundry.applications.api.HandlebarsApplicationMix
     const $trackerList = $(appHtmlElement).find(".progress-countdown-tracker-list");
     if ($trackerList.length) { // Ensure the element exists
       $trackerList.sortable({
-        handle: ".tictac-drag-handle",
+        handle: ".progress-countdown-tracker-drag-handle",
         update: async (event, ui) => {
           // This is still within the callback, so you can make it async
           const newOrder = $trackerList.find(".progress-countdown-tracker-row").map((i, el) => el.dataset.id).get();
@@ -670,7 +670,7 @@ class TictacTrackerApp extends foundry.applications.api.HandlebarsApplicationMix
     }
 
     // editing the tracker names
-    const editNameInputs = appHtmlElement.querySelectorAll(".tictac-edit-name"); //this.element[0].querySelectorAll(".edit-name"); // this.element is a jQuery obj, get the native HTMLElement
+    const editNameInputs = appHtmlElement.querySelectorAll(".progress-countdown-tracker-edit-name"); //this.element[0].querySelectorAll(".edit-name"); // this.element is a jQuery obj, get the native HTMLElement
     editNameInputs.forEach(input => {
       input.addEventListener("blur", async (event) => {
         const id = event.currentTarget.dataset.id;
@@ -691,11 +691,11 @@ class TictacTrackerApp extends foundry.applications.api.HandlebarsApplicationMix
     // use selected font
     const selectedFont = game.settings.get("progress-countdown-tracker", "moduleFontFamily");
     const rootElement = this.element;
-    rootElement.style.setProperty('--tictac-font-family', selectedFont);
+    rootElement.style.setProperty('--progress-countdown-tracker-font-family', selectedFont);
     
     // resize text input fields for GM and players
     let maxWidth = 50;
-    const elementsToMeasure = rootElement.querySelectorAll(".tictac-edit-name, .tictac-display-name");
+    const elementsToMeasure = rootElement.querySelectorAll(".progress-countdown-tracker-edit-name, .progress-countdown-tracker-display-name");
     const tempSpan = document.createElement("span");
     tempSpan.style.visibility = "hidden";
     tempSpan.style.whiteSpace = "pre";
