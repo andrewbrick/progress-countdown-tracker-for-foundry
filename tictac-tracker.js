@@ -52,7 +52,7 @@ Hooks.once("init", () => {
     scope: "client",
     config: true,
     type: new game.colorPicker.ColorPickerField(),
-    default: "#A02B93",
+    default: "#0CA011",
     onChange: () => {
       game.tictacTracker.render(true); 
     }
