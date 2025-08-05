@@ -11,17 +11,17 @@ Within the window, the GM can:
 - re-order trackers with drag-handlebars (client-scoped)
 
 In the module settings:
-- change the icons (a font awesome string) used for progress and consequence trackers (client-scoped)
+- change the icons (a font awesome string without quotes, e.g. fa-solid fa-burst) used for progress and consequence trackers (client-scoped)
 - change the font for the window (client-scoped)
 - change the colors of 'pips' for progress and consequence trackers (client-scoped)
 
 Other notes:
 - new trackers are invisible to players when created (indicated by partial opacity in the GM view), allowing the GM to configure them before they're made visible
-- when players have the window minimized (collapsed), a warning will show whenever a tracker is updated
-- when the GM makes a tracker visible, the window is maximized (uncollapsed) so players are aware
+- when players have the window minimized (collapsed), a warning will show whenever a tracker is updated; this warning goes away when the player expands the window
+- when the GM makes a tracker visible, the window is expanded (uncollapsed) so players are aware
 - players can re-order their own trackers, but they can't change anything else about the trackers
 - window is sized dynamically to fit tracker names and the number of 'pips' for a uniform look
-- each tracker can have a max of 24 pips and min of 1 pip
+- each tracker can have between 1 and 24 'pips'
 
 Player view:
 
