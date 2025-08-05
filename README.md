@@ -22,6 +22,7 @@ Other notes:
 - players can re-order their own trackers, but they can't change anything else about the trackers
 - window is sized dynamically to fit tracker names and the number of 'pips' for a uniform look
 - each tracker can have between 1 and 24 'pips'
+- all settings are persisted
 
 Player view:
 
