@@ -32,7 +32,7 @@ Hooks.once("init", () => {
     type: String,
     default: "\u25CF", // unicode black circle
     onChange: async (value) => {
-      // Validate single char
+      /*// Validate single char
       const trimmed = value.trim();
       if (trimmed.length === 0) {
         ui.notifications.warn("Consequence Pip Character field is blank. Using default.");
@@ -41,7 +41,7 @@ Hooks.once("init", () => {
         const firstChar = trimmed.charAt(0);
         ui.notifications.warn("You must enter exactly one character. Using only the first character.");
         await game.settings.set("tictac-tracker", "consequencePipCharacter", firstChar);
-      }
+      }*/
       game.tictacTracker.render(true); 
     }
   });
@@ -352,8 +352,8 @@ class TictacTrackerApp extends foundry.applications.api.HandlebarsApplicationMix
     const progressPipChar = game.settings.get("tictac-tracker", "progressPipCharacter");
     const consequencePipChar = game.settings.get("tictac-tracker", "consequencePipCharacter");
     // Are they font awesome icons?
-    const progIsFa = (progressPipChar.includes('fa-') || progressPipChar.startsWith('fas '))
-    const consIsFa = (consequencePipChar.includes('fa-') || consequencePipChar.startsWith('fas '))
+    //const progIsFa = (progressPipChar.includes('fa-') || progressPipChar.startsWith('fas '))
+    //const consIsFa = (consequencePipChar.includes('fa-') || consequencePipChar.startsWith('fas '))
 
     return {
       isGM,
@@ -363,9 +363,9 @@ class TictacTrackerApp extends foundry.applications.api.HandlebarsApplicationMix
       trackers: fullList,
       maxPips: maxPips,
       progressPipChar: progressPipChar,
-      consequencePipChar: consequencePipChar,
-      progIsFa: progIsFa,
-      consIsFa: consIsFa
+      consequencePipChar: consequencePipChar
+      //progIsFa: progIsFa,
+      //consIsFa: consIsFa
     };
   }
 
