@@ -35,10 +35,10 @@
               {{log '@index:' @index 'filled_cnt:' ../this.filled_cnt 'pip_cnt:' ../this.pip_cnt}}
                   <div class="tictac-pip {{#if (lt @index ../this.filled_cnt)}}filled{{/if}}"
                      style="
-                         {{#if (lt @index ../this.filled_cnt)}} /* Only apply background-color if pip is filled */
-                             background-color: {{#ifEquals ../this.type 'progress'}}{{../../progressColor}}{{else}}{{../../consequenceColor}}{{/ifEquals}};
+                         {{#if (lt @index ../this.filled_cnt)}} 
+                             color: {{#ifEquals ../this.type 'progress'}}{{../../progressColor}}{{else}}{{../../consequenceColor}}{{/ifEquals}};
                          {{/if}}
-                         ">
+                         " data-pip-char="{{#ifEquals ../this.type 'progress'}}{{../../progressPipChar}}{{else}}{{../../consequencePipChar}}{{/ifEquals}}">
                     </div>
                 {{/range}}
             </div>
