@@ -1,5 +1,5 @@
 # Tictac Tracker for Foundry
-A compact, collapsable overlay for consequence and progress trackers. 
+A compact, collapsable overlay for consequence and progress trackers. Useful for Daggerheart™ or any game in which you wish to track progress (skill challenges, crafting, etc.). 
 
 ![GM Tracker](./screenshots/tictac-tracker-gm2.jpg)
 
