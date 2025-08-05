@@ -1,5 +1,5 @@
 # Progress/Countdown Tracker for Foundry
-A compact, collapsable overlay for progress and countdown/consequence trackers. Useful for Daggerheart™ or any game in which you wish to track progress (skill challenges, crafting, etc.). 
+A compact, collapsable overlay for progress and countdown/consequence trackers. Useful for Daggerheart™ or any game in which you wish to track progress or countdowns (skill challenges, crafting, etc.). 
 
 ![GM Tracker](./screenshots/tictac-tracker-gm2.jpg)
 
@@ -10,7 +10,7 @@ Within the window, the GM can:
 - increment and decrement each tracker
 - re-order trackers with drag-handlebars (client-scoped)
 
-In the module settings:
+In the module settings, you can:
 - change the icons (a font awesome string without quotes, e.g. fa-solid fa-burst) used for progress and consequence trackers (client-scoped)
 - change the font for the window (client-scoped)
 - change the colors of 'pips' for progress and consequence trackers (client-scoped)
