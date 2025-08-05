@@ -38,11 +38,7 @@
                          {{#if (lt @index ../this.filled_cnt)}} 
                              color: {{#ifEquals ../this.type 'progress'}}{{../../progressColor}}{{else}}{{../../consequenceColor}}{{/ifEquals}};
                          {{/if}}
-                         " data-pip-char="{{#ifEquals ../this.type 'progress'}}{{../../progressPipChar}}{{else}}{{../../consequencePipChar}}{{/ifEquals}}">
-		{{#if isFontAwesomeIcon}} {{#ifEquals ../this.type 'progress'}}{{../../progressPipChar}}{{else}}{{../../consequencePipChar}}{{/ifEquals}}
-		{{else}}
-                <i class="{{#ifEquals ../this.type 'progress'}}{{../../progressPipChar}}{{else}}{{../../consequencePipChar}}{{/ifEquals}}"></i>
-            	{{/if}}
+			 "> <i class="{{#ifEquals ../this.type 'progress'}}{{../../progressPipChar}}{{else}}{{../../consequencePipChar}}{{/ifEquals}}"></i>
                     </div>
                 {{/range}}
             </div>
