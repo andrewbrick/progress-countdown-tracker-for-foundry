@@ -95,7 +95,8 @@
     flex-shrink: 0;
     box-sizing: border-box;
     margin-right: 1.5em;
-    margin-bottom: 4px;
+    margin-bottom: 0px;
+    margin-top: 1px;
 }
 
 .tictac-drag-handle {
@@ -141,7 +142,7 @@
   justify-content: center;
   align-items: center;
   font-family: "Arial", sans-serif;
-  font-size: calc(var(--pip-size) * 2);
+  font-size: calc(var(--pip-size) * 1.2);
 }
 .tictac-pip::before {
   content: attr(data-pip-char);
