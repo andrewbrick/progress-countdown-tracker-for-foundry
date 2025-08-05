@@ -13,7 +13,7 @@
     <div class="tictac-tracker-list">
       {{#each trackers}}
         {{#if (or ../isGM this.visible)}}
-        <div class="tictac-tracker-row" data-id="{{this.id}}">
+        <div class="tictac-tracker-row" data-id="{{this.id}}" {{#unless this.visible}}style="opacity: .4"{{/unless}}>
           <div class="tictac-drag-handle"><i class="fas fa-grip-lines"></i></div>
 
           {{#if ../isGM}}<input class="tictac-edit-name" data-id="{{this.id}}" type="text" value="{{this.name}}" />
