@@ -4,7 +4,7 @@
   "description": "Adds a GM-controlled, extensible overlay for progress clocks/trackers and countdowns. https://github.com/andrewbrick/tictac-tracker-for-foundry/",
   "version": "0.9.0",
   "compatibility": {
-    "minimum": "12",
+    "minimum": "13",
     "verified": "13.346"
   },
   "styles": ["styles/trackers.css"],
