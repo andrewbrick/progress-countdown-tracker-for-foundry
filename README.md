@@ -1,7 +1,7 @@
 # Tictac Tracker for Foundry
 A compact, collapsable overlay for consequence and progress trackers. 
 
-<p align="center">
+<p style="text-align: center">
 ![GM Tracker](./screenshots/tictac-tracker-gm2.jpg)
 </p> 
 
