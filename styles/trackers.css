@@ -19,7 +19,8 @@
   padding: 0.1em;
   border-radius: 8px;
   color: white;
-  font-family: var(--font-primary);
+  /*font-family: var(--font-primary);*/
+  font-family: var(--tictac-font-family);
 }
 
 .tictac-trackers-window:hover {
