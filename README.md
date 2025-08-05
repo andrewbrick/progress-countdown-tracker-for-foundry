@@ -1,6 +1,7 @@
 # Tictac Tracker for Foundry
 A compact, collapsable overlay for consequence and progress trackers. 
-![GM Tracker](./screenshots/tictac-tracker-gm2.jpg)
+
+<center>![GM Tracker](./screenshots/tictac-tracker-gm2.jpg)</center> 
 
 Within the window, the GM can:
 - add and delete trackers
@@ -21,7 +22,7 @@ Other notes:
 - players can re-order their own trackers, but they can't change anything else about the trackers
 - window is sized dynamically to fit tracker names and the number of 'pips' for a uniform look
 
-Player view:
+<center>Player view:
 
 ![Player Tracker](./screenshots/tictac-tracker-player1.jpg)
 
@@ -36,3 +37,4 @@ Player warning on tracker change (if collapsed):
 Quick-start guide:
 
 ![How to](./screenshots/tictac-tracker-howto.jpg)
+</center>
