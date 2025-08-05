@@ -20,7 +20,7 @@
   border-radius: 8px;
   color: white;
   /*font-family: var(--font-primary);*/
-  font-family: var(--tictac-font-family);
+  font-family: var(--progress-countdown-tracker-font-family);
 }
 
 .progress-countdown-trackers-window:hover {
@@ -37,31 +37,31 @@
   overflow: hidden;
 }
 
-.tictac-header {
+.progress-countdown-tracker-header {
   display: flex;
 }
-.tictac-header span {
+.progress-countdown-tracker-header span {
   margin-right: 10px;
 }
-.tictac-header-last-span {
+.progress-countdown-tracker-header-last-span {
   margin-left: auto;
 }
-.tictac-collapse-button {
+.progress-countdown-tracker-collapse-button {
   font-size: 10px;
 }
 
-.tictac-toggle-collapse {
+.progress-countdown-tracker-toggle-collapse {
   text-align: center;
   cursor: pointer;
   margin-bottom: 0.3em;
 }
 
-.tictac-empty-add-button {
+.progress-countdown-tracker-empty-add-button {
   text-align: center;
   margin-top: 1em;
 }
 
-.tictac-empty-add-button button {
+.progress-countdown-tracker-empty-add-button button {
   background: none;
   border: none;
   color: #aaaaaa;
@@ -156,13 +156,13 @@
 
 }
 
-.progress-countdown-tracker-pip-controls, .tictac-gm-controls {
+.progress-countdown-tracker-pip-controls, .progress-countdown-tracker-gm-controls {
   display: flex;
   gap: 0.01em;
   padding: 0.01em;
 }
 
-.progress-countdown-tracker-pip-controls button, .tictac-gm-controls button {
+.progress-countdown-tracker-pip-controls button, .progress-countdown-tracker-gm-controls button {
   background: none;
   border: none;
   color: #cccccc;
