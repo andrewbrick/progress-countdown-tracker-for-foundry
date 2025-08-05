@@ -1,7 +1,9 @@
 # Tictac Tracker for Foundry
 A compact, collapsable overlay for consequence and progress trackers. 
 
-<center>![GM Tracker](./screenshots/tictac-tracker-gm2.jpg)</center> 
+<center>
+![GM Tracker](./screenshots/tictac-tracker-gm2.jpg)
+</center> 
 
 Within the window, the GM can:
 - add and delete trackers
