@@ -1,6 +1,6 @@
 Hooks.once("init", () => {
   // progress pip character
-  game.settings.register("tictac-tracker", "progressPipCharacter", {
+  game.settings.register("progress-countdown-tracker", "progressPipCharacter", {
     name: "Progress Pip Character",
     hint: "Change the pip character for progress trackers. Use a Font Awesome icon name without quotes. Applies only to you.",
     scope: "client",
@@ -12,18 +12,18 @@ Hooks.once("init", () => {
       const trimmed = value.trim();
       if (trimmed.length === 0) {
         ui.notifications.warn("Progress Pip Character is blank. Using default.");
-        await game.settings.set("tictac-tracker", "progressPipCharacter", "●");
+        await game.settings.set("progress-countdown-tracker", "progressPipCharacter", "●");
       } else if (trimmed.length > 1) {
         const firstChar = trimmed.charAt(0);
         ui.notifications.warn("You must enter exactly one character. Using only the first character.");
-        await game.settings.set("tictac-tracker", "progressPipCharacter", firstChar);
+        await game.settings.set("progress-countdown-tracker", "progressPipCharacter", firstChar);
       }*/
       game.tictacTracker.render(true); 
     }
   });
   
   // consequence pip character
-  game.settings.register("tictac-tracker", "consequencePipCharacter", {
+  game.settings.register("progress-countdown-tracker", "consequencePipCharacter", {
     name: "Consequence Pip Character",
     hint: "Change the pip character for consequence trackers. Use a Font Awesome icon name without quotes. Applies only to you.",
     scope: "client",
@@ -35,18 +35,18 @@ Hooks.once("init", () => {
       const trimmed = value.trim();
       if (trimmed.length === 0) {
         ui.notifications.warn("Consequence Pip Character field is blank. Using default.");
-        await game.settings.set("tictac-tracker", "consequencePipCharacter", "●");
+        await game.settings.set("progress-countdown-tracker", "consequencePipCharacter", "●");
       } else if (trimmed.length > 1) {
         const firstChar = trimmed.charAt(0);
         ui.notifications.warn("You must enter exactly one character. Using only the first character.");
-        await game.settings.set("tictac-tracker", "consequencePipCharacter", firstChar);
+        await game.settings.set("progress-countdown-tracker", "consequencePipCharacter", firstChar);
       }*/
       game.tictacTracker.render(true); 
     }
   });
 
   // progress pip color
-  game.settings.register("tictac-tracker", "progressPipColor", {
+  game.settings.register("progress-countdown-tracker", "progressPipColor", {
     name: "Progress Pip Color",
     hint: "Change the color of active pips for progress trackers. Applies only to you.",
     scope: "client",
@@ -59,7 +59,7 @@ Hooks.once("init", () => {
   });
 
   // consequence pip color
-  game.settings.register("tictac-tracker", "consequencePipColor", {
+  game.settings.register("progress-countdown-tracker", "consequencePipColor", {
     name: "Consequence Pip Color",
     hint: "Change the color of active pips for consequence trackers. Applies only to you.",
     scope: "client",
@@ -72,7 +72,7 @@ Hooks.once("init", () => {
   });
 
   // keep track of the tracker's position
-  game.settings.register("tictac-tracker", "trackerPosition", {
+  game.settings.register("progress-countdown-tracker", "trackerPosition", {
     name: "Tracker Position",
     scope: "client",
     config: false,
@@ -81,7 +81,7 @@ Hooks.once("init", () => {
   });
 
   // store collapsed state
-  game.settings.register("tictac-tracker", "collapsed", {
+  game.settings.register("progress-countdown-tracker", "collapsed", {
     name: "Collapsed",
     scope: "client",
     config: false,
@@ -89,7 +89,7 @@ Hooks.once("init", () => {
     default: false
   });
 
-  game.settings.register("tictac-tracker", "trackerOrder", {
+  game.settings.register("progress-countdown-tracker", "trackerOrder", {
     name: "Tracker Order",
     scope: "client",
     config: false,
@@ -97,7 +97,7 @@ Hooks.once("init", () => {
     default: []
   });
 
-  game.settings.register("tictac-tracker", "trackerData", {
+  game.settings.register("progress-countdown-tracker", "trackerData", {
     name: "Tracker Data",
     scope: "world",
     config: false,
@@ -105,7 +105,7 @@ Hooks.once("init", () => {
     default: []
   });
 
-  game.settings.register("tictac-tracker", "trackerDataChanged", { // store whether trackerData has changed since user collapsed the trackers
+  game.settings.register("progress-countdown-tracker", "trackerDataChanged", { // store whether trackerData has changed since user collapsed the trackers
     name: "Tracker Data Changed Tracker",
     scope: "client",
     config: false,
@@ -174,7 +174,7 @@ Hooks.once('ready', async () => {
     fontChoices[fontName] = fontName;
   }
   // font selector
-  game.settings.register("tictac-tracker", "moduleFontFamily", {
+  game.settings.register("progress-countdown-tracker", "moduleFontFamily", {
     name: "Module Font Family",
     hint: "Select a font for use by this module. Applies only to you.",
     scope: "client",
@@ -199,13 +199,13 @@ Hooks.once('ready', async () => {
   //console.log("DEBUG: TictacTrackerApp Instance Frame Options:", game.tictacTracker.options.frame); // Check if frame options are inherited/set
   //console.log("DEBUG: TictacTrackerApp Instance HTML Element:", game.tictacTracker.element); // Check the element reference
   //console.log("DEBUG: Does TictacTrackerApp have _onRender method?", typeof game.tictacTracker._onRender); // Should be 'function'
-  //console.log("num trackers:", game.settings.get("tictac-tracker", "trackerData").length);
+  //console.log("num trackers:", game.settings.get("progress-countdown-tracker", "trackerData").length);
 
   // Re-render socket
-  game.socket.on("module.tictac-tracker", (payload) => {
+  game.socket.on("module.progress-countdown-tracker", (payload) => {
     if (payload.action === "renderApplication") {
       //console.log("payload.action is renderApplication");
-      const applicationInstance = foundry.applications.instances.get("tictac-tracker");
+      const applicationInstance = foundry.applications.instances.get("progress-countdown-tracker");
       //console.log("applicationInstance", applicationInstance);
       if (applicationInstance) {
         //console.log("applicationInstance exists");
@@ -214,14 +214,14 @@ Hooks.once('ready', async () => {
     }
     // trackerDataChanged force client update
     if (payload.action === "syncTrackerDataChanged") {
-      const collapsed = game.settings.get("tictac-tracker", "collapsed");
+      const collapsed = game.settings.get("progress-countdown-tracker", "collapsed");
       if (collapsed) {
-        game.settings.set("tictac-tracker", "trackerDataChanged", true);
+        game.settings.set("progress-countdown-tracker", "trackerDataChanged", true);
       }
     }
     // GM forceUncollapse force client update
     if (payload.action === "forceUncollapse") {
-      game.settings.set("tictac-tracker", "collapsed", false);
+      game.settings.set("progress-countdown-tracker", "collapsed", false);
     }
   });  
   
@@ -230,11 +230,11 @@ Hooks.once('ready', async () => {
 class TictacTrackerApp extends foundry.applications.api.HandlebarsApplicationMixin(foundry.applications.api.ApplicationV2) { //HandlebarsApplicationMixin(foundry.applications.api.ApplicationV2) {
   
   static get DEFAULT_OPTIONS() {
-    const storedPosition = game.settings.get("tictac-tracker", "trackerPosition");
+    const storedPosition = game.settings.get("progress-countdown-tracker", "trackerPosition");
     const baseOptions = super.DEFAULT_OPTIONS;
     const customOptions = {
-      id: "tictac-tracker",
-      template: "modules/tictac-tracker/templates/trackers.html",
+      id: "progress-countdown-tracker",
+      template: "modules/progress-countdown-tracker/templates/trackers.html",
       popOut: true,
       resizeable: false,
       window: {
@@ -246,7 +246,7 @@ class TictacTrackerApp extends foundry.applications.api.HandlebarsApplicationMix
         width: "auto",
         height: "auto"
       },
-      classes: ["tictac-trackers-window"],
+      classes: ["progress-countdown-trackers-window"],
       actions: {
         addTracker: TictacTrackerApp._onAddTracker,
         delTracker: TictacTrackerApp._onDelTracker,
@@ -268,8 +268,8 @@ class TictacTrackerApp extends foundry.applications.api.HandlebarsApplicationMix
   
   /*
   static DEFAULT_OPTIONS = { //static get defaultOptions() {
-    id: "tictac-tracker",
-    template: "modules/tictac-tracker/templates/trackers.html",
+    id: "progress-countdown-tracker",
+    template: "modules/progress-countdown-tracker/templates/trackers.html",
     popOut: true,
     resizeable: false,
     window: {
@@ -279,7 +279,7 @@ class TictacTrackerApp extends foundry.applications.api.HandlebarsApplicationMix
       width: "auto",
       height: "auto"
     },
-    classes: ["tictac-trackers-window"],
+    classes: ["progress-countdown-trackers-window"],
     actions: {
       addTracker: TictacTrackerApp._onAddTracker,
       delTracker: TictacTrackerApp._onDelTracker,
@@ -299,9 +299,9 @@ class TictacTrackerApp extends foundry.applications.api.HandlebarsApplicationMix
   */
 
   async _prepareContext(options) {
-    const data = game.settings.get("tictac-tracker", "trackerData");
-    const collapsed = game.settings.get("tictac-tracker", "collapsed");
-    const order = game.settings.get("tictac-tracker", "trackerOrder");
+    const data = game.settings.get("progress-countdown-tracker", "trackerData");
+    const collapsed = game.settings.get("progress-countdown-tracker", "collapsed");
+    const order = game.settings.get("progress-countdown-tracker", "trackerOrder");
     const isGM = game.user.isGM;
     //console.log("isGM _prepareContext:", isGM);
 
@@ -317,8 +317,8 @@ class TictacTrackerApp extends foundry.applications.api.HandlebarsApplicationMix
     console.log("_prepareContext return:", {
       isGM,
       collapsed: collapsed,
-      progressColor: game.settings.get("tictac-tracker", "progressPipColor"),
-      consequenceColor: game.settings.get("tictac-tracker", "consequencePipColor"),
+      progressColor: game.settings.get("progress-countdown-tracker", "progressPipColor"),
+      consequenceColor: game.settings.get("progress-countdown-tracker", "consequencePipColor"),
       trackers: fullList
     });
     */
@@ -338,8 +338,8 @@ class TictacTrackerApp extends foundry.applications.api.HandlebarsApplicationMix
     maxPipsPlayer += 1;
 
     // Get pip characters
-    const progressPipChar = game.settings.get("tictac-tracker", "progressPipCharacter");
-    const consequencePipChar = game.settings.get("tictac-tracker", "consequencePipCharacter");
+    const progressPipChar = game.settings.get("progress-countdown-tracker", "progressPipCharacter");
+    const consequencePipChar = game.settings.get("progress-countdown-tracker", "consequencePipCharacter");
     // Are they font awesome icons?
     //const progIsFa = (progressPipChar.includes('fa-') || progressPipChar.startsWith('fas '))
     //const consIsFa = (consequencePipChar.includes('fa-') || consequencePipChar.startsWith('fas '))
@@ -348,8 +348,8 @@ class TictacTrackerApp extends foundry.applications.api.HandlebarsApplicationMix
       isGM,
       collapsed: collapsed,
       //collapsed: finalCollapsed,
-      progressColor: game.settings.get("tictac-tracker", "progressPipColor"),
-      consequenceColor: game.settings.get("tictac-tracker", "consequencePipColor"),
+      progressColor: game.settings.get("progress-countdown-tracker", "progressPipColor"),
+      consequenceColor: game.settings.get("progress-countdown-tracker", "consequencePipColor"),
       trackers: fullList,
       maxPips: maxPips,
       maxPipsPlayer: maxPipsPlayer,
@@ -363,7 +363,7 @@ class TictacTrackerApp extends foundry.applications.api.HandlebarsApplicationMix
   async _renderHTML(context, options) {
     //const html = await foundry.applications.handlebars.renderTemplate(this.options.template, await this.getData());
     //console.log("_renderHTML context:", context);
-    const html = await foundry.applications.handlebars.renderTemplate("modules/tictac-tracker/templates/trackers.html", context); //this.getData()); //this.getData()); //context);
+    const html = await foundry.applications.handlebars.renderTemplate("modules/progress-countdown-tracker/templates/trackers.html", context); //this.getData()); //this.getData()); //context);
     //const template = document.createElement("template");
     //template.innerHTML = html.trim();
     //return template.content.firstElementChild;
@@ -388,8 +388,8 @@ class TictacTrackerApp extends foundry.applications.api.HandlebarsApplicationMix
     event.preventDefault();
     //console.log("add tracker clicked");
   
-    const data = game.settings.get("tictac-tracker", "trackerData");
-    const order = game.settings.get("tictac-tracker", "trackerOrder");
+    const data = game.settings.get("progress-countdown-tracker", "trackerData");
+    const order = game.settings.get("progress-countdown-tracker", "trackerOrder");
     let base = "New Tracker";
     let i = 0 ;
     let name;
@@ -410,42 +410,42 @@ class TictacTrackerApp extends foundry.applications.api.HandlebarsApplicationMix
     data.push(newTracker);
     order.push(id);
 
-    await game.settings.set("tictac-tracker", "trackerData", data);
-    await game.settings.set("tictac-tracker", "trackerOrder", order);
+    await game.settings.set("progress-countdown-tracker", "trackerData", data);
+    await game.settings.set("progress-countdown-tracker", "trackerOrder", order);
     this.render();
-    game.socket.emit("module.tictac-tracker", { action: "renderApplication" });
+    game.socket.emit("module.progress-countdown-tracker", { action: "renderApplication" });
   }
 
   static async _onDelTracker(event, element) {
     //console.log("delete tracker clicked")
-    const trackerRow = element.closest(".tictac-tracker-row");
+    const trackerRow = element.closest(".progress-countdown-tracker-row");
     const id = trackerRow.dataset.id;
-    let data = game.settings.get("tictac-tracker", "trackerData");
+    let data = game.settings.get("progress-countdown-tracker", "trackerData");
     const thisTracker = data.find(t => t.id === id);
-    let order = game.settings.get("tictac-tracker", "trackerOrder");
+    let order = game.settings.get("progress-countdown-tracker", "trackerOrder");
     data = data.filter(t => t.id !== id);
     order = order.filter(i => i !== id);
-    await game.settings.set("tictac-tracker", "trackerData", data);
-    await game.settings.set("tictac-tracker", "trackerOrder", order);
+    await game.settings.set("progress-countdown-tracker", "trackerData", data);
+    await game.settings.set("progress-countdown-tracker", "trackerOrder", order);
     this.render();
-    if(thisTracker.visible) { game.socket.emit("module.tictac-tracker", { action: "syncTrackerDataChanged" }); }
-    game.socket.emit("module.tictac-tracker", { action: "renderApplication" });
+    if(thisTracker.visible) { game.socket.emit("module.progress-countdown-tracker", { action: "syncTrackerDataChanged" }); }
+    game.socket.emit("module.progress-countdown-tracker", { action: "renderApplication" });
   }
 
   static async _onCollapseTrackers(event, element) {
     //console.log("collapse/expand toggle clicked")
-    const current = game.settings.get("tictac-tracker", "collapsed");
+    const current = game.settings.get("progress-countdown-tracker", "collapsed");
     if (current) { // if the tracker is collapsed, clear trackerDataChanged (b/c the user is now expanding it)
-      game.settings.set("tictac-tracker", "trackerDataChanged", false);
+      game.settings.set("progress-countdown-tracker", "trackerDataChanged", false);
     }
-    await game.settings.set("tictac-tracker", "collapsed", !current);
+    await game.settings.set("progress-countdown-tracker", "collapsed", !current);
     this.render();
   }
 
   static async _onChangeToProg(event, element) { 
-    const trackerRow = element.closest(".tictac-tracker-row");
+    const trackerRow = element.closest(".progress-countdown-tracker-row");
     const id = trackerRow.dataset.id;
-    const data = game.settings.get("tictac-tracker", "trackerData");
+    const data = game.settings.get("progress-countdown-tracker", "trackerData");
     const thisTracker = data.find(t => t.id === id);
     const type = thisTracker.type;
     if(thisTracker && thisTracker.type !== "progress") {
@@ -459,17 +459,17 @@ class TictacTrackerApp extends foundry.applications.api.HandlebarsApplicationMix
           return tracker
         }
       });
-      await game.settings.set("tictac-tracker", "trackerData", updatedData);
+      await game.settings.set("progress-countdown-tracker", "trackerData", updatedData);
       this.render();
-      if(thisTracker.visible) { game.socket.emit("module.tictac-tracker", { action: "syncTrackerDataChanged" }); }
-      game.socket.emit("module.tictac-tracker", { action: "renderApplication" });
+      if(thisTracker.visible) { game.socket.emit("module.progress-countdown-tracker", { action: "syncTrackerDataChanged" }); }
+      game.socket.emit("module.progress-countdown-tracker", { action: "renderApplication" });
     }
   }
 
   static async _onChangeToCons(event, element) { 
-    const trackerRow = element.closest(".tictac-tracker-row");
+    const trackerRow = element.closest(".progress-countdown-tracker-row");
     const id = trackerRow.dataset.id;
-    const data = game.settings.get("tictac-tracker", "trackerData");
+    const data = game.settings.get("progress-countdown-tracker", "trackerData");
     const thisTracker = data.find(t => t.id === id);
     const type = thisTracker.type;
     if(thisTracker && thisTracker.type !== "consequence") {
@@ -483,17 +483,17 @@ class TictacTrackerApp extends foundry.applications.api.HandlebarsApplicationMix
           return tracker
         }
       });
-      await game.settings.set("tictac-tracker", "trackerData", updatedData);
+      await game.settings.set("progress-countdown-tracker", "trackerData", updatedData);
       this.render();
-      if(thisTracker.visible) { game.socket.emit("module.tictac-tracker", { action: "syncTrackerDataChanged" }); }
-      game.socket.emit("module.tictac-tracker", { action: "renderApplication" });
+      if(thisTracker.visible) { game.socket.emit("module.progress-countdown-tracker", { action: "syncTrackerDataChanged" }); }
+      game.socket.emit("module.progress-countdown-tracker", { action: "renderApplication" });
     }
   }
     
   static async _onToggleVis(event, element) { //.toggle-visibility
-    const trackerRow = element.closest(".tictac-tracker-row");
+    const trackerRow = element.closest(".progress-countdown-tracker-row");
     const id = trackerRow.dataset.id;
-    const data = game.settings.get("tictac-tracker", "trackerData");
+    const data = game.settings.get("progress-countdown-tracker", "trackerData");
     const thisTracker = data.find(t => t.id === id);
     if(!thisTracker) return;
 
@@ -508,18 +508,18 @@ class TictacTrackerApp extends foundry.applications.api.HandlebarsApplicationMix
       }
     });
     
-    await game.settings.set("tictac-tracker", "trackerData", updatedData);
+    await game.settings.set("progress-countdown-tracker", "trackerData", updatedData);
     this.render();
-    //if(!thisTracker.visible) { game.socket.emit("module.tictac-tracker", { action: "syncTrackerDataChanged" }); }
-    if(!thisTracker.visible) { game.socket.emit("module.tictac-tracker", { action: "forceUncollapse" }); }
-    game.socket.emit("module.tictac-tracker", { action: "renderApplication" });
+    //if(!thisTracker.visible) { game.socket.emit("module.progress-countdown-tracker", { action: "syncTrackerDataChanged" }); }
+    if(!thisTracker.visible) { game.socket.emit("module.progress-countdown-tracker", { action: "forceUncollapse" }); }
+    game.socket.emit("module.progress-countdown-tracker", { action: "renderApplication" });
   }
 
   static async _onAddPipCont(event, element) {
     //console.log("add pip container clicked")
-    const trackerRow = element.closest(".tictac-tracker-row");
+    const trackerRow = element.closest(".progress-countdown-tracker-row");
     const id = trackerRow.dataset.id;
-    const data = game.settings.get("tictac-tracker", "trackerData");
+    const data = game.settings.get("progress-countdown-tracker", "trackerData");
     const thisTracker = data.find(t => t.id === id);
     if(!thisTracker) return;
 
@@ -534,17 +534,17 @@ class TictacTrackerApp extends foundry.applications.api.HandlebarsApplicationMix
       }
     });
     
-    await game.settings.set("tictac-tracker", "trackerData", updatedData);
+    await game.settings.set("progress-countdown-tracker", "trackerData", updatedData);
     this.render();
-    if(thisTracker.visible) { game.socket.emit("module.tictac-tracker", { action: "syncTrackerDataChanged" }); }
-    game.socket.emit("module.tictac-tracker", { action: "renderApplication" });
+    if(thisTracker.visible) { game.socket.emit("module.progress-countdown-tracker", { action: "syncTrackerDataChanged" }); }
+    game.socket.emit("module.progress-countdown-tracker", { action: "renderApplication" });
   }
 
   static async _onSubPipCont(event, element) {
     //console.log("sub pip container clicked")
-    const trackerRow = element.closest(".tictac-tracker-row");
+    const trackerRow = element.closest(".progress-countdown-tracker-row");
     const id = trackerRow.dataset.id;
-    const data = game.settings.get("tictac-tracker", "trackerData");
+    const data = game.settings.get("progress-countdown-tracker", "trackerData");
     const thisTracker = data.find(t => t.id === id);
     if(!thisTracker) return;
 
@@ -560,18 +560,18 @@ class TictacTrackerApp extends foundry.applications.api.HandlebarsApplicationMix
       }
     });
     
-    await game.settings.set("tictac-tracker", "trackerData", updatedData);
+    await game.settings.set("progress-countdown-tracker", "trackerData", updatedData);
     this.render();
-    if(thisTracker.visible) { game.socket.emit("module.tictac-tracker", { action: "syncTrackerDataChanged" }); }
-    game.socket.emit("module.tictac-tracker", { action: "renderApplication" });
+    if(thisTracker.visible) { game.socket.emit("module.progress-countdown-tracker", { action: "syncTrackerDataChanged" }); }
+    game.socket.emit("module.progress-countdown-tracker", { action: "renderApplication" });
   }
 
   static async _onAddPip (event, element) {
     //console.log("add pip clicked")
-    const trackerRow = element.closest(".tictac-tracker-row");
+    const trackerRow = element.closest(".progress-countdown-tracker-row");
     //console.log("trackerRow", trackerRow);
     const id = trackerRow.dataset.id;
-    const data = game.settings.get("tictac-tracker", "trackerData");
+    const data = game.settings.get("progress-countdown-tracker", "trackerData");
     //console.log("_onAddPip data:", data);
     const thisTracker = data.find(t => t.id === id);
     if(!thisTracker) return;
@@ -587,17 +587,17 @@ class TictacTrackerApp extends foundry.applications.api.HandlebarsApplicationMix
       }
     });
     //console.log("_onAddPip updatedData:", updatedData);
-    await game.settings.set("tictac-tracker", "trackerData", updatedData);
+    await game.settings.set("progress-countdown-tracker", "trackerData", updatedData);
     this.render();
-    if(thisTracker.visible) { game.socket.emit("module.tictac-tracker", { action: "syncTrackerDataChanged" }); }
-    game.socket.emit("module.tictac-tracker", { action: "renderApplication" });
+    if(thisTracker.visible) { game.socket.emit("module.progress-countdown-tracker", { action: "syncTrackerDataChanged" }); }
+    game.socket.emit("module.progress-countdown-tracker", { action: "renderApplication" });
   }
 
   static async _onSubPip (event, element) {
     //console.log("sub pip clicked")
-    const trackerRow = element.closest(".tictac-tracker-row");
+    const trackerRow = element.closest(".progress-countdown-tracker-row");
     const id = trackerRow.dataset.id;
-    const data = game.settings.get("tictac-tracker", "trackerData");
+    const data = game.settings.get("progress-countdown-tracker", "trackerData");
     const thisTracker = data.find(t => t.id === id);
     if(!thisTracker) return;
 
@@ -612,17 +612,17 @@ class TictacTrackerApp extends foundry.applications.api.HandlebarsApplicationMix
       }
     });
 
-    await game.settings.set("tictac-tracker", "trackerData", updatedData);
+    await game.settings.set("progress-countdown-tracker", "trackerData", updatedData);
     this.render();
-    if(thisTracker.visible) { game.socket.emit("module.tictac-tracker", { action: "syncTrackerDataChanged" }); }
-    game.socket.emit("module.tictac-tracker", { action: "renderApplication" });
+    if(thisTracker.visible) { game.socket.emit("module.progress-countdown-tracker", { action: "syncTrackerDataChanged" }); }
+    game.socket.emit("module.progress-countdown-tracker", { action: "renderApplication" });
   }
 
   /*
   static async _onPipMod (event, element) { //.pip-mod
     const id = event.currentTarget.dataset.id;
     const action = event.currentTarget.dataset.action;
-    const data = game.settings.get("tictac-tracker", "trackerData");
+    const data = game.settings.get("progress-countdown-tracker", "trackerData");
     const tracker = data.find(t => t.id === id);
     if(!tracker) return;
 
@@ -635,7 +635,7 @@ class TictacTrackerApp extends foundry.applications.api.HandlebarsApplicationMix
       tracker.pip_cnt++;
     }
 
-    await game.settings.set("tictac-tracker", "trackerData", data);
+    await game.settings.set("progress-countdown-tracker", "trackerData", data);
     this.render();
   }
   */
@@ -645,28 +645,28 @@ class TictacTrackerApp extends foundry.applications.api.HandlebarsApplicationMix
 
     // save position
     const pos = this.position;
-    game.settings.set("tictac-tracker", "trackerPosition", {
+    game.settings.set("progress-countdown-tracker", "trackerPosition", {
       top: pos.top,
       left: pos.left
     });
  
     // re-ordering the trackers
     const appHtmlElement = this.element;
-    const $trackerList = $(appHtmlElement).find(".tictac-tracker-list");
+    const $trackerList = $(appHtmlElement).find(".progress-countdown-tracker-list");
     if ($trackerList.length) { // Ensure the element exists
       $trackerList.sortable({
         handle: ".tictac-drag-handle",
         update: async (event, ui) => {
           // This is still within the callback, so you can make it async
-          const newOrder = $trackerList.find(".tictac-tracker-row").map((i, el) => el.dataset.id).get();
-          await game.settings.set("tictac-tracker", "trackerOrder", newOrder);
+          const newOrder = $trackerList.find(".progress-countdown-tracker-row").map((i, el) => el.dataset.id).get();
+          await game.settings.set("progress-countdown-tracker", "trackerOrder", newOrder);
           // Might want to re-render here if the sort order affects other elements
           this.render(false); // Re-render without forcing a re-draw of the whole app
-          game.socket.emit("module.tictac-tracker", { action: "renderApplication" });
+          game.socket.emit("module.progress-countdown-tracker", { action: "renderApplication" });
         }
       });
     } else {
-      console.warn("DEBUG: Sortable container with class 'tictac-tracker-list' NOT FOUND during _onRender!");
+      console.warn("DEBUG: Sortable container with class 'progress-countdown-tracker-list' NOT FOUND during _onRender!");
     }
 
     // editing the tracker names
@@ -675,21 +675,21 @@ class TictacTrackerApp extends foundry.applications.api.HandlebarsApplicationMix
       input.addEventListener("blur", async (event) => {
         const id = event.currentTarget.dataset.id;
         const newName = event.currentTarget.value.trim();
-        const data = game.settings.get("tictac-tracker", "trackerData");
+        const data = game.settings.get("progress-countdown-tracker", "trackerData");
         const tracker = data.find(t => t.id === id);
         if (tracker) {
           tracker.name = newName;
-          await game.settings.set("tictac-tracker", "trackerData", data);
+          await game.settings.set("progress-countdown-tracker", "trackerData", data);
           // UI to update visually based on name change, consider re-rendering
           this.render(false); 
-          if(tracker.visible) { game.socket.emit("module.tictac-tracker", { action: "syncTrackerDataChanged" }); }
-          game.socket.emit("module.tictac-tracker", { action: "renderApplication" });
+          if(tracker.visible) { game.socket.emit("module.progress-countdown-tracker", { action: "syncTrackerDataChanged" }); }
+          game.socket.emit("module.progress-countdown-tracker", { action: "renderApplication" });
         }
       });
     });
 
     // use selected font
-    const selectedFont = game.settings.get("tictac-tracker", "moduleFontFamily");
+    const selectedFont = game.settings.get("progress-countdown-tracker", "moduleFontFamily");
     const rootElement = this.element;
     rootElement.style.setProperty('--tictac-font-family', selectedFont);
     
@@ -724,33 +724,33 @@ class TictacTrackerApp extends foundry.applications.api.HandlebarsApplicationMix
     html.querySelector(".edit-name").on("blur", async (event) => {
       const id = event.currentTarget.dataset.id;
       const newName = event.currentTarget.value.trim();
-      const data = game.settings.get("tictac-tracker", "trackerData");
+      const data = game.settings.get("progress-countdown-tracker", "trackerData");
       const tracker = data.find(t => t.id === id);
       if(tracker) {
         tracker.name = newName;
-        await game.settings.set("tictac-tracker", "trackerData", data);
+        await game.settings.set("progress-countdown-tracker", "trackerData", data);
       }
     });
     
     html.querySelector(".toggle-type").on("click", async (event) => {
       const id = event.currentTarget.dataset.id;
       const type = event.currentTarget.dataset.type;
-      const data = game.settings.get("tictac-tracker", "trackerData");
+      const data = game.settings.get("progress-countdown-tracker", "trackerData");
       const tracker = data.find(t => t.id === id);
       if(tracker && tracker.type !== type) {
         tracker.type = type;
-        await game.settings.set("tictac-tracker", "trackerData", data);
+        await game.settings.set("progress-countdown-tracker", "trackerData", data);
         this.render();
       }
     });
 
     html.querySelector(".toggle-visibility").on("click", async (event) => {
       const id = event.currentTarget.dataset.id;
-      const data = game.settings.get("tictac-tracker", "trackerData");
+      const data = game.settings.get("progress-countdown-tracker", "trackerData");
       const tracker = data.find(t => t.id === id);
       if(tracker) {
         tracker.visible = !tracker.visible;
-        await game.settings.set("tictac-tracker", "trackerData", data);
+        await game.settings.set("progress-countdown-tracker", "trackerData", data);
         this.render();
       }
     });
@@ -759,7 +759,7 @@ class TictacTrackerApp extends foundry.applications.api.HandlebarsApplicationMix
     html.querySelector(".pip-mod").on("click", async (event) => {
       const id = event.currentTarget.dataset.id;
       const action = event.currentTarget.dataset.action;
-      const data = game.settings.get("tictac-tracker", "trackerData");
+      const data = game.settings.get("progress-countdown-tracker", "trackerData");
       const tracker = data.find(t => t.id === id);
       if(!tracker) return;
 
@@ -772,7 +772,7 @@ class TictacTrackerApp extends foundry.applications.api.HandlebarsApplicationMix
         tracker.pip_cnt++;
       }
 
-      await game.settings.set("tictac-tracker", "trackerData", data);
+      await game.settings.set("progress-countdown-tracker", "trackerData", data);
       this.render();
     });
     
@@ -781,7 +781,7 @@ class TictacTrackerApp extends foundry.applications.api.HandlebarsApplicationMix
       handle: ".drag-handle",
       update: async (event, ui) => {
         const newOrder = html.find(".tracker-row").map((i, el) => el.dataset.id).get();
-        await game.settings.set("tictac-tracker", "trackerOrder", newOrder);
+        await game.settings.set("progress-countdown-tracker", "trackerOrder", newOrder);
       }
     });
     
