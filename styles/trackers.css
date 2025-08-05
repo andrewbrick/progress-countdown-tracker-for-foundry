@@ -95,6 +95,7 @@
     flex-shrink: 0;
     box-sizing: border-box;
     margin-right: 1.5em;
+    margin-bottom: 4px;
 }
 
 .tictac-drag-handle {
@@ -134,15 +135,23 @@
   width: var(--pip-size);
   height: var(--pip-size);
   border-radius: 50%;
-  background-color: #555555;
-  border: 1px solid #aaaaaa;
+  background-color: transparent;
   opacity: 0.3;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-family: "Arial", sans-serif;
+  font-size: calc(var(--pip-size) * 2);
 }
-
+.tictac-pip::before {
+  content: attr(data-pip-char);
+}
 .tictac-pip.filled {
   opacity: 1;
-  background-color: #d703fc;
-  border: 1px solid #aaaaaa;
+  background-color: transparent;
+}
+.tictac-pip.filled::before {
+
 }
 
 .tictac-pip-controls, .tictac-gm-controls {
