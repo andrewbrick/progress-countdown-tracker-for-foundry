@@ -3,7 +3,7 @@ Hooks.once("init", () => {
   // progress pip character
   game.settings.register("tictac-tracker", "progressPipCharacter", {
     name: "Progress Pip Character",
-    hint: "Change the pip character for progress trackers (use one character only). Applies only to you.",
+    hint: "Change the pip character for progress trackers. Use a Font Awesome icon name without quotes. Applies only to you.",
     scope: "client",
     config: true,
     type: String,
@@ -26,7 +26,7 @@ Hooks.once("init", () => {
   // consequence pip character
   game.settings.register("tictac-tracker", "consequencePipCharacter", {
     name: "Consequence Pip Character",
-    hint: "Change the pip character for consequence trackers (use one character only). Applies only to you.",
+    hint: "Change the pip character for consequence trackers. Use a Font Awesome icon name without quotes. Applies only to you.",
     scope: "client",
     config: true,
     type: String,
