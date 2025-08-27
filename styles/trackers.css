@@ -1,4 +1,4 @@
-#progress-countdown-tracker:not(:hover):not(.minimized) header, 
+#progress-countdown-tracker:not(:hover):not(.minimized) .window-header, 
 #progress-countdown-tracker:not(:hover):not(.minimized) .controls,  
 #progress-countdown-tracker:not(:hover):not(.minimized) .window-resize-handle {
     opacity: 0;
@@ -21,6 +21,7 @@
   color: white;
   /*font-family: var(--font-primary);*/
   font-family: var(--progress-countdown-tracker-font-family);
+  width: auto;
 }
 
 .progress-countdown-trackers-window:hover {
@@ -28,40 +29,38 @@
   box-shadow: 0 0 10px #000;
 }
 
-.progress-countdown-trackers-app-body {
-  width: auto;
-}
-.progress-countdown-trackers-app-body.collapsed {
+
+ .progress-countdown-trackers-app-body.collapsed {
   min-width: 400px;
   height: auto;
   overflow: hidden;
 }
 
-.progress-countdown-tracker-header {
+ .progress-countdown-tracker-header {
   display: flex;
 }
-.progress-countdown-tracker-header span {
+ .progress-countdown-tracker-header span {
   margin-right: 10px;
 }
-.progress-countdown-tracker-header-last-span {
+ .progress-countdown-tracker-header-last-span {
   margin-left: auto;
 }
-.progress-countdown-tracker-collapse-button {
+ .progress-countdown-tracker-collapse-button {
   font-size: 10px;
 }
 
-.progress-countdown-tracker-toggle-collapse {
+ .progress-countdown-tracker-toggle-collapse {
   text-align: center;
   cursor: pointer;
   margin-bottom: 0.3em;
 }
 
-.progress-countdown-tracker-empty-add-button {
+ .progress-countdown-tracker-empty-add-button {
   text-align: center;
   margin-top: 1em;
 }
 
-.progress-countdown-tracker-empty-add-button button {
+ .progress-countdown-tracker-empty-add-button button {
   background: none;
   border: none;
   color: #aaaaaa;
@@ -69,7 +68,7 @@
   cursor: pointer;
 }
 
-.progress-countdown-tracker-list {
+ .progress-countdown-tracker-list {
   display: flex;
   flex-direction: column;
   gap: 0.3em;
@@ -77,7 +76,7 @@
   width: auto;
 }
 
-.progress-countdown-tracker-row {
+ .progress-countdown-tracker-row {
   background: rgba(255, 255, 255, 0.05);
   padding: 0.2em;
   border-radius: 6px;
@@ -87,7 +86,7 @@
   width: auto;
 }
 
-.progress-countdown-tracker-pips-container {
+ .progress-countdown-tracker-pips-container {
     display: grid;
     grid-template-columns: repeat(var(--max-pips), 1fr);
     gap: 2px;
@@ -100,13 +99,13 @@
     margin-top: 1px;
 }
 
-.progress-countdown-tracker-drag-handle {
+ .progress-countdown-tracker-drag-handle {
   cursor: grab;
   color: #888888;
   margin-left: 0.2em;
 }
 
-.progress-countdown-tracker-edit-name {
+ .progress-countdown-tracker-edit-name {
   /*flex-grow: 1;*/
   background: transparent;
   border: none;
@@ -115,7 +114,7 @@
   width: auto;
   min-width: 50px;
 }
-.progress-countdown-tracker-display-name {
+ .progress-countdown-tracker-display-name {
   /*flex-grow: 1;*/
   background: transparent;
   border: none;
@@ -126,14 +125,14 @@
   margin-left: .5em;
 }
 
-.progress-countdown-tracker-pips {
+ .progress-countdown-tracker-pips {
   display: flex;
   gap: 0.2em;
   margin-left: 0.5em;
   margin-right: 0.5em;
 }
 
-.progress-countdown-tracker-pip {
+ .progress-countdown-tracker-pip {
   width: var(--pip-size);
   height: var(--pip-size);
   border-radius: 50%;
@@ -145,24 +144,24 @@
   font-family: "Arial", sans-serif;
   font-size: calc(var(--pip-size) * 1.2);
 }
-.progress-countdown-tracker-pip::before {
+ .progress-countdown-tracker-pip::before {
   content: attr(data-pip-char);
 }
-.progress-countdown-tracker-pip.filled {
+ .progress-countdown-tracker-pip.filled {
   opacity: 1;
   background-color: transparent;
 }
-.progress-countdown-tracker-pip.filled::before {
+ .progress-countdown-tracker-pip.filled::before {
 
 }
 
-.progress-countdown-tracker-pip-controls, .progress-countdown-tracker-gm-controls {
+ .progress-countdown-tracker-pip-controls, .progress-countdown-tracker-gm-controls {
   display: flex;
   gap: 0.01em;
   padding: 0.01em;
 }
 
-.progress-countdown-tracker-pip-controls button, .progress-countdown-tracker-gm-controls button {
+ .progress-countdown-tracker-pip-controls button, .progress-countdown-tracker-gm-controls button {
   background: none;
   border: none;
   color: #cccccc;
@@ -172,12 +171,12 @@
   padding: 0.2em;
 }
 
-.progress-countdown-tracker-footer {
+ .progress-countdown-tracker-footer {
   text-align: center;
   margin-top: 0.5em;
 }
 
-.progress-countdown-tracker-footer button {
+ .progress-countdown-tracker-footer button {
   background: none;
   border: none;
   color: #4CAF50;
