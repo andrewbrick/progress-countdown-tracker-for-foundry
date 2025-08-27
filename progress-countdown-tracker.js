@@ -1,4 +1,30 @@
+export let pcTracker = null;
+
 Hooks.once("init", () => {
+
+  // is the tracker window visible?
+  game.settings.register("progress-countdown-tracker", "trackerVisible", {
+    name: "Visible",
+    scope: "client",
+    config: true,
+    type: Boolean,
+    default: true,
+    onChange: (value) => {
+      if(!pcTracker) {
+        pcTracker = new ProgressCountdownTrackerApp();
+      }
+      if(value && !pcTracker.rendered) {
+        game.pcTracker.render(true);
+        //console.log(pcTracker.rendered);
+        //console.log("visible setting:", game.settings.get("progress-countdown-tracker", "trackerVisible"));
+      } else {
+        game.pcTracker.close();
+        //console.log(pcTracker.rendered);
+        //console.log("visible setting:", game.settings.get("progress-countdown-tracker", "trackerVisible"));
+      }
+    }
+  });
+
   // progress pip character
   game.settings.register("progress-countdown-tracker", "progressPipCharacter", {
     name: "Progress Pip Character",
@@ -231,12 +257,14 @@ class ProgressCountdownTrackerApp extends foundry.applications.api.HandlebarsApp
   
   static get DEFAULT_OPTIONS() {
     const storedPosition = game.settings.get("progress-countdown-tracker", "trackerPosition");
-    const baseOptions = super.DEFAULT_OPTIONS;
+    //const baseOptions = super.DEFAULT_OPTIONS;
+    const baseOptions = foundry.utils.deepClone(super.DEFAULT_OPTIONS);
     const customOptions = {
       id: "progress-countdown-tracker",
       template: "modules/progress-countdown-tracker/templates/trackers.html",
       popOut: true,
       resizeable: false,
+      minimizable: true,
       window: {
         title: "Trackers",
       },
@@ -263,7 +291,7 @@ class ProgressCountdownTrackerApp extends foundry.applications.api.HandlebarsApp
         //editTrackerName: ProgressCountdownTrackerApp._onEditTrackerName
       }
     }
-    return foundry.utils.mergeObject(baseOptions, customOptions);
+    return foundry.utils.mergeObject(baseOptions, customOptions, { inplace: false, overwrite: true} );
   }
   
   /*
@@ -640,6 +668,11 @@ class ProgressCountdownTrackerApp extends foundry.applications.api.HandlebarsApp
   }
   */
 
+  _onClose(options) {
+    super._onClose(options);
+    game.settings.set("progress-countdown-tracker", "trackerVisible", false);
+  }
+
   _onRender(context, options) {
     super._onRender(context, options);
 
@@ -789,4 +822,3 @@ class ProgressCountdownTrackerApp extends foundry.applications.api.HandlebarsApp
   } // end activate listeners
   */
 }
-
