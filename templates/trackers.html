@@ -3,7 +3,8 @@
     <div class="progress-countdown-tracker-topbar">
       <span>Trackers </span>
       {{#if (getSetting "progress-countdown-tracker" "trackerDataChanged")}}<span><i class="fas fa-exclamation-triangle" style="color: #FFC107;"></i> Trackers Updated!</span>{{/if}}
-      <span class="progress-countdown-tracker-header-last-span" data-action="collapseTrackers"><button class="progress-countdown-tracker-control-button"><i class="fas fa-chevron-down"></i></button></span>
+      <div class="topbar-right"><button class="progress-countdown-tracker-control-button" data-action="collapseTrackers"><i class="fas fa-chevron-down"></i></button>
+      <button class="progress-countdown-tracker-control-button" data-action="closeTrackers"><i class="fas fa-times"></i></button></div>
     </div>
   {{else}}
     {{#if isGM}}
