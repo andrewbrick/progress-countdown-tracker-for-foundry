@@ -706,20 +706,44 @@ class ProgressCountdownTrackerApp extends foundry.applications.api.HandlebarsApp
     const editNameInputs = appHtmlElement.querySelectorAll(".progress-countdown-tracker-edit-name"); //this.element[0].querySelectorAll(".edit-name"); // this.element is a jQuery obj, get the native HTMLElement
     editNameInputs.forEach(input => {
       input.addEventListener("blur", async (event) => {
-        const id = event.currentTarget.dataset.id;
-        const newName = event.currentTarget.value.trim();
-        const data = game.settings.get("progress-countdown-tracker", "trackerData");
-        const tracker = data.find(t => t.id === id);
-        if (tracker) {
-          tracker.name = newName;
-          await game.settings.set("progress-countdown-tracker", "trackerData", data);
-          // UI to update visually based on name change, consider re-rendering
-          this.render(false); 
-          if(tracker.visible) { game.socket.emit("module.progress-countdown-tracker", { action: "syncTrackerDataChanged" }); }
-          game.socket.emit("module.progress-countdown-tracker", { action: "renderApplication" });
+        await this._updateTrackerName(event);
+        // this was moved lower to also allow for "Enter" to do something
+        //const id = event.currentTarget.dataset.id;
+        //const newName = event.currentTarget.value.trim();
+        //const data = game.settings.get("progress-countdown-tracker", "trackerData");
+        //const tracker = data.find(t => t.id === id);
+        //if (tracker) {
+        //  tracker.name = newName;
+        //  await game.settings.set("progress-countdown-tracker", "trackerData", data);
+        //  // UI to update visually based on name change, consider re-rendering
+        //  this.render(false); 
+        //  if(tracker.visible) { game.socket.emit("module.progress-countdown-tracker", { action: "syncTrackerDataChanged" }); }
+        //  game.socket.emit("module.progress-countdown-tracker", { action: "renderApplication" });
+        //}
+      });
+      input.addEventListener("keydown", async (event) => {
+        if (event.key === "Enter") {
+          event.preventDefault();
+          await this._updateTrackerName(event);
+          event.currentTarget.blur();
         }
       });
     });
+    this._updateTrackerName = async (event) => {
+      const id = event.currentTarget.dataset.id;
+      const newName = event.currentTarget.value.trim();
+      const data = game.settings.get("progress-countdown-tracker", "trackerData");
+      const tracker = data.find(t => t.id === id);
+      if (tracker) {
+        tracker.name = newName;
+        await game.settings.set("progress-countdown-tracker", "trackerData", data);
+        this.render(false);
+        if (tracker.visible) {
+          game.socket.emit("module.progress-countdown-tracker", { action: "syncTrackerDataChanged" });
+        }
+        game.socket.emit("module.progress-countdown-tracker", { action: "renderApplication" });
+      }
+    };
 
     // use selected font
     const selectedFont = game.settings.get("progress-countdown-tracker", "moduleFontFamily");
@@ -751,7 +775,15 @@ class ProgressCountdownTrackerApp extends foundry.applications.api.HandlebarsApp
     });
     
   }
-  
+
+  // save position when window is moved
+  async setPosition(position = {}) {
+    const result = super.setPosition(position);
+    const final = this.position;
+    await game.settings.set("progress-countdown-tracker", "trackerPosition", final);
+    return result;
+  }
+
 // Old activateListeners    
 /*
     html.querySelector(".edit-name").on("blur", async (event) => {
