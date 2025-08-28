@@ -1,14 +1,23 @@
 <div class="progress-countdown-trackers-app-body{{#if collapsed}}collapsed{{/if}}">
   {{#if collapsed}}
-    <div class="progress-countdown-tracker-header">
+    <div class="progress-countdown-tracker-topbar">
       <span>Trackers </span>
       {{#if (getSetting "progress-countdown-tracker" "trackerDataChanged")}}<span><i class="fas fa-exclamation-triangle" style="color: #FFC107;"></i> Trackers Updated!</span>{{/if}}
-      <span class="progress-countdown-tracker-header-last-span" data-action="collapseTrackers"><button class="progress-countdown-tracker-collapse-button"><i class="fas fa-chevron-down"></i></button></span>
+      <span class="progress-countdown-tracker-header-last-span" data-action="collapseTrackers"><button class="progress-countdown-tracker-control-button"><i class="fas fa-chevron-down"></i></button></span>
     </div>
   {{else}}
-    <div class="progress-countdown-tracker-header">
-      <span class="progress-countdown-tracker-header-last-span" data-action="collapseTrackers"><button class="progress-countdown-tracker-collapse-button"><i class="fas fa-chevron-up"></i></button></span>
+    {{#if isGM}}
+    <div class="progress-countdown-tracker-topbar"><div class="topbar-left">
+      <button class="progress-countdown-tracker-add-tracker" data-action="addTracker"><i class="fas fa-circle-plus"></i> Add Tracker</button></div>
+      <div class="topbar-right"><button class="progress-countdown-tracker-control-button" data-action="collapseTrackers"><i class="fas fa-chevron-up"></i></button>
+      <button class="progress-countdown-tracker-control-button" data-action="closeTrackers"><i class="fas fa-times"></i></button></div>
     </div>
+    {{else}} <!-- for players, just show control buttons -->
+    <div class="progress-countdown-tracker-topbar"><div class="topbar-left">Trackers </div>
+      <div class="topbar-right"><button class="progress-countdown-tracker-control-button" data-action="collapseTrackers"><i class="fas fa-chevron-up"></i></button>
+      <button class="progress-countdown-tracker-control-button" data-action="closeTrackers"><i class="fas fa-times"></i></button></div>
+    </div>
+    {{/if}}
 
     <div class="progress-countdown-tracker-list">
       {{#each trackers}}
@@ -57,11 +66,5 @@
         {{/if}}
       {{/each}}
     </div>
-
-    {{#if isGM}}
-    <div class="progress-countdown-tracker-footer">
-      <button class="progress-countdown-tracker-add-tracker" data-action="addTracker"><i class="fas fa-circle-plus"></i> Add Tracker</button>
-    </div>
-    {{/if}}
   {{/if}}
 </div>
