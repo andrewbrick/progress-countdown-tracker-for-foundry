@@ -1,3 +1,7 @@
+v1.0.03
+- Slightly modified styling (no more default window header) and UI element positions
+- Repositioning the window can be done by click-dragging in the top of the window
+
 v1.0.02
 - Pressing Enter when typing a tracker name now saves the tracker name (instead of just clicking off the text input box).
 - The window's position is now saved when you move it. Previously, the position would be saved only if something inside the window was changed.

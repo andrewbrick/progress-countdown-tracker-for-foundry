@@ -207,7 +207,7 @@ Hooks.once('ready', async () => {
     config: true,
     type: String,
     choices: fontChoices,
-    default: "Signika, sans-serif",
+    default: "Signika",
     onChange: () => {
       game.pcTracker.render(true); 
     }
@@ -287,45 +287,14 @@ class ProgressCountdownTrackerApp extends foundry.applications.api.HandlebarsApp
         changeToCons: ProgressCountdownTrackerApp._onChangeToCons,
         toggleVis: ProgressCountdownTrackerApp._onToggleVis, // toggle visibility of the tracker
         //moveTracker: ProgressCountdownTrackerApp._onMoveTracker, // grab one tracker and re-position it within the list
-        collapseTrackers: ProgressCountdownTrackerApp._onCollapseTrackers // toggle to collapse / expand the tracker bars
         //editTrackerName: ProgressCountdownTrackerApp._onEditTrackerName
+        collapseTrackers: ProgressCountdownTrackerApp._onCollapseTrackers, // toggle to collapse / expand the tracker bars
+        closeTrackers: ProgressCountdownTrackerApp._onCloseTrackers
       }
     }
     return foundry.utils.mergeObject(baseOptions, customOptions, { inplace: false, overwrite: true} );
   }
   
-  /*
-  static DEFAULT_OPTIONS = { //static get defaultOptions() {
-    id: "progress-countdown-tracker",
-    template: "modules/progress-countdown-tracker/templates/trackers.html",
-    popOut: true,
-    resizeable: false,
-    window: {
-      title: "Trackers",
-    },
-    position: {
-      width: "auto",
-      height: "auto"
-    },
-    classes: ["progress-countdown-trackers-window"],
-    actions: {
-      addTracker: ProgressCountdownTrackerApp._onAddTracker,
-      delTracker: ProgressCountdownTrackerApp._onDelTracker,
-      addPipCont: ProgressCountdownTrackerApp._onAddPipCont, // add a pip to the tracker
-      subPipCont: ProgressCountdownTrackerApp._onSubPipCont, // subtract a pip from the tracker
-      addPip: ProgressCountdownTrackerApp._onAddPip, // color in the next pip in the tracker
-      subPip: ProgressCountdownTrackerApp._onSubPip, // gray out the next pip in the tracker
-      toggleType: ProgressCountdownTrackerApp._onToggleType, // toggle between consequence and progress
-      changeToProg: ProgressCountdownTrackerApp._onChangeToProg,
-      changeToCons: ProgressCountdownTrackerApp._onChangeToCons,
-      toggleVis: ProgressCountdownTrackerApp._onToggleVis, // toggle visibility of the tracker
-      //moveTracker: ProgressCountdownTrackerApp._onMoveTracker, // grab one tracker and re-position it within the list
-      collapseTrackers: ProgressCountdownTrackerApp._onCollapseTrackers // toggle to collapse / expand the tracker bars
-      //editTrackerName: ProgressCountdownTrackerApp._onEditTrackerName
-    }
-  }
-  */
-
   async _prepareContext(options) {
     const data = game.settings.get("progress-countdown-tracker", "trackerData");
     const collapsed = game.settings.get("progress-countdown-tracker", "collapsed");
@@ -468,6 +437,22 @@ class ProgressCountdownTrackerApp extends foundry.applications.api.HandlebarsApp
     }
     await game.settings.set("progress-countdown-tracker", "collapsed", !current);
     this.render();
+  }
+
+  _onClose(options) {
+    //console.log("_onClose called");
+    super._onClose(options);
+    game.settings.set("progress-countdown-tracker", "trackerVisible", false);
+  }
+
+  // close window (implementing the custom button)
+  static async _onCloseTrackers(event, element) {
+    //console.log("trying to close");
+    event.preventDefault();
+    if (game.pcTracker?.rendered) {
+      game.pcTracker.close(); 
+      game.settings.set("progress-countdown-tracker", "trackerVisible", false);
+    }
   }
 
   static async _onChangeToProg(event, element) { 
@@ -668,20 +653,16 @@ class ProgressCountdownTrackerApp extends foundry.applications.api.HandlebarsApp
   }
   */
 
-  _onClose(options) {
-    super._onClose(options);
-    game.settings.set("progress-countdown-tracker", "trackerVisible", false);
-  }
-
   _onRender(context, options) {
     super._onRender(context, options);
 
     // save position
-    const pos = this.position;
-    game.settings.set("progress-countdown-tracker", "trackerPosition", {
-      top: pos.top,
-      left: pos.left
-    });
+    //const pos = this.position;
+    //game.settings.set("progress-countdown-tracker", "trackerPosition", {
+    //  top: pos.top,
+    //  left: pos.left
+    //});
+    //console.log("top of onRender position:", game.settings.get("progress-countdown-tracker", "trackerPosition"));
  
     // re-ordering the trackers
     const appHtmlElement = this.element;
@@ -773,84 +754,74 @@ class ProgressCountdownTrackerApp extends foundry.applications.api.HandlebarsApp
     elementsToMeasure.forEach((element) => {
       element.style.width = `${maxWidth}px`;
     });
+
+    // Make the window-content draggable
+    const appEl = this.element;
+    //console.log(appEl);
+    if(!appEl) return;
+    
+    const handle = appEl.querySelector(".progress-countdown-tracker-topbar"); //.window-content");
+    if(!handle) return;
+
+    handle.addEventListener("mousedown", (event) => {
+      event.preventDefault();
+      const rect = appEl.getBoundingClientRect();
+      const offsetX = event.clientX - rect.left;
+      const offsetY = event.clientY - rect.top;
+
+      const onMouseMove = (e) => {
+        appEl.style.left = `${e.clientX - offsetX}px`;
+        appEl.style.top = `${e.clientY - offsetY}px`;
+      };
+
+      const onMouseUp = () => {
+        window.removeEventListener("mousemove", onMouseMove);
+        window.removeEventListener("mouseup", onMouseUp);
+
+        // Save new position
+        //console.log("saving position");
+        game.settings.set("progress-countdown-tracker", "trackerPosition", {
+          left: parseFloat(appEl.style.left),
+          top: parseFloat(appEl.style.top)
+        });
+        this.setPosition({
+          left: parseFloat(appEl.style.left),
+          top: parseFloat(appEl.style.top)
+        });
+        //console.log("position:", game.settings.get("progress-countdown-tracker", "trackerPosition"));
+      };
+      window.addEventListener("mousemove", onMouseMove);
+      window.addEventListener("mouseup", onMouseUp);
+    });
     
   }
+
+  // override default rendering to ensure correct position is kept
+  /*async _renderFrame(options) {
+    await super._renderFrame(options);
+    const appEl = this.element;
+    if(!appEl) return;
+    const pos = game.settings.get("progress-countdown-tracker", "trackerPosition");
+    if(pos?.left !== undefined && pos?.top !== undefined) {
+      appEl.style.position = "absolute";
+      appEl.style.left = `${pos.left}px`;
+      appEl.style.top = `${pos.top}px`;
+    }
+  }*/
 
   // save position when window is moved
-  async setPosition(position = {}) {
+  /*async setPosition(position = {}) {
     const result = super.setPosition(position);
-    const final = this.position;
+    const final = game.settings.get("progress-countdown-tracker", "trackerPosition"); //this.position;
     await game.settings.set("progress-countdown-tracker", "trackerPosition", final);
+    console.log("setPosition position:", game.settings.get("progress-countdown-tracker", "trackerPosition"));
+    this.setPosition({
+      left: `${final.left}px`,
+      top: `${final.top}px`,
+      width: this.position.width,
+      height: this.position.height
+    });
     return result;
-  }
+  }*/
 
-// Old activateListeners    
-/*
-    html.querySelector(".edit-name").on("blur", async (event) => {
-      const id = event.currentTarget.dataset.id;
-      const newName = event.currentTarget.value.trim();
-      const data = game.settings.get("progress-countdown-tracker", "trackerData");
-      const tracker = data.find(t => t.id === id);
-      if(tracker) {
-        tracker.name = newName;
-        await game.settings.set("progress-countdown-tracker", "trackerData", data);
-      }
-    });
-    
-    html.querySelector(".toggle-type").on("click", async (event) => {
-      const id = event.currentTarget.dataset.id;
-      const type = event.currentTarget.dataset.type;
-      const data = game.settings.get("progress-countdown-tracker", "trackerData");
-      const tracker = data.find(t => t.id === id);
-      if(tracker && tracker.type !== type) {
-        tracker.type = type;
-        await game.settings.set("progress-countdown-tracker", "trackerData", data);
-        this.render();
-      }
-    });
-
-    html.querySelector(".toggle-visibility").on("click", async (event) => {
-      const id = event.currentTarget.dataset.id;
-      const data = game.settings.get("progress-countdown-tracker", "trackerData");
-      const tracker = data.find(t => t.id === id);
-      if(tracker) {
-        tracker.visible = !tracker.visible;
-        await game.settings.set("progress-countdown-tracker", "trackerData", data);
-        this.render();
-      }
-    });
-    
-
-    html.querySelector(".pip-mod").on("click", async (event) => {
-      const id = event.currentTarget.dataset.id;
-      const action = event.currentTarget.dataset.action;
-      const data = game.settings.get("progress-countdown-tracker", "trackerData");
-      const tracker = data.find(t => t.id === id);
-      if(!tracker) return;
-
-      if (action === "pip--" && tracker.filled_cnt > 0) tracker.filled_cnt--;
-      else if (action === "pip++" && tracker.filled_cnt < tracker.pip_cnt) tracker.filled_cnt++;
-      else if (action === "cnt--" && tracker.pip_cnt > 1) {
-        tracker.pip_cnt--;
-        if (tracker.filled_cnt > tracker.pip_cnt) tracker.filled_cnt = tracker.pip_cnt;
-      } else if (action === "cnt++" && tracker.pip_cnt < 24) {
-        tracker.pip_cnt++;
-      }
-
-      await game.settings.set("progress-countdown-tracker", "trackerData", data);
-      this.render();
-    });
-    
-
-    html.querySelector(".tracker-list").sortable({
-      handle: ".drag-handle",
-      update: async (event, ui) => {
-        const newOrder = html.find(".tracker-row").map((i, el) => el.dataset.id).get();
-        await game.settings.set("progress-countdown-tracker", "trackerOrder", newOrder);
-      }
-    });
-    
-    
-  } // end activate listeners
-  */
 }
