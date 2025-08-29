@@ -1,3 +1,8 @@
+v1.0.05
+- If a player has completely closed the window, it will re-appear in collapsed form (with the "trackers updated" warning) when the GM increments, decrements, or changes the name of a visible tracker.
+- The GM now has the option to push settings for pip character, pip color, and fonts to players.
+- A link to Font Awesome is now available in the settings window.
+
 v1.0.04
 - Oops! All berries. Added close button to the collapsed window.
   
