@@ -5,6 +5,7 @@ Hooks.once("init", () => {
   // is the tracker window visible?
   game.settings.register("progress-countdown-tracker", "trackerVisible", {
     name: "Visible",
+    hint: "Make the tracker window visible if you've closed it.",
     scope: "client",
     config: true,
     type: Boolean,
@@ -27,7 +28,7 @@ Hooks.once("init", () => {
 
   // progress pip character
   game.settings.register("progress-countdown-tracker", "progressPipCharacter", {
-    name: "Progress Pip Character",
+    name: "Progress Pip Character", // (<a href="https://fontawesome.com/search?o=r" target="_blank">Font Awesome</a>)
     hint: "Change the pip character for progress trackers. Use a Font Awesome icon name without quotes. Applies only to you.",
     scope: "client",
     config: true,
@@ -44,6 +45,14 @@ Hooks.once("init", () => {
         ui.notifications.warn("You must enter exactly one character. Using only the first character.");
         await game.settings.set("progress-countdown-tracker", "progressPipCharacter", firstChar);
       }*/
+      const force = game.settings.get("progress-countdown-tracker", "pushPipChars");
+      if (game.user.isGM && force) {
+        game.socket.emit("module.progress-countdown-tracker", {
+          action: "setPipChars",
+          chars: value,
+          type: "pro"
+        });
+      }
       game.pcTracker.render(true); 
     }
   });
@@ -67,8 +76,26 @@ Hooks.once("init", () => {
         ui.notifications.warn("You must enter exactly one character. Using only the first character.");
         await game.settings.set("progress-countdown-tracker", "consequencePipCharacter", firstChar);
       }*/
+      const force = game.settings.get("progress-countdown-tracker", "pushPipChars");
+      if (game.user.isGM && force) {
+        game.socket.emit("module.progress-countdown-tracker", {
+          action: "setPipChars",
+          chars: value,
+          type: "con"
+        });
+      }
       game.pcTracker.render(true); 
     }
+  });
+
+  // apply pip characters to players
+  game.settings.register("progress-countdown-tracker", "pushPipChars", {
+    name: "Apply pip characters for players",
+    hint: "(Overrides their settings when you make changes.)",
+    scope: "world",
+    config: true,
+    type: Boolean,
+    default: false
   });
 
   // progress pip color
@@ -79,7 +106,15 @@ Hooks.once("init", () => {
     config: true,
     type: new game.colorPicker.ColorPickerField(),
     default: "#0CA011",
-    onChange: () => {
+    onChange: (value) => {
+      const force = game.settings.get("progress-countdown-tracker", "pushColors");
+      if (game.user.isGM && force) {
+        game.socket.emit("module.progress-countdown-tracker", {
+          action: "setPipColors",
+          colors: value,
+          type: "pro"
+        });
+      }
       game.pcTracker.render(true); 
     }
   });
@@ -92,9 +127,27 @@ Hooks.once("init", () => {
     config: true,
     type: new game.colorPicker.ColorPickerField(),
     default: "#A02B93",
-    onChange: () => {
+    onChange: (value) => {
+      const force = game.settings.get("progress-countdown-tracker", "pushColors"); 
+      if (game.user.isGM && force) {
+        game.socket.emit("module.progress-countdown-tracker", {
+          action: "setPipColors",
+          colors: value,
+          type: "con"
+        });
+      }
       game.pcTracker.render(true); 
     }
+  });
+
+  // apply colors to players
+  game.settings.register("progress-countdown-tracker", "pushColors", {
+    name: "Apply pip colors for players",
+    hint: "(Overrides their settings when you make changes.)",
+    scope: "world",
+    config: true,
+    type: Boolean,
+    default: false
   });
 
   // keep track of the tracker's position
@@ -189,6 +242,58 @@ Hooks.once("init", () => {
 
 }); // end init
 
+Hooks.on("renderSettingsConfig", (app, element, data) => {
+  let target = element.querySelector('[name="progress-countdown-tracker.progressPipCharacter"]').closest(".form-group");
+  target.insertAdjacentHTML("beforebegin", `<h6>Pip Characters</h6><a href="https://fontawesome.com/search?o=r" target="_blank">Font Awesome</a>`);
+  target = element.querySelector('[name="progress-countdown-tracker.progressPipColor"]').closest(".form-group");
+  target.insertAdjacentHTML("beforebegin", `<h6>Pip Colors</h6>`);
+  target = element.querySelector('[name="progress-countdown-tracker.moduleFontFamily"]').closest(".form-group");
+  target.insertAdjacentHTML("beforebegin", `<h6>Font</h6>`);
+});
+
+// capture "push to client" tickbox changes in real time
+Hooks.on("renderSettingsConfig", (app, html, data) => {
+  const checkboxPushColors = html.querySelector(`input[name="progress-countdown-tracker.pushColors"]`);
+  const checkboxPushChars = html.querySelector(`input[name="progress-countdown-tracker.pushPipChars"]`);
+  const checkboxPushFont = html.querySelector(`input[name="progress-countdown-tracker.pushFont"]`);
+
+  if(checkboxPushColors) {
+    checkboxPushColors.addEventListener("change", ev => {
+      const checked = ev.currentTarget.checked;
+      game.settings.set("progress-countdown-tracker", "pushColors", checked);
+      if(checked) {
+        const pc = game.settings.get("progress-countdown-tracker", "progressPipColor");
+        const cc = game.settings.get("progress-countdown-tracker", "consequencePipColor");
+        const colors = { pc, cc };
+        game.socket.emit("module.progress-countdown-tracker", { action: "setPipColors", colors, type: "both" });
+      }
+    });
+  }
+  if(checkboxPushChars) {
+    checkboxPushChars.addEventListener("change", ev => {
+      const checked = ev.currentTarget.checked;
+      game.settings.set("progress-countdown-tracker", "pushPipChars", checked);
+      if(checked) {
+        const pc = game.settings.get("progress-countdown-tracker", "progressPipCharacter");
+        const cc = game.settings.get("progress-countdown-tracker", "consequencePipCharacter");
+        const chars = { pc, cc };
+        //console.log(chars);
+        game.socket.emit("module.progress-countdown-tracker", { action: "setPipChars", chars, type: "both" });
+      }
+    });
+  }
+  if(checkboxPushFont) {
+    checkboxPushFont.addEventListener("change", ev => {
+      const checked = ev.currentTarget.checked;
+      game.settings.set("progress-countdown-tracker", "pushFont", checked);
+      if(checked) {
+        const f = game.settings.get("progress-countdown-tracker", "moduleFontFamily");
+        game.socket.emit("module.progress-countdown-tracker", { action: "setFont", value: f });
+      }
+    });
+  }
+});
+
 Hooks.once('ready', async () => {
 
   // Final config menu item
@@ -208,10 +313,62 @@ Hooks.once('ready', async () => {
     type: String,
     choices: fontChoices,
     default: "Signika",
-    onChange: () => {
+    onChange: (value) => {
+      const force = game.settings.get("progress-countdown-tracker", "pushFont"); 
+      if (game.user.isGM && force) {
+        game.socket.emit("module.progress-countdown-tracker", {
+          action: "setFont",
+          value: value
+        });
+      }
       game.pcTracker.render(true); 
     }
   });
+  // push font to client option
+  game.settings.register("progress-countdown-tracker", "pushFont", {
+    name: "Apply font for players",
+    hint: "(Overrides their settings when you make changes.)",
+    scope: "world",
+    config: true,
+    type: Boolean,
+    default: false
+  });
+
+  // Listener for GM pushing settings to clients
+  if (game.user) {
+    game.socket.on("module.progress-countdown-tracker", (data) => {
+      if (data.action === "setPipColors") {
+        if (data.type === "pro") {
+          game.settings.set("progress-countdown-tracker", "progressPipColor", data.colors);
+        }
+        if (data.type === "con") {
+          game.settings.set("progress-countdown-tracker", "consequencePipColor", data.colors);
+        }
+        if (data.type === "both") {
+          const {pc,cc} = data.colors;
+          game.settings.set("progress-countdown-tracker", "progressPipColor", pc);
+          game.settings.set("progress-countdown-tracker", "consequencePipColor", cc);
+        }
+      }
+      if (data.action === "setPipChars") {
+        if (data.type === "pro") {
+          console.log(data.type, data.chars);
+          game.settings.set("progress-countdown-tracker", "progressPipCharacter", data.chars);
+        }
+        if (data.type === "con") {
+          game.settings.set("progress-countdown-tracker", "consequencePipCharacter", data.chars);
+        }
+        if (data.type === "both") {
+          const {pc,cc} = data.chars;
+          game.settings.set("progress-countdown-tracker", "progressPipCharacter", pc);
+          game.settings.set("progress-countdown-tracker", "consequencePipCharacter", cc);
+        }
+      }
+      if (data.action === "setFont") {
+        game.settings.set("progress-countdown-tracker", "moduleFontFamily", data.value);
+      }
+    });
+  }
 
   // Module init
   game.pcTracker = new ProgressCountdownTrackerApp();
@@ -248,6 +405,16 @@ Hooks.once('ready', async () => {
     // GM forceUncollapse force client update
     if (payload.action === "forceUncollapse") {
       game.settings.set("progress-countdown-tracker", "collapsed", false);
+      game.settings.set("progress-countdown-tracker", "trackerVisible", true);
+    }
+    // GM force window open when updated (collapsed)
+    if (payload.action === "showClientCollapsed") {
+      const windowVis = game.settings.get("progress-countdown-tracker", "trackerVisible");
+      if(!windowVis) {
+        game.settings.set("progress-countdown-tracker", "trackerDataChanged", true);
+        game.settings.set("progress-countdown-tracker", "collapsed", true);
+        game.settings.set("progress-countdown-tracker", "trackerVisible", true);
+      }
     }
   });  
   
@@ -432,9 +599,10 @@ class ProgressCountdownTrackerApp extends foundry.applications.api.HandlebarsApp
   static async _onCollapseTrackers(event, element) {
     //console.log("collapse/expand toggle clicked")
     const current = game.settings.get("progress-countdown-tracker", "collapsed");
-    if (current) { // if the tracker is collapsed, clear trackerDataChanged (b/c the user is now expanding it)
+    //console.log("collapsed:", current);
+    //if (current) { // if the tracker is collapsed, clear trackerDataChanged (b/c the user is now expanding it); edit: since this is a toggle, needs to be set to false whenever it's clicked (safe)
       game.settings.set("progress-countdown-tracker", "trackerDataChanged", false);
-    }
+    //}
     await game.settings.set("progress-countdown-tracker", "collapsed", !current);
     this.render();
   }
@@ -602,7 +770,11 @@ class ProgressCountdownTrackerApp extends foundry.applications.api.HandlebarsApp
     //console.log("_onAddPip updatedData:", updatedData);
     await game.settings.set("progress-countdown-tracker", "trackerData", updatedData);
     this.render();
-    if(thisTracker.visible) { game.socket.emit("module.progress-countdown-tracker", { action: "syncTrackerDataChanged" }); }
+    if(thisTracker.visible) { 
+      game.settings.set("progress-countdown-tracker", "trackerDataChanged", true);
+      game.socket.emit("module.progress-countdown-tracker", { action: "syncTrackerDataChanged" });  
+      game.socket.emit("module.progress-countdown-tracker", { action: "showClientCollapsed" });
+    }  
     game.socket.emit("module.progress-countdown-tracker", { action: "renderApplication" });
   }
 
@@ -627,31 +799,13 @@ class ProgressCountdownTrackerApp extends foundry.applications.api.HandlebarsApp
 
     await game.settings.set("progress-countdown-tracker", "trackerData", updatedData);
     this.render();
-    if(thisTracker.visible) { game.socket.emit("module.progress-countdown-tracker", { action: "syncTrackerDataChanged" }); }
+    if(thisTracker.visible) { 
+      game.settings.set("progress-countdown-tracker", "trackerDataChanged", true);
+      game.socket.emit("module.progress-countdown-tracker", { action: "syncTrackerDataChanged" }); 
+      game.socket.emit("module.progress-countdown-tracker", { action: "showClientCollapsed" });
+    }
     game.socket.emit("module.progress-countdown-tracker", { action: "renderApplication" });
   }
-
-  /*
-  static async _onPipMod (event, element) { //.pip-mod
-    const id = event.currentTarget.dataset.id;
-    const action = event.currentTarget.dataset.action;
-    const data = game.settings.get("progress-countdown-tracker", "trackerData");
-    const tracker = data.find(t => t.id === id);
-    if(!tracker) return;
-
-    if (action === "pip--" && tracker.filled_cnt > 0) tracker.filled_cnt--;
-    else if (action === "pip++" && tracker.filled_cnt < tracker.pip_cnt) tracker.filled_cnt++;
-    else if (action === "cnt--" && tracker.pip_cnt > 1) {
-      tracker.pip_cnt--;
-      if (tracker.filled_cnt > tracker.pip_cnt) tracker.filled_cnt = tracker.pip_cnt;
-    } else if (action === "cnt++" && tracker.pip_cnt < 24) {
-      tracker.pip_cnt++;
-    }
-
-    await game.settings.set("progress-countdown-tracker", "trackerData", data);
-    this.render();
-  }
-  */
 
   _onRender(context, options) {
     super._onRender(context, options);
@@ -721,6 +875,7 @@ class ProgressCountdownTrackerApp extends foundry.applications.api.HandlebarsApp
         this.render(false);
         if (tracker.visible) {
           game.socket.emit("module.progress-countdown-tracker", { action: "syncTrackerDataChanged" });
+          game.socket.emit("module.progress-countdown-tracker", { action: "showClientCollapsed" });
         }
         game.socket.emit("module.progress-countdown-tracker", { action: "renderApplication" });
       }
