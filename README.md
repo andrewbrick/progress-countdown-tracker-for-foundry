@@ -14,6 +14,7 @@ In the module settings, you can:
 - change the icons (a font awesome string without quotes, e.g. fa-solid fa-burst) used for progress and consequence trackers (client-scoped)
 - change the font for the window (client-scoped)
 - change the colors of 'pips' for progress and consequence trackers (client-scoped)
+- GM can push these settings to players
 
 Other notes:
 - new trackers are invisible to players when created (indicated by partial opacity in the GM view), allowing the GM to configure them before they're made visible
