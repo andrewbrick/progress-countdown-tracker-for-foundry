@@ -11,10 +11,10 @@ Hooks.once("init", () => {
     type: Boolean,
     default: true,
     onChange: (value) => {
-      if(!pcTracker) {
-        pcTracker = new ProgressCountdownTrackerApp();
+      if(!game.pcTracker) {
+        game.pcTracker = new ProgressCountdownTrackerApp();
       }
-      if(value && !pcTracker.rendered) {
+      if(value && !game.pcTracker.rendered) {
         game.pcTracker.render(true);
         //console.log(pcTracker.rendered);
         //console.log("visible setting:", game.settings.get("progress-countdown-tracker", "trackerVisible"));
@@ -989,16 +989,18 @@ Hooks.on("getSceneControlButtons", function(controls) {
     name: 'open-progress-trackers',
     title: 'Open Progress Trackers',
     button: true,
-    onChange: (value) => {
-      if(!pcTracker) {
-        pcTracker = new ProgressCountdownTrackerApp();
+    onChange: () => {
+      if(!game.pcTracker) {
+        game.pcTracker = new ProgressCountdownTrackerApp();
       }
-      if(value && !pcTracker.rendered) {
+      if(!game.pcTracker.rendered) {
         game.pcTracker.render(true);
+        game.settings.set("progress-countdown-tracker", "trackerVisible", true);
         //console.log(pcTracker.rendered);
         //console.log("visible setting:", game.settings.get("progress-countdown-tracker", "trackerVisible"));
       } else {
         game.pcTracker.close();
+        game.settings.set("progress-countdown-tracker", "trackerVisible", false);
         //console.log(pcTracker.rendered);
         //console.log("visible setting:", game.settings.get("progress-countdown-tracker", "trackerVisible"));
       }
