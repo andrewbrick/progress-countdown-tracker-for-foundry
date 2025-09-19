@@ -980,3 +980,30 @@ class ProgressCountdownTrackerApp extends foundry.applications.api.HandlebarsApp
   }*/
 
 }
+
+Hooks.on("getSceneControlButtons", function(controls) {
+  let tileControls = controls['tokens'];
+
+  tileControls.tools['open-progress-trackers'] = {
+    icon: 'fas fa-list-timeline',
+    name: 'open-progress-trackers',
+    title: 'Open Progress Trackers',
+    button: true,
+    onChange: (value) => {
+      if(!pcTracker) {
+        pcTracker = new ProgressCountdownTrackerApp();
+      }
+      if(value && !pcTracker.rendered) {
+        game.pcTracker.render(true);
+        //console.log(pcTracker.rendered);
+        //console.log("visible setting:", game.settings.get("progress-countdown-tracker", "trackerVisible"));
+      } else {
+        game.pcTracker.close();
+        //console.log(pcTracker.rendered);
+        //console.log("visible setting:", game.settings.get("progress-countdown-tracker", "trackerVisible"));
+      }
+    },
+    visible: true,
+  };
+
+});
