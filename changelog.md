@@ -1,5 +1,6 @@
 v1.0.10
-- Added menu button to show/hide the tracker window (courtesy CaelReader)
+- Added menu button to show the tracker window (courtesy CaelReader)
+- Updated with v1.0.11 to make that button toggle the window's visibility and sync with the Settings Menu tickbox
 
 v1.0.05
 - If a player has completely closed the window, it will re-appear in collapsed form (with the "trackers updated" warning) when the GM increments, decrements, or changes the name of a visible tracker.
