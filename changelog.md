@@ -1,3 +1,6 @@
+v1.0.10
+- Added menu button to show/hide the tracker window (courtesy CaelReader)
+
 v1.0.05
 - If a player has completely closed the window, it will re-appear in collapsed form (with the "trackers updated" warning) when the GM increments, decrements, or changes the name of a visible tracker.
 - The GM now has the option to push settings for pip character, pip color, and fonts to players.
