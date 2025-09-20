@@ -1,5 +1,5 @@
 v1.0.10
-- Added menu button to show the tracker window (courtesy CaelReader)
+- Added token control sidebar menu button to show the tracker window (courtesy CaelReader)
 - Updated with v1.0.11 to make that button toggle the window's visibility and sync with the Settings Menu tickbox
 
 v1.0.05
