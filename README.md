@@ -1,6 +1,8 @@
 # Progress/Countdown Tracker for Foundry
 A compact, collapsible overlay for progress and countdown/consequence trackers. Useful for Daggerheart™ or any game in which you wish to track progress or countdowns (skill challenges, crafting, etc.). Foundry v13 only.
 
+Have a request? Log an issue here in github. Development is welcome.
+
 ![GM Tracker](./screenshots/tictac-tracker-gm2.jpg)
 
 Within the window, the GM can:
