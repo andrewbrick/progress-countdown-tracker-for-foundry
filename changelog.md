@@ -1,3 +1,7 @@
+v1.0.2
+- Updated token menu button handling
+- Fixed issue with handlebar helpers that conflicted with PF2e spell range text disappearing (name conflict: "range")
+
 v1.0.10
 - Added token control sidebar menu button to show the tracker window (courtesy CaelReader)
 - Updated with v1.0.11 to make that button toggle the window's visibility and sync with the Settings Menu tickbox
