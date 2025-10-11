@@ -41,7 +41,7 @@
 
           <div class="progress-countdown-tracker-pips-container" style="--max-pips: {{#if ../isGM}}{{../maxPips}}{{else}}{{../maxPipsPlayer}}{{/if}};">
             <div class="progress-countdown-tracker-pips">
-              {{#range this.pip_cnt}}
+              {{#compute_pc_bar_range this.pip_cnt}}
               {{! log '@index:' @index 'filled_cnt:' ../this.filled_cnt 'pip_cnt:' ../this.pip_cnt}} 
                   <div class="progress-countdown-tracker-pip {{#if (lt @index ../this.filled_cnt)}}filled{{/if}}"
                      style="
@@ -50,7 +50,7 @@
                          {{/if}}
 			 "> <i class="{{#ifEquals ../this.type 'progress'}}{{../../progressPipChar}}{{else}}{{../../consequencePipChar}}{{/ifEquals}}"></i>
                     </div>
-                {{/range}}
+                {{/compute_pc_bar_range}}
             </div>
           </div>
 
