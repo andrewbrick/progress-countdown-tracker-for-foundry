@@ -192,7 +192,7 @@ Hooks.once("init", () => {
     default: false
   });
 
-  Handlebars.registerHelper("range", function(n, block) {
+  Handlebars.registerHelper("compute_pc_bar_range", function(n, block) {
     let accum = '';
     for (let i = 0; i < n; ++i) {
         // Create a new data frame for each iteration
@@ -987,21 +987,23 @@ Hooks.on("getSceneControlButtons", function(controls) {
   tileControls.tools['open-progress-trackers'] = {
     icon: 'fas fa-list-timeline',
     name: 'open-progress-trackers',
-    title: 'Open Progress Trackers',
-    button: true,
-    onChange: () => {
+    title: 'Toggle Progress Trackers',
+    //button: true,
+    toggle: true,
+    active: game.settings.get("progress-countdown-tracker", "trackerVisible") ?? false,
+    onClick: (active) => {
       if(!game.pcTracker) {
         game.pcTracker = new ProgressCountdownTrackerApp();
       }
-      if(!game.pcTracker.rendered) {
+      if(active) { //!game.pcTracker.rendered) {
         game.pcTracker.render(true);
         game.settings.set("progress-countdown-tracker", "trackerVisible", true);
-        //console.log(pcTracker.rendered);
+        //console.log(game.pcTracker.rendered);
         //console.log("visible setting:", game.settings.get("progress-countdown-tracker", "trackerVisible"));
       } else {
         game.pcTracker.close();
         game.settings.set("progress-countdown-tracker", "trackerVisible", false);
-        //console.log(pcTracker.rendered);
+        //console.log(game.pcTracker.rendered);
         //console.log("visible setting:", game.settings.get("progress-countdown-tracker", "trackerVisible"));
       }
     },
