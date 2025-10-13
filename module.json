@@ -2,7 +2,7 @@
   "id": "progress-countdown-tracker",
   "title": "Progress/Countdown Tracker",
   "description": "Adds a GM-controlled, collapsable overlay for progress clocks/trackers and countdowns. https://github.com/andrewbrick/progress-countdown-tracker-for-foundry/",
-  "version": "1.0.20",
+  "version": "1.0.21",
   "compatibility": {
     "minimum": "13",
     "verified": "13.350"
@@ -15,7 +15,7 @@
   "socket": true,
   "url": "https://github.com/andrewbrick/progress-countdown-tracker-for-foundry/",
   "manifest": "https://raw.githubusercontent.com/andrewbrick/progress-countdown-tracker-for-foundry/refs/heads/main/module.json",
-  "download": "https://github.com/andrewbrick/progress-countdown-tracker-for-foundry/archive/refs/tags/v1.0.20.zip",
+  "download": "https://github.com/andrewbrick/progress-countdown-tracker-for-foundry/archive/refs/tags/v1.0.21.zip",
   "relationships": {
     "requires": [{
       "id": "color-picker",
