@@ -1,4 +1,7 @@
-v1.0.2
+v1.0.21
+- Added CSS styling to make the window fade out when not hovered/focused like other Foundry UI elements
+
+v1.0.20
 - Updated token menu button handling
 - Fixed issue with handlebar helpers that conflicted with PF2e spell range text disappearing (name conflict: "range")
 
