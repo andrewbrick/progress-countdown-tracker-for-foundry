@@ -1,3 +1,6 @@
+v1.0.22
+- Made the window conform to the core UI settings for inactive opacity (suggested by bleachkitty)
+
 v1.0.21
 - Added CSS styling to make the window fade out when not hovered/focused like other Foundry UI elements
 
