@@ -192,6 +192,15 @@ Hooks.once("init", () => {
     default: false
   });
 
+  // inactive opacity
+  game.settings.register("progress-countdown-tracker", "inactiveOpacity", {
+    name: "Inactive Opacity",
+    scope: "client",
+    config: false,
+    type: Number,
+    default: 0.3 //game.settings.get("core", "uiConfig").fade.opacity
+  });
+
   Handlebars.registerHelper("compute_pc_bar_range", function(n, block) {
     let accum = '';
     for (let i = 0; i < n; ++i) {
@@ -241,6 +250,21 @@ Hooks.once("init", () => {
   });
 
 }); // end init
+
+Hooks.on("updateSetting", (setting, changes) => { // this may be redundant
+  if(setting.key !== "core.uiConfig.fade.opacity") {
+    //console.log(setting.key, "doesn't match");
+    return;
+  }
+  const newOpacity = changes.fade?.opacity;
+  for (const app of Object.values(ui.windows)) {
+    if (app instanceof ProgressCountdownTrackerApp) {
+      app.element[0].style.setProperty("--inactive-opacity", newOpacity);
+      this.render();
+      //console.log("inside hook");
+    }
+  }
+});
 
 Hooks.on("renderSettingsConfig", (app, element, data) => {
   let target = element.querySelector('[name="progress-countdown-tracker.progressPipCharacter"]').closest(".form-group");
@@ -352,7 +376,7 @@ Hooks.once('ready', async () => {
       }
       if (data.action === "setPipChars") {
         if (data.type === "pro") {
-          console.log(data.type, data.chars);
+          //console.log(data.type, data.chars);
           game.settings.set("progress-countdown-tracker", "progressPipCharacter", data.chars);
         }
         if (data.type === "con") {
@@ -369,6 +393,32 @@ Hooks.once('ready', async () => {
       }
     });
   }
+
+  const body = document.body;
+
+  // Watch for changes to the <body> style attribute (to match opacity slider in the UI config)
+  const observer = new MutationObserver(() => {
+    const newOpacity = getComputedStyle(body).getPropertyValue("--ui-fade-opacity").trim();
+    if (!newOpacity) return;
+
+    //console.log("Detected new UI fade opacity:", newOpacity);
+
+    // Apply new inactive opacity to your window(s)
+    for (const win of foundry.applications.instances.values()) {
+      //console.log("iterating windows", win);
+      if (win instanceof ProgressCountdownTrackerApp) { //ProgressCountdownTrackerApp
+        //console.log("found tracker app");
+        win.setInactiveOpacity(newOpacity);
+      }
+    }
+  });
+
+  observer.observe(body, {
+    attributes: true,
+    attributeFilter: ["style"]
+  });
+
+  //console.log("Now observing UI fade opacity changes on <body>.");
 
   // Module init
   game.pcTracker = new ProgressCountdownTrackerApp();
@@ -810,6 +860,8 @@ class ProgressCountdownTrackerApp extends foundry.applications.api.HandlebarsApp
   _onRender(context, options) {
     super._onRender(context, options);
 
+    this.element.style.setProperty("--inactive-opacity", game.settings.get("core", "uiConfig").fade.opacity);
+        
     // save position
     //const pos = this.position;
     //game.settings.set("progress-countdown-tracker", "trackerPosition", {
@@ -949,6 +1001,11 @@ class ProgressCountdownTrackerApp extends foundry.applications.api.HandlebarsApp
       window.addEventListener("mouseup", onMouseUp);
     });
     
+  }
+
+  setInactiveOpacity(value) {
+    //console.log("setting inactive opacity");
+    this.element.style.setProperty("--inactive-opacity", value);
   }
 
   // override default rendering to ensure correct position is kept
