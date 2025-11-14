@@ -372,6 +372,7 @@ Hooks.once('ready', async () => {
 
   // Module init
   game.pcTracker = new ProgressCountdownTrackerApp();
+  const inactiveOpacity = game.settings.get("core", "inactiveOpacity");
   await game.pcTracker.render(true);
 
   //console.log("DEBUG: foundry object available:", typeof foundry);
@@ -810,6 +811,9 @@ class ProgressCountdownTrackerApp extends foundry.applications.api.HandlebarsApp
   _onRender(context, options) {
     super._onRender(context, options);
 
+    const inactiveOpacity = game.settings.get("core", "inactiveOpacity");
+    this.element.style.setProperty("--inactive-opacity", inactiveOpacity);
+    
     // save position
     //const pos = this.position;
     //game.settings.set("progress-countdown-tracker", "trackerPosition", {
