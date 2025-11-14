@@ -1,4 +1,4 @@
-v1.0.22
+v1.0.23
 - Made the window conform to the core UI settings for inactive opacity (suggested by bleachkitty)
 
 v1.0.21
